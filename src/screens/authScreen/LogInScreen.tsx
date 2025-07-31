@@ -88,6 +88,7 @@ const LogInScreen = () => {
             return;
         }
         try {
+            console.log(9)
             setLoader(true);
             let response = await AuthApi.mobileSignIn({ mobile_no: Number(formValue.phoneNumber) });
             console.log(response.data, "mobileSignIn_response");

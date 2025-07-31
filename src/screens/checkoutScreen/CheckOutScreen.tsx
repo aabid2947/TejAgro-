@@ -16,10 +16,11 @@ import { BLACK, GRAY_BORDER, MDBLUE, ORANGE } from "../../shared/common-styles/c
 import { PressableB, titleViewIcon } from "../../shared/components/CommonUtilities"
 import { MyOrdersStyle } from "../orders/MyOrdersStyle"
 import { CheckOutStyle } from "./CheckOutStyle"
-import { clearSelectedPromoCode, setTotalItems } from "../../reduxToolkit/counterSlice"
+import { clearSelectedPromoCode, setTotalItems, setOrderPlaced } from "../../reduxToolkit/counterSlice"
 import TextPoppinsSemiBold from "../../shared/fontFamily/TextPoppinsSemiBold"
 import { useTranslation } from "react-i18next"
 import EditIcon from "../../svg/EditIcon"
+import ConfirmOrderModal from "../../components/alertmodal/ConfirmOrderModal"
 import React from "react"
 
 const CheckOutScreen = (props: any) => {
@@ -87,7 +88,8 @@ const CheckOutScreen = (props: any) => {
                     ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
                     navigation.navigate(MY_PROFILE)
                 } else {
-                    ToastAndroid.show("Order placed !", ToastAndroid.SHORT);
+                    ToastAndroid.show(t("Order_Placed"), ToastAndroid.SHORT);
+                    dispatch(setOrderPlaced(true))
                     navigation.navigate(HOME_SCREEN)
                 }
             } else {

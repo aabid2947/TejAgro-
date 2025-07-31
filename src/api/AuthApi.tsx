@@ -27,6 +27,7 @@ const searchProduct = (requestBody: any, accessToken: string) => {
     })
 }
 
+
 const getProductDetailById = (requestBody: any, accessToken: string) => {
 
     const url = `${AUTH_API_URL}product-details.php`;

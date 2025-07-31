@@ -19,7 +19,8 @@ export interface CounterState {
     isProfileInfo: {},
     isReferral: boolean,
     totalItems: number,
-    wallet: WalletInfo
+    wallet: WalletInfo,
+    orderPlaced: boolean
 }
 
 const initialState: CounterState = {
@@ -35,6 +36,7 @@ const initialState: CounterState = {
     isReferral: false,
     totalItems: 0,
     wallet: {},
+    orderPlaced: false,
 }
 
 export const counterSlice = createSlice({
@@ -55,6 +57,7 @@ export const counterSlice = createSlice({
             state.promoCodeId = {}
             state.isProfileInfo = {}
             state.totalItems = 0
+            state.orderPlaced = false
         },
         isUserVerify: (state, action: PayloadAction<boolean>) => {
             state.isUserVerify = action.payload
@@ -86,8 +89,11 @@ export const counterSlice = createSlice({
         walletDetails: (state, action: any) => {
             state.wallet = action.payload.length > 0 ? action.payload[0] || {} : {}
         },
+        setOrderPlaced: (state, action: PayloadAction<boolean>) => {
+            state.orderPlaced = action.payload
+        }
     },
 })
 
-export const { login, isLogOut, isUserVerify, languageSelection, selectedCropProduct, selectedShippingAddress, selectedPromoCode, clearSelectedPromoCode, profileDetail, referralDetails, setTotalItems, walletDetails } = counterSlice.actions
+export const { login, isLogOut, isUserVerify, languageSelection, selectedCropProduct, selectedShippingAddress, selectedPromoCode, clearSelectedPromoCode, profileDetail, referralDetails, setTotalItems, walletDetails, setOrderPlaced } = counterSlice.actions
 export default counterSlice.reducer

@@ -1,7 +1,6 @@
-
 import React from 'react';
-import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { BLACK, GRAY_SHADE, MD_GRAY, MDBLUE, PINK_GREY, WHITE } from '../../shared/common-styles/colors';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { BLACK, GRAY_SHADE, MD_GRAY, PINK_GREY, WHITE } from '../../shared/common-styles/colors';
 import BackButtonIcon from '../../svg/BackButtonIcon';
 import TextPoppinsMediumBold from '../../shared/fontFamily/TextPoppinsMediumBold';
 
@@ -10,17 +9,28 @@ const TopHeaderFixed = (props?: any) => {
     return (
         <View style={styles.topHeader}>
             <View style={styles.viewSection}>
+                {/* Left Side */}
                 <View style={styles.iconView}>
-                    {props?.gobackText && <Pressable style={({ pressed }) => [{ paddingEnd: 10, flexDirection: 'row', alignItems: 'center', opacity: pressed ? 0.2 : 1 }]} onPress={() => props?.onGoBack ? props?.onGoBack() : ''} >
-                        <BackButtonIcon width={24} height={24} />
-                        {props?.imageView && <View style={styles.imageView} />}
-                        <TextPoppinsMediumBold style={styles.goBackText}>{props?.gobackText}</TextPoppinsMediumBold>
-                    </Pressable>}
-                    {props?.headerTxt &&
+                    {props?.gobackText && (
+                        <Pressable style={({ pressed }) => [{ paddingEnd: 10, flexDirection: 'row', alignItems: 'center', opacity: pressed ? 0.2 : 1 }]} onPress={() => props?.onGoBack ? props?.onGoBack() : ''} >
+                            <BackButtonIcon width={24} height={24} />
+                            {props?.imageView && <View style={styles.imageView} />}
+                            <TextPoppinsMediumBold style={styles.goBackText}>{props?.gobackText}</TextPoppinsMediumBold>
+                        </Pressable>
+                    )}
+                    {props?.headerTxt && (
                         <Pressable style={({ pressed }) => [{ opacity: pressed ? 0.2 : 1 }]} onPress={() => props?.onGoBack ? props?.onGoBack() : ""}>
                             <TextPoppinsMediumBold style={styles.headerText}>{props?.headerTxt}</TextPoppinsMediumBold>
-                        </Pressable>}
+                        </Pressable>
+                    )}
                 </View>
+
+                {/* Right Side (conditionally rendered) */}
+                {props.rightComponent && (
+                    <View style={styles.rightComponentView}>
+                        {props.rightComponent}
+                    </View>
+                )}
             </View>
         </View>
     );
@@ -68,11 +78,16 @@ const useStyles = (props: any) => StyleSheet.create({
     viewSection: {
         flexDirection: 'row',
         flex: 1,
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
     iconView: {
         flexDirection: 'row',
         paddingLeft: 20,
         alignItems: 'center',
+    },
+    rightComponentView: {
+        paddingRight: 20,
     },
     cartBtn: {
         marginHorizontal: 10
@@ -90,5 +105,4 @@ const useStyles = (props: any) => StyleSheet.create({
         elevation: 1,
         backgroundColor: 'red'
     }
-
 });

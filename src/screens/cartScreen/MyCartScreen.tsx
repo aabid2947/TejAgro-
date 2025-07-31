@@ -13,7 +13,7 @@ import TopHeaderFixed from '../../components/headerview/TopHeaderFixed';
 import { LoaderScreen } from '../../components/loaderview/LoaderScreen';
 import { RootState } from '../../reduxToolkit/store';
 import { ADD_NEW_SHIPPING_SCREEN, CHECKOUT_SCREEN, PROMO_CODE_SCREEN, SHIPPING_ADDRESS_SCREEN } from '../../routes/Routes';
-import { BGRED, BLACK, LIGHT_SILVER, ORANGE, WHITE } from '../../shared/common-styles/colors';
+import { BGRED, BLACK, LIGHT_SILVER, MDBLUE, ORANGE, WHITE } from '../../shared/common-styles/colors';
 import { PressableB } from '../../shared/components/CommonUtilities';
 import TextPoppinsSemiBold from '../../shared/fontFamily/TextPoppinsSemiBold';
 import ArrowIcon from '../../svg/ArrowIcon';
@@ -22,12 +22,14 @@ import { MyOrdersStyle } from '../orders/MyOrdersStyle';
 import { PromoCodeStyle } from '../promo/PromoCodeStyle';
 import { MyCartStyle } from './MyCartStyle';
 import { useTranslation } from 'react-i18next';
-import { clearSelectedPromoCode, profileDetail, selectedPromoCode, setTotalItems, walletDetails } from '../../reduxToolkit/counterSlice';
+import { clearSelectedPromoCode, profileDetail, selectedPromoCode, setTotalItems, walletDetails, setOrderPlaced } from '../../reduxToolkit/counterSlice';
 import CartSvg from '../../svg/CartSvg';
 // import CheckBox from '@react-native-community/checkbox';
 import { CheckBox } from 'react-native-elements';
 import UnCheckbox from '../../svg/UnCheckbox';
 import CheckBoxSvg from '../../svg/CheckboxSvg';
+import ConfirmOrderModal from '../../components/alertmodal/ConfirmOrderModal';
+
 
 interface WalletBoxProps {
     walletOpening: number;
@@ -48,6 +50,7 @@ const MyCartScreen = ({ navigation, route }: any) => {
     const selectedShippingAddress: any = useSelector((state: RootState) => state.counter.selectAddress)
     const selectedPromoCodeValue: any = useSelector((state: RootState) => state.counter.promoCodeId)
     const profileInfo: any = useSelector((state: RootState) => state.counter.isProfileInfo)
+    const orderPlaced = useSelector((state: RootState) => state.counter.orderPlaced)
     const [isLoader, setLoader] = useState(true);
     const [cartData, setCartData] = useState<any[]>([]);
     const [refresh, setRefresh] = useState(false)
@@ -59,8 +62,7 @@ const MyCartScreen = ({ navigation, route }: any) => {
     const [isLoading, setIsLoading] = useState(false);
     const [totalCartPrice, settotalCartPrice] = useState(0)
     const [walletUsed, setWalletUsed] = useState<any>(null)
-
-
+    const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
 
 
     const dispatch = useDispatch()
@@ -419,12 +421,46 @@ const MyCartScreen = ({ navigation, route }: any) => {
             </>
         )
     }
+    useEffect(() => {
+        if (orderPlaced) {
+            setIsConfirmModalVisible(true);
+            setTimeout(() => {
+                setIsConfirmModalVisible(false);
+                dispatch(setOrderPlaced(false));
+            }, 2000);
+        }
+    }, [orderPlaced]);
+
+    const onShopMore = () => {
+        navigation.navigate('Product');
+    };
+
+   const ShopMoreComponent = () => (
+    <TouchableOpacity
+        onPress={onShopMore}
+        style={{
+            backgroundColor: MDBLUE,
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+            borderRadius: 25,
+            alignItems: 'center',
+            justifyContent: 'center',
+        }}
+    >
+        <TextPoppinsSemiBold style={{ color: BLACK, fontSize: 14, lineHeight: 24 }}>
+            {t('SHOP_MORE')}
+        </TextPoppinsSemiBold>
+    </TouchableOpacity>
+);
+
     return (
         <SafeAreaView style={MyCartStyle.container}>
             <TopHeaderFixed
                 leftIconSize={20}
                 headerTxt={t("MY_CART")}
-                topHeight={100} />
+                topHeight={100}
+                rightComponent={<ShopMoreComponent />}
+            />
             {isLoader ?
                 <LoaderScreen /> :
                 <>
@@ -471,6 +507,13 @@ const MyCartScreen = ({ navigation, route }: any) => {
                     onClose={closePromoModal}
                 />
             )}
+            <ConfirmOrderModal
+                modalVisible={isConfirmModalVisible}
+                onClose={() => {
+                    setIsConfirmModalVisible(false);
+                    dispatch(setOrderPlaced(false));
+                }}
+            />
         </SafeAreaView>
     );
 };

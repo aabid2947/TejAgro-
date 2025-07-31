@@ -171,19 +171,48 @@ const Dashboard = ({ navigation }: any) => {
         const trimmedQuery = query.trim();
         setSearchQuery(query);
 
-        if (trimmedQuery) {
-            try {
-                const response = await AuthApi.getCrops();
-                const filtered = response.data.filter((crop: any) =>
-                    crop.crop_name.toLowerCase().includes(trimmedQuery.toLowerCase()) ||
-                    crop.crop_marathi_name.includes(trimmedQuery)
+        if (!trimmedQuery) {
+            setFilteredCrops([]);
+            setSelectedId("0"); // Reset category selection when search is cleared
+            return;
+        }
+
+        try {
+            // Step 1: Search for crops
+            const cropResponse = await AuthApi.getCrops();
+            const foundCrops = cropResponse.data.filter((crop: any) =>
+                crop.crop_name.toLowerCase().includes(trimmedQuery.toLowerCase()) ||
+                crop.crop_marathi_name.toLowerCase().includes(trimmedQuery.toLowerCase())
+            );
+
+            // Step 2: Check if crops were found
+            if (foundCrops.length > 0) {
+                setFilteredCrops(foundCrops);
+            } else {
+                // Step 3: If no crops found, search for a category
+                const lowercasedQuery = trimmedQuery.toLowerCase();
+                const foundCategory = categoryData.find((cat: any) =>
+                    cat.crop_category_name.toLowerCase().includes(lowercasedQuery) ||
+                    (cat.marathi_crop_category_name && cat.marathi_crop_category_name.toLowerCase().includes(lowercasedQuery))
                 );
-                setFilteredCrops(filtered);
-            } catch (error) {
-                console.log("Error fetching crops:", error);
-                setFilteredCrops([]);
+
+                if (foundCategory) {
+                    // Step 4: If category found, fetch its crops and display them
+                    setSelectedId(foundCategory.crop_category_id); // Highlight the category
+                    const payload = { "crop_category_id": foundCategory.crop_category_id };
+                    const categoryCropResponse = await AuthApi.getCropByCategoryId(payload);
+                    if (categoryCropResponse && categoryCropResponse.data) {
+                        setFilteredCrops(categoryCropResponse.data);
+                    } else {
+                        setFilteredCrops([]); // No crops in this category
+                    }
+                } else {
+                    // Step 5: If nothing is found, result is empty
+                    setFilteredCrops([]);
+                }
             }
-        } else {
+        } catch (error) {
+            console.log("Error during search:", error);
             setFilteredCrops([]);
         }
     };
