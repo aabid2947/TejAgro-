@@ -18,6 +18,7 @@ const getProductList = () => {
 }
 
 const searchProduct = (requestBody: any, accessToken: string) => {
+    console.log(accessToken)
     const url = `${AUTH_API_URL}product-search.php`;
     return axios.post(url, requestBody, {
         headers: {
@@ -69,13 +70,12 @@ const updateCart = (payload: any,accessToken:any) => {
             }
         });
 }
-const removeCartItem = (requestBody: any) => {
+const removeCartItem = (requestBody: any,accessToken:any) => {
     const url = `${AUTH_API_URL}cart-remove.php`;
-    return authAxios.post(url, requestBody);
+     return authAxios.delete(url, {data:requestBody});
 }
 
 const confirmOrder = (requestBody: any) => {
-    console.log(requestBody, "request body for confirm order");
     const url = `${AUTH_API_URL}order-place.php`;
     return authAxios.post(url, requestBody)
 }
@@ -112,6 +112,7 @@ const cropStages = (payload: any) => {
 }
 
 const cropMapping = (payload: any) => {
+    console.log("Payload for crop mapping:", payload);
     const url = `crop-mapping.php`;
     return authAxios.post(url, payload);
 }
@@ -144,10 +145,12 @@ const getCropByCategoryId = (payload: any) => {
     return authAxios.post(url, payload);
 }
 const getPromoCodeList = () => {
+    
     const url = `all-promo-code.php`;
     return authAxios.get(url);
 }
 const updatePromoCode = (payload: any) => {
+    console.log(payload)
     const url = `promo-code.php`;
     return authAxios.post(url, payload);
 }

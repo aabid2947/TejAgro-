@@ -71,7 +71,7 @@ const MyCartScreen = ({ navigation, route }: any) => {
     };
     let totalItemsCount = calculateTotalItems()
        useEffect(() => {
-   console.log("e",profileInfo?.min_order_value)
+//    console.log("e",profileInfo?.min_order_value)
     }, []);
     useEffect(() => {
         dispatch(setTotalItems(totalItemsCount));
@@ -150,7 +150,7 @@ const MyCartScreen = ({ navigation, route }: any) => {
             try {
                 const payload = { "cart_id": itemId };
                
-                const response = await AuthApi.removeCartItem(payload);
+                const response = await AuthApi.removeCartItem(payload,token);
                 if (response && response.data) {
                     setCartData(cartData.filter((item: any) => item.cart_id !== itemId));
                     ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
@@ -286,7 +286,7 @@ const MyCartScreen = ({ navigation, route }: any) => {
     const updateCartItemQuantity = async (itemId: any, productId: any, quantity: number) => {
         try {
            const response= await AuthApi.updateCart({ cart_id: itemId, product_id: productId, quantity: quantity },token);
-           console.log(response)
+        
             getCartDetail();
         } catch (error) {
             console.log('Failed to update quantity on backend', error);
@@ -306,7 +306,7 @@ const MyCartScreen = ({ navigation, route }: any) => {
 
     const WalletBox: React.FC<WalletBoxProps> = ({ walletOpening, minOrderValue, totalCartPrice }) => {
         const isCheckboxEnabled = minOrderValue <= totalCartPrice;
-        console.log("e",isCheckboxEnabled)
+        // console.log("e",isCheckboxEnabled)
 
         const payload = {
             "client_id": decodedToken?.data?.client_id,

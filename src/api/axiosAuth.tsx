@@ -13,8 +13,7 @@ const authAxios = axios.create({
 // Fetch token once and set header on instance creation
 const initializeAuthAxios = async () => {
     const token = await AsyncStorage.getItem('jwtToken');
-    console.log(token
-    )
+
     if (token) {
         authAxios.defaults.headers.common['Authorization'] = `${JSON.parse(token)}`;
     }

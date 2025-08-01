@@ -189,6 +189,7 @@ const MenuBarScreen = ({ navigation }: any) => {
             } else if (response.error) {
                 console.log('Image Picker Error: ', response.error);
             } else {
+                console.log("Image response:", response.assets[0]);
                 uploadProfileImage(response.assets[0]);
             }
         });

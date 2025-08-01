@@ -89,7 +89,8 @@ const OtpScreen = ({ route: { params }, route }: any) => {
         setSessionTimeOut(false);
         setRunning(true);
         setOtpId(parseInt(otpId) + 1)
-        await AuthApi.mobileSignIn({ mobile_no: Number(route?.params?.mobileNumber) });
+        const res =await AuthApi.mobileSignIn({ mobile_no: Number(route?.params?.mobileNumber) });
+        console.log(res)
     }
     const [props, getCellOnLayoutHandler] = useClearByFocusCell({
         value,
