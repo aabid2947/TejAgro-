@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { BLACK, DARK_GREEN_New, MD_GRAY_Dark, MDBLUE, PINK_GREY, Poppins, PoppinsMedium, WHITE, WHITE_GRAY } from "../../shared/common-styles/colors";
+import { BLACK, DARK_GREEN_New, MD_GRAY_Dark, MDBLUE, PINK_GREY, Poppins, PoppinsMedium, WHITE, WHITE_GRAY, RED, LIGHT_GRAY } from "../../shared/common-styles/colors";
 import { heightPercentageToDP, widthPercentageToDP } from "react-native-responsive-screen";
 
 export const DashboardStyle = StyleSheet.create({
@@ -12,6 +12,19 @@ export const DashboardStyle = StyleSheet.create({
         fontWeight: '700',
         lineHeight: 27,
         paddingBottom: 10
+    },
+    removeCropButton: {
+        position: 'absolute',
+        top: 5,
+        right: 5,
+        backgroundColor: RED,
+        borderRadius: 12,
+        width: 24,
+        height: 24,
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 10,
+        elevation: 5,
     },
     columnView: {
         justifyContent: 'flex-start',
@@ -90,6 +103,10 @@ export const DashboardStyle = StyleSheet.create({
         borderTopRightRadius: 5,
         resizeMode: 'cover',
     },
+    productContainer: {
+        marginHorizontal: 5,
+        marginVertical: 5,
+    },
     productContainer1: {
         padding: 5,
         flex: 1,
@@ -116,23 +133,163 @@ export const DashboardStyle = StyleSheet.create({
         borderLeftColor: MDBLUE,
         borderBottomEndRadius: 10,
         borderBottomStartRadius: 10,
-        backgroundColor: MDBLUE,
-        width: 98,
         alignItems: 'center',
-        justifyContent: 'center'
-    },
-    productContainer: {
-        marginBottom: 16,
-        // borderWidth: 1,
-        borderColor: '#ddd',
-        borderRadius: 8,
-        backgroundColor: WHITE,
-        width: widthPercentageToDP(25)
+        justifyContent: 'center',
+        width: 98,
+        backgroundColor: '#E3F2FD'
     },
     productName: {
-        fontSize: 14,
+        fontSize: 12,
         color: BLACK,
-        lineHeight: 22,
-        textAlign: 'center'
+        textAlign: 'center',
+        fontFamily: PoppinsMedium
     },
-})
+    // My Crops Section Styles
+    myCropsSection: {
+        // borderWidth: 1,
+        backgroundColor: WHITE,
+        marginHorizontal: 15,
+        marginBottom: 10,
+        borderRadius: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        // paddingTop: 25,
+        elevation: 2,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+    },
+    myCropsHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        // marginBottom: 5,
+        paddingHorizontal: 5,
+    },
+    myCropsTitle: {
+        fontSize: 16,
+        color: BLACK,
+        fontWeight: '600',
+        lineHeight: 24,
+        fontFamily: PoppinsMedium
+    },
+    editButton: {
+        backgroundColor: DARK_GREEN_New,
+        paddingHorizontal: 15,
+        paddingVertical: 8,
+        borderRadius: 20,
+    },
+    editButtonText: {
+        color: WHITE,
+        fontSize: 12,
+        fontWeight: '500',
+        fontFamily: Poppins
+    },
+    editActions: {
+        flexDirection: 'row',
+        gap: 10,
+    },
+    cancelButton: {
+        backgroundColor: LIGHT_GRAY,
+        paddingHorizontal: 15,
+        paddingVertical: 8,
+        borderRadius: 20,
+    },
+    cancelButtonText: {
+        color: BLACK,
+        fontSize: 12,
+        fontWeight: '500',
+        fontFamily: Poppins
+    },
+    myCropsList: {
+        // borderWidth: 1,
+        // paddingHorizontal: 5,
+        paddingTop: 10,
+        // overflow:'visible'
+    },
+    myCropContainer: {
+        position: 'relative',
+        alignItems: 'center',
+        // marginHorizontal: 8,
+        width: 80,
+        // paddingTop: 15,
+        // paddingBottom: 10,
+        // paddingHorizontal: 5,
+    },
+    removeCropButton: {
+        position: 'absolute',
+        top: -5,
+        right: -5,
+        backgroundColor: RED,
+        borderRadius: 12,
+        width: 24,
+        height: 24,
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 1,
+        elevation: 3,
+    },
+    removeCropText: {
+        color: WHITE,
+        fontSize: 16,
+        fontWeight: 'bold',
+        lineHeight: 20,
+    },
+    myCropImage: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        resizeMode: 'cover',
+        marginBottom: 5,
+    },
+    myCropName: {
+        fontSize: 10,
+        color: BLACK,
+        textAlign: 'center',
+        fontFamily: Poppins,
+        numberOfLines: 2,
+    },
+    noMyCropsContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 20,
+        backgroundColor: '#F5F5F5',
+        borderRadius: 8,
+        margin: 5,
+    },
+    noMyCropsText: {
+        fontSize: 14,
+        color: MD_GRAY_Dark,
+        textAlign: 'center',
+        fontFamily: Poppins,
+    },
+    // Submit button at bottom
+    submitButtonContainer: {
+        position: 'absolute',
+        bottom: 20,
+        left: 20,
+        right: 20,
+        backgroundColor: DARK_GREEN_New,
+        paddingVertical: 15,
+        borderRadius: 25,
+        alignItems: 'center',
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+    },
+    submitButtonText: {
+        color: WHITE,
+        fontSize: 16,
+        fontWeight: '600',
+        fontFamily: PoppinsMedium
+    },
+});

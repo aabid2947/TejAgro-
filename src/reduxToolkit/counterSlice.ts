@@ -21,6 +21,8 @@ export interface CounterState {
     totalItems: number,
     wallet: WalletInfo,
     orderPlaced: boolean
+    selectedMyCrop: [],
+
 }
 
 const initialState: CounterState = {
@@ -37,6 +39,7 @@ const initialState: CounterState = {
     totalItems: 0,
     wallet: {},
     orderPlaced: false,
+    selectedMyCrop: [],
 }
 
 export const counterSlice = createSlice({
@@ -91,9 +94,12 @@ export const counterSlice = createSlice({
         },
         setOrderPlaced: (state, action: PayloadAction<boolean>) => {
             state.orderPlaced = action.payload
-        }
+        },
+         selectedMyCropProduct: (state, action: any) => {
+            state.selectedMyCrop = action.payload
+        },
     },
 })
 
-export const { login, isLogOut, isUserVerify, languageSelection, selectedCropProduct, selectedShippingAddress, selectedPromoCode, clearSelectedPromoCode, profileDetail, referralDetails, setTotalItems, walletDetails, setOrderPlaced } = counterSlice.actions
+export const { login, isLogOut, isUserVerify, languageSelection, selectedCropProduct, selectedShippingAddress, selectedPromoCode, clearSelectedPromoCode, profileDetail, referralDetails, setTotalItems, walletDetails, setOrderPlaced,selectedMyCropProduct } = counterSlice.actions
 export default counterSlice.reducer

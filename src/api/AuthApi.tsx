@@ -18,7 +18,7 @@ const getProductList = () => {
 }
 
 const searchProduct = (requestBody: any, accessToken: string) => {
-    console.log(accessToken)
+    console.log(requestBody)
     const url = `${AUTH_API_URL}product-search.php`;
     return axios.post(url, requestBody, {
         headers: {
@@ -95,10 +95,26 @@ const CropProduct = (id: any, accessToken: string) => {
     })
 }
 
-const getCrops = () => {
-    const url = `${AUTH_API_URL}crop-master.php`;
-    return authAxios.get(url);
+const getMyCrops = (payload: any) => {
+    const url = `farming-crop-details.php`;
+    return authAxios.post(url, payload);
 }
+
+const addToMyCrops = (payload: any) => {
+    const url = `farming-crop-update.php`;
+    return authAxios.post(url, payload);
+}
+
+const updateMyCrops = (payload: any) => {
+    const url = `farming-crop-update.php`;
+    return authAxios.put(url, payload);
+}
+
+const deleteMyCrops = (payload: any) => {
+    const url = `farming-crop-update.php`;
+    return authAxios.delete(url, { data: payload });
+}
+
 
 const orderHistory = (payload: any) => {
     console.log("Payload for order history:", payload);
@@ -140,6 +156,12 @@ const getCategory = () => {
     const url = `crop-category.php`;
     return authAxios.get(url);
 }
+
+const getCrops = () => {
+    const url = `${AUTH_API_URL}crop-master.php`;
+    return authAxios.get(url);
+}
+
 const getCropByCategoryId = (payload: any) => {
     const url = `category-wise-all-crop.php`;
     return authAxios.post(url, payload);
@@ -203,6 +225,10 @@ export default {
     getBanners,
     CropProduct,
     getCrops,
+    getMyCrops,
+    addToMyCrops,
+    updateMyCrops,
+    deleteMyCrops,
     orderHistory,
     cropStages,
     cropMapping,

@@ -28,7 +28,7 @@ authAxios.interceptors.request.use(
         if (token) {
             config.headers.Authorization = `${JSON.parse(token)}`;
         }
-        // console.log("Request Headers:", config.headers);  // Log headers for debugging
+        console.log("Request Headers:",token);  // Log headers for debugging
         return config;
     },
     (error) => {

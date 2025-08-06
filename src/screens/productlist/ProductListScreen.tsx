@@ -17,21 +17,45 @@ import { DashboardStyle } from '../dashboard/DashboardStyle';
 import { ProductListStyle } from './ProductListStyle';
 import TextPoppinsMediumBold from '../../shared/fontFamily/TextPoppinsMediumBold';
 import { jwtDecode } from 'jwt-decode';
-
+import CustomCaraosel from "../../components/customCarousel/CustomCarousel";
 const ProductListScreen = ({ navigation }: any) => {
     const { t } = useTranslation();
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [refresh, setRefresh] = useState(false)
     const [isLoader, setLoader] = useState(true);
+    const [banner, setBanner] = useState([])
     const [productData, setProductData] = useState([]);
     const selectedCrop: any = useSelector((state: RootState) => state.counter.selectedCrop)
     const userData: any = useSelector((state: RootState) => state.counter.isUserinfo)
     const profileDetail: any = useSelector((state: RootState) => state.counter.isProfileInfo)
     const totalItems: any = useSelector((state: RootState) => state.counter.totalItems)
     const isUserData = useSelector((state: any) => state.counter.isUserinfo)
+    const handleSnapToItem = (index: number) => {
+    };
 
     const dispatch = useDispatch()
+
+    const loadBanner = async () => {
+            // setLoader(true);
+            console.log("Loading banners...");
+            try {
+                const bannerResponse = await AuthApi.getBanners()
+                
+                
+                 console.log("Banner response:", bannerResponse.data);
+                if (bannerResponse ) {
+                    setBanner(bannerResponse?.data?.dashboard_slider || []);
+                } else {
+                    console.log("Received undefined response from APIs");
+                }
+            } catch (error: any) {
+                console.log("Error loading data:", error.response || error);
+            } finally {
+                // setLoader(false);
+            }
+        };
+    
 
     const decodedTokens = (token: string) => {
         try {
@@ -54,7 +78,7 @@ const ProductListScreen = ({ navigation }: any) => {
         };
         try {
             setLoader(true);
-            const response = await AuthApi.getCartDetails(payload);
+            const response = await AuthApi.getCartDetails(payload,token);
             if (response && response.data && Array.isArray(response.data)) {
                 const numberofItems = response.data.reduce((total: number, item: any) => total + Number(item.quantity), 0)
                 dispatch(setTotalItems(numberofItems))
@@ -75,6 +99,7 @@ const ProductListScreen = ({ navigation }: any) => {
             setRefresh(false)
             getProductList()
             getCartDetail()
+            loadBanner()
         }, 1000)
     }
     const handleSearch = async (query: string) => {
@@ -91,6 +116,7 @@ const ProductListScreen = ({ navigation }: any) => {
         // setTimeout(() => {
             getProductList()
             getCartDetail()
+            loadBanner()
         // }, 1000)
 
     }, [])
@@ -134,6 +160,10 @@ const ProductListScreen = ({ navigation }: any) => {
     return (
         <SafeAreaView style={ProductListStyle.main}>
             {headerView(`Hi, ${profileDetail?.client_name || ""}`, "Enjoy our services", onPressSide, totalItems, navigation)}
+              {banner?.length > 0 && <CustomCaraosel
+                data={banner}
+                onSnapToItem={handleSnapToItem}
+            />}
             <View style={ProductListStyle.container}>
                 <SearchInput
                     placeholder={t('SEARCH_HERE')}

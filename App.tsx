@@ -26,6 +26,7 @@ import { PRIMARY, WHITE } from './src/shared/common-styles/colors';
 import AuthGuardReferralCode from './src/components/guards/AuthGuardReferralCode';
 import WhatsAppIcon from './src/svg/WhatsAppIcon'; // Import the improved WhatsApp icon
 // import { initializeAuthAxios } from './src/api/axiosAuth';
+
 import { Linking } from 'react-native';
 import {
   configureReanimatedLogger,
