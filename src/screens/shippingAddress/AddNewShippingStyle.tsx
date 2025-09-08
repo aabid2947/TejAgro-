@@ -4,6 +4,7 @@ import { BGRED, BLACK, GRAY_BORDER, PoppinsMedium, WHITE } from "../../shared/co
 export const AddNewShippingStyle = StyleSheet.create({
     mainView: {
         flex: 1,
+        // paddingTop: insets.top,
     },
     titleText: {
         fontSize: 16,

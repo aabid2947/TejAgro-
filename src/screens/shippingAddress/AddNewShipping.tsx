@@ -17,12 +17,14 @@ import { RootStackParamList } from "../../routes/AppRouter";
 import { selectedShippingAddress } from "../../reduxToolkit/counterSlice";
 import TextPoppinsMediumBold from "../../shared/fontFamily/TextPoppinsMediumBold";
 import TextPoppinsSemiBold from "../../shared/fontFamily/TextPoppinsSemiBold";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const AddNewShipping = (data: any) => {
     const navigation: any = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     const [isLoader, setLoader] = useState(false);
     const isUserData = useSelector((state: RootState) => state.counter.isUserinfo)
     const dispatch = useDispatch();
+    const insets = useSafeAreaInsets()
     const decodeToken = (token: string) => {
         try {
             const decoded = jwtDecode(token);
@@ -189,7 +191,7 @@ const AddNewShipping = (data: any) => {
     }
 
     return (
-        <SafeAreaView style={AddNewShippingStyle.mainView}>
+        <SafeAreaView style={{ ...AddNewShippingStyle.mainView, paddingTop: insets.top ,paddingBottom: insets.bottom }}>
             <TopHeaderFixed
                 leftIconSize={20}
                 gobackText={t('Add shipping address')}

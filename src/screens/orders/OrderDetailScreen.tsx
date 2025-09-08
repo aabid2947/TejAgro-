@@ -15,9 +15,11 @@ import React from 'react';
 import { useState } from 'react';
 import { regexImage } from '../../shared/utilities/String';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const OrderDetailScreen = ({ route }: any) => {
     const [imageError, setImageError] = useState(false);
+    const insets = useSafeAreaInsets()
 
     const navigation: any = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     const { ordered_updated_data } = route.params;
@@ -76,7 +78,7 @@ const OrderDetailScreen = ({ route }: any) => {
         )
     }
     return (
-        <SafeAreaView style={ProductListStyle.main}>
+        <SafeAreaView style={[ProductListStyle.main, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
             <TopHeaderFixed
                 leftIconSize={20}
                 headerTxt={t('ORDER_DETAIL')}

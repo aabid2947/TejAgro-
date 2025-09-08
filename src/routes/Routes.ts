@@ -13,6 +13,7 @@ export const NOTIFICATION_SCREEN = "NotifcationScreen";
 export const MYCART_SCREEN = "MyCartScreen";
 export const CHECKOUT_SCREEN = "CheckOutScreen";
 export const PAYMENT_SUCCESS = "PaymentStatusScreen"
+export const PAYMENT_SUCCESS_SCREEN = "PaymentSuccessScreen"
 export const PROPERTY_HISTORY_SCREEN = "MyPropertyHistoryScreen"
 export const PRODUCT_SCREEN = "productScreen"
 export const ORDER_SCREEN = "myOrders"

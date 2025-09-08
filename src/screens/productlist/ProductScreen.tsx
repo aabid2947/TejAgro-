@@ -18,10 +18,12 @@ import { LoaderScreen } from '../../components/loaderview/LoaderScreen';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useDispatch } from 'react-redux';
 import { clearSelectedPromoCode, setTotalItems } from '../../reduxToolkit/counterSlice';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const ProductScreen = (props: any) => {
     const { t } = useTranslation();
     const [isLoader, setLoader] = useState(false);
+    const insets = useSafeAreaInsets()
     const [productDetail, setProductDetail]: any = useState([]);
     const [quantity, setQuantity] = useState(1);
     const navigation: any = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
@@ -101,7 +103,7 @@ const ProductScreen = (props: any) => {
     };
 
     return (
-        <SafeAreaView style={ProductListStyle.main}>
+        <SafeAreaView style={[ProductListStyle.main, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
             <TopHeaderFixed
                 leftIconSize={20}
                 headerTxt={t('DETAIL')}

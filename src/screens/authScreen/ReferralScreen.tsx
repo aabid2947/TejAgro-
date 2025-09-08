@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TouchableOpacity, Pressable, ScrollView, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import AuthApi from '../../api/AuthApi';
@@ -10,6 +10,7 @@ import TextPoppinsSemiBold from '../../shared/fontFamily/TextPoppinsSemiBold';
 import FontScaledText from '../../components/customInput/FontScaledText';
 import { BLACK, GREY, PoppinsMedium } from '../../shared/common-styles/colors';
 import { referralDetails } from '../../reduxToolkit/counterSlice';
+
 const ReferralScreen = () => {
     const [verification, setVerification] = useState(false);
     const [referralCode, setRederralCode] = useState("");
@@ -18,6 +19,7 @@ const ReferralScreen = () => {
     const [isSubmitLoader, setIsSubmitLoader] = useState(false);
     const [errorMsg, setError] = useState(null);
     const dispatch = useDispatch();
+    const insets = useSafeAreaInsets()
     const onContinue = async () => {
         // try {
         //     if (referralCode) {
@@ -95,7 +97,7 @@ const ReferralScreen = () => {
     }
 
     return (
-        <SafeAreaView {...ReferralCodeStyle.container}>
+        <SafeAreaView style={{ ...ReferralCodeStyle.container, paddingTop: insets.top }}>
             <ScrollView keyboardShouldPersistTaps='handled'>
                 <View style={ReferralCodeStyle.backIcon} >
                     <TextPoppinsMediumBold>Referral Code</TextPoppinsMediumBold>

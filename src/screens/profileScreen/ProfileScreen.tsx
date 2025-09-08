@@ -16,8 +16,10 @@ import { GRAY_SHADE, WHITE } from "../../shared/common-styles/colors";
 import TextPoppinsMediumBold from "../../shared/fontFamily/TextPoppinsMediumBold";
 import { ProfileScreenStyle } from "./ProfileScreenStyle";
 import { useTranslation } from "react-i18next";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 const ProfileScreen = (props: any) => {
     const { t } = useTranslation();
+    const insets = useSafeAreaInsets()
     const navigation: any = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     const isUserData = useSelector((state: RootState) => state.counter.isUserinfo)
     // const profileDetail: any = useSelector((state: RootState) => state.counter.isProfileInfo)
@@ -167,7 +169,7 @@ const ProfileScreen = (props: any) => {
     };
 
     return (
-        <SafeAreaView style={ProfileScreenStyle.mainCardView}>
+        <SafeAreaView style={[ProfileScreenStyle.mainCardView, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
             <TopHeaderFixed
                 leftIconSize={20}
                 gobackText={t("MY_PROFILE")}

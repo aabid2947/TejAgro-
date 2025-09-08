@@ -54,11 +54,16 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: BLACK,
         fontFamily: PoppinsMedium,
-        lineHeight: 21
+        lineHeight: 21,
+        width: '50%',
+        
+        textAlign: 'left',
     },
     priceValue: {
         fontSize: 16,
         color: BLACK,
-        lineHeight: 22
+        lineHeight: 22,
+        // width: '50%',
+        // textAlign: 'left'
     },
 })

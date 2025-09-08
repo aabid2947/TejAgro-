@@ -19,6 +19,7 @@ import { selectedShippingAddress } from "../../reduxToolkit/counterSlice"
 import { PressableB } from "../../shared/components/CommonUtilities"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { RootStackParamList } from "../../routes/AppRouter"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 const ShippingAddressScreen = (props: any) => {
     const navigation: any = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
@@ -29,6 +30,7 @@ const ShippingAddressScreen = (props: any) => {
     const [selectedAddId, setSelectedAddID] = useState(1);
     const [refresh, setRefresh] = useState(false)
     const dispatch = useDispatch()
+    const insets = useSafeAreaInsets()
     const [shippingAddress, setShippingAddress] = useState([]);
 
     useEffect(() => {
@@ -99,7 +101,7 @@ const ShippingAddressScreen = (props: any) => {
     };
 
     return (
-        <SafeAreaView style={ShippingAddressStyle.mainView}>
+        <SafeAreaView style={{ ...ShippingAddressStyle.mainView, paddingTop: insets.top,paddingBottom: insets.bottom }}>
             <TopHeaderFixed
                 leftIconSize={20}
                 gobackText={t('SHIPPING_ADDRESS')}

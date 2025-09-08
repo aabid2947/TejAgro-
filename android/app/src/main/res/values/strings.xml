@@ -1,3 +1,4 @@
 <resources>
+  <!-- <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item> -->
     <string name="app_name">Tej Agro</string>
 </resources>

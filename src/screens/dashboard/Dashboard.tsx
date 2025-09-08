@@ -17,8 +17,10 @@ import TextPoppinsMediumBold from "../../shared/fontFamily/TextPoppinsMediumBold
 import { regexImage } from "../../shared/utilities/String";
 import SearchInput from "../../components/searchInput/SearchInput";
 import CartSvg from "../../svg/CartSvg";
-
+import {  useSafeAreaInsets } from "react-native-safe-area-context";
 const DashBoard = ({ navigation }: any) => {
+    const insets = useSafeAreaInsets();
+
     const { t, i18n } = useTranslation();
     const [selectedId, setSelectedId] = useState("0");
     const [selecteProduct, setSelectedProduct]: any = useState([])
@@ -33,6 +35,7 @@ const DashBoard = ({ navigation }: any) => {
     const [isEditingMyCrops, setIsEditingMyCrops] = useState(false);
     const [tempSelectedCrops, setTempSelectedCrops] = useState([]);
     const [myCropsLoaded, setMyCropsLoaded] = useState(false);
+    const [originalCategoryData, setOriginalCategoryData]: any = useState([]);
     
     const dispatch = useDispatch()
     const isLoggedIn: any = useSelector((state: RootState) => state.counter.login)
@@ -92,10 +95,13 @@ const DashBoard = ({ navigation }: any) => {
                     crop_category_name: "All Crops",
                     marathi_crop_category_name: "सर्व पिके"
                 };
-                setCategoryData([
+                const categoryArray = Array.isArray(categoryResponse?.data) ? categoryResponse?.data : [];
+                const originalCategories = [
                     allCropsCategory,
-                    ...(Array.isArray(categoryResponse?.data) ? categoryResponse?.data : []),
-                ]);
+                    ...categoryArray,
+                ];
+                setOriginalCategoryData(originalCategories);
+                setCategoryData(originalCategories);
             }
 
             if (myCropsResponse && myCropsResponse.data) {
@@ -110,12 +116,37 @@ const DashBoard = ({ navigation }: any) => {
         }
     };
 
+    // Helper function to reorder categories with selected category appearing after "All Crops"
+    const reorderCategories = (selectedCategoryId: string) => {
+        if (!originalCategoryData.length) return originalCategoryData;
+        
+        const allCropsCategory = originalCategoryData.find((cat: any) => cat.crop_category_id === "0");
+        const selectedCategory = originalCategoryData.find((cat: any) => cat.crop_category_id === selectedCategoryId);
+        const otherCategories = originalCategoryData.filter((cat: any) => 
+            cat.crop_category_id !== "0" && cat.crop_category_id !== selectedCategoryId
+        );
+
+        if (selectedCategoryId === "0" || !selectedCategory) {
+            // If "All Crops" is selected or no valid selection, return original order
+            return originalCategoryData;
+        }
+
+        // Put selected category right after "All Crops"
+        return [allCropsCategory, selectedCategory, ...otherCategories].filter(Boolean);
+    };
+
     const handleCardPress = async (id: any) => {
         if (id === selectedId) {
             setSelectedId("0");
             setSelectedCategoryCropData(cropList);
+            // Reset to original category order when deselecting
+            setCategoryData(originalCategoryData);
         } else {
             setSelectedId(id);
+            // Reorder categories to show selected one after "All Crops"
+            const reorderedCategories = reorderCategories(id);
+            setCategoryData(reorderedCategories);
+            
             const payload = {
                 "crop_category_id": id
             };
@@ -262,6 +293,8 @@ const DashBoard = ({ navigation }: any) => {
         if (!trimmedQuery) {
             setFilteredCrops([]);
             setSelectedId("0");
+            // Reset to original category order when clearing search
+            setCategoryData(originalCategoryData);
             return;
         }
 
@@ -284,6 +317,10 @@ const DashBoard = ({ navigation }: any) => {
 
                 if (foundCategory) {
                     setSelectedId(foundCategory.crop_category_id);
+                    // Reorder categories to show found category after "All Crops"
+                    const reorderedCategories = reorderCategories(foundCategory.crop_category_id);
+                    setCategoryData(reorderedCategories);
+                    
                     const payload = { "crop_category_id": foundCategory.crop_category_id };
                     const categoryCropResponse = await AuthApi.getCropByCategoryId(payload);
                     if (categoryCropResponse && categoryCropResponse.data) {
@@ -304,7 +341,7 @@ const DashBoard = ({ navigation }: any) => {
     };
 
     return (
-        <SafeAreaView style={DashboardStyle.mainCardView}>
+        <SafeAreaView style={{ ...DashboardStyle.mainCardView, paddingTop: insets.top }} >
             {headerView(`Hi, ${profileDetail?.client_name || ""}`, "Enjoy our services", onPressSide, totalItems, navigation)}
             
             {/* My Crops Section - Replacing Banner */}
@@ -411,7 +448,10 @@ const DashBoard = ({ navigation }: any) => {
                             renderItem={({ item, index }: any) => renderNew(item, index)}
                             refreshing={refresh}
                             onRefresh={onRefresh}
-                            columnWrapperStyle={DashboardStyle.columnView}
+                            columnWrapperStyle={{
+                                justifyContent: 'flex-start',
+                                paddingHorizontal: 5,
+                            }}
                             showsVerticalScrollIndicator={false}
                         />
                     </>

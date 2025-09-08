@@ -148,8 +148,11 @@ export const CropSelectedStyle = StyleSheet.create({
     },
     buyButtonText: {
         color: BLACK,
-        lineHeight: 20,
-        fontSize: 13
+        lineHeight: 21,
+        fontSize: 13,
+        width: '100%',
+        textAlign: 'center',
+
     },
     productPrice: {
         fontSize: 16,

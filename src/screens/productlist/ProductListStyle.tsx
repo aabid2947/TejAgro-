@@ -23,7 +23,8 @@ export const ProductListStyle = StyleSheet.create({
         fontSize: 16,
         lineHeight: 35,
         color: BLACK,
-        marginTop: -10
+        marginTop: -10,
+
     },
     titleText: {
         fontSize: 16,
@@ -77,8 +78,9 @@ export const ProductListStyle = StyleSheet.create({
     },
     headerText: {
         color: BLACK,
-        fontSize: 20,
-        fontFamily: PoppinsMedium,
+        fontSize: 18,
+        fontFamily: PoppinsSemibold,
+        fontWeight: 'semibold',
         lineHeight: 30,
         paddingBottom: 10
     },
@@ -108,10 +110,12 @@ export const ProductListStyle = StyleSheet.create({
     },
     textCrop: {
         color: BLACK,
-        fontSize: 14,
+        fontSize: 12,
         textAlign: 'center',
-        lineHeight: 25,
-        marginHorizontal: 5
+        lineHeight: 18,
+        marginHorizontal: 8,
+        maxWidth: 70,
+        flexWrap: 'wrap'
     },
     dividerStyle: {
         borderBottomColor: "#C4C4C4",

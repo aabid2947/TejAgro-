@@ -34,8 +34,8 @@ export const ProductItem = ({ data, index }: any) => {
                 style={style.logo}
             />
             <View style={style.productContainer1}>
-                <TextPoppinsSemiBold style={style.productName}>{productName}</TextPoppinsSemiBold>
-                <TextPoppinsSemiBold style={style.productDescription}>{data.category_name}</TextPoppinsSemiBold>
+                <TextPoppinsMediumBold style={style.productName} >{productName}</TextPoppinsMediumBold>
+                {/* <TextPoppinsSemiBold style={style.productDescription}>{data.category_name}</TextPoppinsSemiBold> */}
                 <View style={style.priceRow}>
                     <Text style={style.sellingPriceText}>₹{data.total_amount ? data.total_amount : data.selling_price}</Text>
                     {data.total_amount !== Number(data.mrp).toFixed(2) && data.mrp && (<Text style={style.mrpText}>₹{data.mrp}</Text>)}
@@ -70,11 +70,15 @@ const style = StyleSheet.create({
         resizeMode: 'cover',
     },
     productName: {
+        // borderWidth:  1,
+        width: '100%',
+        textAlign: 'center',
         fontSize: 14,
         color: BLACK,
         fontFamily: PoppinsMedium,
         lineHeight: 21,
         marginBottom: 4,
+        
     },
     productDescription: {
         fontSize: 12,

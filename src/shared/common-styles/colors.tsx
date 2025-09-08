@@ -53,20 +53,21 @@ const colors = {
 
 ///Font Family/////
 
-export const Poppins = "Poppins-Bold";
-export const PoppinsBlack = "Poppins-Black";
-export const PoppinsLight = "Poppins-Light";
-export const PoppinsBold = "Poppins-Bold";
-export const PoppinsExtraBold = "Poppins-ExtraBold";
-export const PoppinsExtraLight = "Poppins-ExtraLightItalic";
-export const PoppinsMedium = "Poppins-Medium";
-export const PoppinsRegular = "Ubuntu-Regular";
-export const PoppinsSemibold = "Poppins-SemiBold";
-export const Ubuntu = "Ubuntu-Regular";
-export const UbuntuBoldItalic = "Ubuntu-BoldItalic";
-export const UbuntuBold = "Ubuntu-Bold";
-export const UbuntuRegular = "Ubuntu-Regular";
-export const UbuntuMedium = "Ubuntu-Medium";
-export const UbuntuLight = "Ubuntu-Light";
+export const Poppins = "Roboto-Bold";
+export const PoppinsBlack = "Roboto-Black";
+export const PoppinsLight = "Roboto-Light";
+export const PoppinsBold = "Roboto-Bold";
+export const PoppinsExtraBold = "Roboto-Black";
+export const PoppinsExtraLight = "Roboto-Thin";
+export const PoppinsMedium = "Roboto-Medium";
+export const PoppinsRegular = "Roboto-Regular";
+export const PoppinsSemibold = "Roboto-SemiBold"; // Roboto doesn't have SemiBold, fallback to Medium or Bold
+export const Ubuntu = "Roboto-Regular";
+export const UbuntuBoldItalic = "Roboto-BoldItalic";
+export const UbuntuBold = "Roboto-Bold";
+export const UbuntuRegular = "Roboto-Regular";
+export const UbuntuMedium = "Roboto-Medium";
+export const UbuntuLight = "Roboto-Light";
+
 
 export default colors;

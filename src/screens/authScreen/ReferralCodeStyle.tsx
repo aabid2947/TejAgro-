@@ -1,10 +1,12 @@
 import { StyleSheet } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { BGRED, BLACK, MDBLUE, ORANGE, WHITE } from "../../shared/common-styles/colors";
+
 export const ReferralCodeStyle = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: WHITE,
+        // paddingTop: insets.top,
     },
     backIcon: {
         position: "absolute",

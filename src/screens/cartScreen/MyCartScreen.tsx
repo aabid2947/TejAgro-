@@ -29,6 +29,8 @@ import { CheckBox } from 'react-native-elements';
 import UnCheckbox from '../../svg/UnCheckbox';
 import CheckBoxSvg from '../../svg/CheckboxSvg';
 import ConfirmOrderModal from '../../components/alertmodal/ConfirmOrderModal';
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
 
 
 interface WalletBoxProps {
@@ -63,7 +65,7 @@ const MyCartScreen = ({ navigation, route }: any) => {
     const [totalCartPrice, settotalCartPrice] = useState(0)
     const [walletUsed, setWalletUsed] = useState<any>(null)
     const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
-
+    const insets = useSafeAreaInsets();
 
     const dispatch = useDispatch()
     const calculateTotalItems = () => {
@@ -454,7 +456,7 @@ const MyCartScreen = ({ navigation, route }: any) => {
 );
 
     return (
-        <SafeAreaView style={MyCartStyle.container}>
+        <SafeAreaView style={{ ...MyCartStyle.container, paddingTop: insets.top }} >
             <TopHeaderFixed
                 leftIconSize={20}
                 headerTxt={t("MY_CART")}

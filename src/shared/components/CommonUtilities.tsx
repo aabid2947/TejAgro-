@@ -222,7 +222,8 @@ const styles = StyleSheet.create({
         color: BLACK,
         fontSize: 16,
         lineHeight: 21,
-        marginHorizontal: 10
+        marginHorizontal: 10,
+   
     },
     loginContainer: {
         flexDirection: 'row',

@@ -115,6 +115,16 @@ const deleteMyCrops = (payload: any) => {
     return authAxios.delete(url, { data: payload });
 }
 
+const initiatePayment = (requestBody: any) => {
+    console.log(requestBody)
+    const url = `Initiate-Payment.php`;
+    return authAxios.post(url, requestBody);
+}
+
+const webhookPayment = (requestBody: any) => {
+    const url = `Webhook-Payment.php`;
+    return authAxios.post(url, requestBody);
+}
 
 const orderHistory = (payload: any) => {
     console.log("Payload for order history:", payload);
@@ -226,6 +236,8 @@ export default {
     CropProduct,
     getCrops,
     getMyCrops,
+    initiatePayment,
+    webhookPayment,
     addToMyCrops,
     updateMyCrops,
     deleteMyCrops,

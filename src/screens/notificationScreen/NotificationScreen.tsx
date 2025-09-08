@@ -5,6 +5,7 @@ import TopHeaderFixed from "../../components/headerview/TopHeaderFixed";
 import { LoaderScreen } from "../../components/loaderview/LoaderScreen";
 import NoRecordFound from "../../components/noRecordFound/NoRecordFound";
 import { NotifcationScreenStyle } from "./NotificationScreenStyle";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 
 const data1 = [
@@ -30,6 +31,7 @@ const data1 = [
     },
 ]
 const NotifcationScreen = ({ navigation }: any) => {
+    const insets= useSafeAreaInsets()
     const [loader, setLoader] = useState(false)
     const [data, setData] = useState([]);
     const [refresh, setRefresh] = useState(false)
@@ -65,7 +67,7 @@ const NotifcationScreen = ({ navigation }: any) => {
     }
 
     return (
-        <SafeAreaView style={NotifcationScreenStyle.mainView}>
+        <SafeAreaView style={{ ...NotifcationScreenStyle.mainView, paddingTop: insets.top }}>
             <TopHeaderFixed
                 leftIconSize={20}
                 gobackText={"Notification"}

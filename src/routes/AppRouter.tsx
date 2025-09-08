@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
 import MyCartScreen from '../screens/cartScreen/MyCartScreen';
 import CheckOutScreen from '../screens/checkoutScreen/CheckOutScreen';
+import PaymentSuccessScreen from '../screens/checkoutScreen/PaymentSuccessScreen';
 import NotifcationScreen from '../screens/notificationScreen/NotificationScreen';
 import MyOrders from '../screens/orders/MyOrders';
 import AddPaymentScreen from '../screens/payment/AddPaymentScreen';
@@ -9,7 +10,7 @@ import ProductScreen from '../screens/productlist/ProductScreen';
 import ProfileScreen from '../screens/profileScreen/ProfileScreen';
 import ProfileSettingScreen from '../screens/setting/ProfileSettingScreen';
 import ShippingAddressScreen from '../screens/shippingAddress/ShippingAddressScreen';
-import { ADD_NEW_SHIPPING_SCREEN, ADD_PAYMENT_SCREEN, CHECKOUT_SCREEN, CROP_MAP_SCREEN, HOME_SCREEN, MENUBAR_SCREEN, MY_PROFILE, MY_REWARD_SCREEN, MYCART_SCREEN, NOTIFICATION_SCREEN, ORDER_DETAIL_SCREEN, ORDER_SCREEN, PRODUCT_SCREEN, PROFILE_SETTING_SCREEN, PROMO_CODE_SCREEN, SELECTED_CROP_SCREEN, SHIPPING_ADDRESS_SCREEN } from './Routes';
+import { ADD_NEW_SHIPPING_SCREEN, ADD_PAYMENT_SCREEN, CHECKOUT_SCREEN, CROP_MAP_SCREEN, HOME_SCREEN, MENUBAR_SCREEN, MY_PROFILE, MY_REWARD_SCREEN, MYCART_SCREEN, NOTIFICATION_SCREEN, ORDER_DETAIL_SCREEN, ORDER_SCREEN, PAYMENT_SUCCESS_SCREEN, PRODUCT_SCREEN, PROFILE_SETTING_SCREEN, PROMO_CODE_SCREEN, SELECTED_CROP_SCREEN, SHIPPING_ADDRESS_SCREEN } from './Routes';
 import TabScreen from './TabScreen';
 import AddNewShipping from '../screens/shippingAddress/AddNewShipping';
 import MenuBarScreen from '../screens/menuScreen/MenuBarScreen';
@@ -28,6 +29,7 @@ export type RootStackParamList = {
     NotifcationScreen: any
     MyCartScreen: any
     CheckOutScreen: any
+    PaymentSuccessScreen: any
     productScreen: any
     myOrders: any
     ShippingAddressScreen: any
@@ -55,6 +57,7 @@ function AppRouter(): JSX.Element {
                 <RootStack.Screen name={MY_PROFILE} options={{ headerShown: false }} component={ProfileScreen} />
                 <RootStack.Screen name={NOTIFICATION_SCREEN} options={{ headerShown: false }} component={NotifcationScreen} />
                 <RootStack.Screen name={CHECKOUT_SCREEN} options={{ headerShown: false }} component={CheckOutScreen} />
+                <RootStack.Screen name={PAYMENT_SUCCESS_SCREEN} options={{ headerShown: false }} component={PaymentSuccessScreen} />
                 <RootStack.Screen name={PRODUCT_SCREEN} options={{ headerShown: false }} component={ProductScreen} />
                 <RootStack.Screen name={ORDER_SCREEN} options={{ headerShown: false }} component={MyOrders} />
                 <RootStack.Screen name={SHIPPING_ADDRESS_SCREEN} options={{ headerShown: false }} component={ShippingAddressScreen} />

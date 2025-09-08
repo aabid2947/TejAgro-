@@ -4,7 +4,7 @@
  *
  * @format
  */
-
+ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import i18n from 'i18next';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -39,6 +39,8 @@ const MyTheme = {
     background: 'transparent',
   },
 };
+// const insets = useSafeAreaInsets();
+
 function App(): JSX.Element {
   const [loader, setLoader] = useState(false)
   console.log("starting")
@@ -149,7 +151,8 @@ export default () => (
 const style = StyleSheet.create({
   rootStyle: {
     flex: 1,
-    backgroundColor: WHITE
+    backgroundColor: WHITE,
+    // paddingTop: insets.top,
   },
   containerStyle: {
     flex: 1,

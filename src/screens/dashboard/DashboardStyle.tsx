@@ -5,6 +5,7 @@ import { heightPercentageToDP, widthPercentageToDP } from "react-native-responsi
 export const DashboardStyle = StyleSheet.create({
     mainCardView: {
         flex: 1,
+        
     },
     headerText: {
         color: BLACK,
@@ -97,7 +98,7 @@ export const DashboardStyle = StyleSheet.create({
         backgroundColor: PINK_GREY
     },
     logo: {
-        width: 98,
+        width: widthPercentageToDP('28%'),
         height: 70,
         borderTopLeftRadius: 5,
         borderTopRightRadius: 5,
@@ -106,9 +107,10 @@ export const DashboardStyle = StyleSheet.create({
     productContainer: {
         marginHorizontal: 5,
         marginVertical: 5,
+        width: widthPercentageToDP('28%'),
     },
     productContainer1: {
-        padding: 5,
+        padding: 8,
         flex: 1,
         borderBottomWidth: 1,
         borderBottomColor: PINK_GREY,
@@ -120,10 +122,11 @@ export const DashboardStyle = StyleSheet.create({
         borderBottomStartRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
-        width: 98,
+        width: widthPercentageToDP('28%'),
+        minHeight: 50,
     },
     productContainerSelected: {
-        padding: 10,
+        padding: 8,
         flex: 1,
         borderBottomWidth: 1,
         borderBottomColor: MDBLUE,
@@ -135,14 +138,18 @@ export const DashboardStyle = StyleSheet.create({
         borderBottomStartRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
-        width: 98,
-        backgroundColor: '#E3F2FD'
+        width: widthPercentageToDP('28%'),
+        backgroundColor: '#E3F2FD',
+        minHeight: 50,
     },
     productName: {
-        fontSize: 12,
+        fontSize: 11,
         color: BLACK,
         textAlign: 'center',
-        fontFamily: PoppinsMedium
+        fontFamily: PoppinsMedium,
+        numberOfLines: 2,
+        lineHeight: 14,
+        paddingHorizontal: 2,
     },
     // My Crops Section Styles
     myCropsSection: {
@@ -214,11 +221,8 @@ export const DashboardStyle = StyleSheet.create({
     myCropContainer: {
         position: 'relative',
         alignItems: 'center',
-        // marginHorizontal: 8,
         width: 80,
-        // paddingTop: 15,
-        // paddingBottom: 10,
-        // paddingHorizontal: 5,
+        paddingHorizontal: 5,
     },
     removeCropButton: {
         position: 'absolute',
@@ -252,6 +256,8 @@ export const DashboardStyle = StyleSheet.create({
         textAlign: 'center',
         fontFamily: Poppins,
         numberOfLines: 2,
+        lineHeight: 12,
+        paddingHorizontal: 2,
     },
     noMyCropsContainer: {
         alignItems: 'center',

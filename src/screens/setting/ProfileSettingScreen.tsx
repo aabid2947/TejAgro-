@@ -2,7 +2,7 @@
 import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Image, ScrollView, TouchableOpacity, View, Text, Linking } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSelector, useDispatch } from "react-redux";
 import TopHeaderFixed from "../../components/headerview/TopHeaderFixed";
 import DropdownPicker from "../../components/dropdownpicker/DropDownPicker";
@@ -31,6 +31,7 @@ const languageEnum: any = {
 
 const ProfileSettingScreen = ({ navigation }: any) => {
     const { t } = useTranslation();
+    const insets = useSafeAreaInsets()
     const dispatch = useDispatch();
     const refStateRBSheet: any = useRef();
     const profileDetail: any = useSelector((state: RootState) => state.counter.isProfileInfo);
@@ -84,7 +85,7 @@ const ProfileSettingScreen = ({ navigation }: any) => {
     );
 
     return (
-        <SafeAreaView style={settingStyle.mainCardView}>
+        <SafeAreaView style={[settingStyle.mainCardView, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
             <TopHeaderFixed
                 leftIconSize={20}
                 gobackText={t('SETTING_PROFILE')}

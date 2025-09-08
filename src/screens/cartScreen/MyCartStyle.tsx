@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 import { BLACK, GRAY_BORDER, MDBLUE, WHITE } from "../../shared/common-styles/colors";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 
+
 export const MyCartStyle = StyleSheet.create({
     container: {
         flex: 1,

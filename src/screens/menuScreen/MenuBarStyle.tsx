@@ -4,7 +4,7 @@ import { BLACK, PINK_GREY, WHITE } from "../../shared/common-styles/colors";
 
 export const MenuBarStyle = StyleSheet.create({
     mainView: {
-        flex: 1
+        flex: 1,
     },
     txtAccountName: {
         fontSize: 16,

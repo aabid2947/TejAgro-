@@ -33,8 +33,11 @@ import * as ImagePicker from 'react-native-image-picker';
 import { regexImage } from "../../shared/utilities/String";
 import { PermissionsAndroid, Platform } from 'react-native';
 import WalletIcon from "../../svg/WalletIcon";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 const MenuBarScreen = ({ navigation }: any) => {
     const { t } = useTranslation();
+    
+    const insets = useSafeAreaInsets()
     const version = DeviceInfo.getVersion();
     const dispatch = useDispatch()
     const [modalVisible, setModalVisible] = useState(false);
@@ -224,7 +227,7 @@ const MenuBarScreen = ({ navigation }: any) => {
     };
     // console.log(profileInfo, 'profileInfo')
     return (
-        <SafeAreaView style={MenuBarStyle.mainView}>
+        <SafeAreaView style={{ ...MenuBarStyle.mainView, paddingTop: insets.top,paddingBottom: insets.bottom }}>
             <TopHeaderFixed
                 leftIconSize={20}
                 gobackText={t("PROFILE")}

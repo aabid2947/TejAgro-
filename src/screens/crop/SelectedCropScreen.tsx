@@ -15,8 +15,10 @@ import { ProductListStyle } from '../productlist/ProductListStyle';
 import TextPoppinsMediumBold from '../../shared/fontFamily/TextPoppinsMediumBold';
 import TextPoppinsSemiBold from '../../shared/fontFamily/TextPoppinsSemiBold';
 import React from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const SelectedCropScreen = ({ navigation }: any) => {
     const { t } = useTranslation();
+    const insets = useSafeAreaInsets()
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [refresh, setRefresh] = useState(false)
@@ -67,13 +69,18 @@ const SelectedCropScreen = ({ navigation }: any) => {
 
     const renderCategory = (item: any, index: any) => {
         return (
-            <View style={{ marginTop: 10 }} key={item?.id + index}>
-                <View style={{
-                    ...DashboardStyle.productImage1
-                }}
-                >
-                    <Image source={{ uri: item?.crop_image }} style={{ height: 45, width: 45, resizeMode: "contain", borderRadius: 40, overflow: "hidden" }} alt='img' />
-                </View>
+            <View style={{ marginTop: 10, alignItems: 'center' }} key={item?.id + index}>
+                <Image 
+                    source={{ uri: item?.crop_image }} 
+                    style={{ 
+                        height: 50, 
+                        width: 50, 
+                        resizeMode: "cover", 
+                        borderRadius: 25, 
+                        marginBottom: 5 
+                    }} 
+                    alt='img' 
+                />
                 <TextPoppinsSemiBold style={ProductListStyle.textCrop}>{item?.crop_marathi_name}</TextPoppinsSemiBold>
             </View>
         )
@@ -84,7 +91,7 @@ const SelectedCropScreen = ({ navigation }: any) => {
     }
 
     return (
-        <SafeAreaView style={ProductListStyle.main}>
+        <SafeAreaView style={[ProductListStyle.main, { paddingTop: insets.top }]}>
             {headerView(`Hi, ${profileDetail?.client_name || ""}`, "Enjoy our services", onPressSide, totalItems, navigation
             )}
             <View style={ProductListStyle.container}>
@@ -95,7 +102,7 @@ const SelectedCropScreen = ({ navigation }: any) => {
                     searchQuery={searchQuery}
                     onChangeText={handleSearch} /> */}
                 {selectedCrop?.length > 0 &&
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' }}>
                         <View>
                             <TextPoppinsMediumBold style={ProductListStyle.titleSelectText}>{t('SELECTED')}</TextPoppinsMediumBold>
                             <FlatList
@@ -108,10 +115,11 @@ const SelectedCropScreen = ({ navigation }: any) => {
                                 renderItem={({ item, index }: any) => renderCategory(item, index)}
                             />
                         </View>
-                        <View style={{ marginLeft: '-10%', marginBottom: '-8%' }}>
+                        
+                        <View style={{ marginLeft: '0%', marginBottom: '-8%', flex: 1, flexWrap: 'wrap' }}>
                             {productData?.message ? null :
-                                <Text style={[ProductListStyle.headerText, ProductListStyle.headerTextCommon]}>
-                                    पीक वाढीची अवस्था निवडा
+                                <Text style={[ProductListStyle.headerText, ProductListStyle.headerTextCommon, { flexWrap: 'wrap', textAlign: 'center' }]}>
+                                    खालील पैकी अवस्था निवडून पुढील उत्पादने पहा
                                 </Text>
                             }
                         </View>

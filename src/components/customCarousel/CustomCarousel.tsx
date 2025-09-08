@@ -31,7 +31,7 @@ const CustomCaraosel = (banner: any) => {
         <View style={styles.parentView}>
             <ReCarousel
                 loop
-                width={width}
+                width={width/1.1}
                 height={width / 2.2}
                 autoPlay={true}
                 data={banner?.data}
@@ -46,8 +46,14 @@ const CustomCaraosel = (banner: any) => {
                                 >
                                     <ImageBackground
                                         borderRadius={12}
+                                        resizeMode="contain"
                                         source={{ uri: item?.image }}
-                                        style={styles.imgStyle}
+                                        style={[
+    styles.imgStyle,
+    { width: '100%' } ,
+     { height: '100%' } // Make it take full width of parent
+  ]}
+
                                     />
                                 </Animated.View>
                             }
@@ -83,6 +89,9 @@ const styles = StyleSheet.create({
         borderColor: GRAY
     },
     imgStyle: {
+        // flex:1,
+        alignItems: 'center',
+        justifyContent: 'center',
         height: heightPercentageToDP(20),
         borderRadius: 12,
     }

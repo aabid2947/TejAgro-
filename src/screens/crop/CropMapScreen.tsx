@@ -17,12 +17,14 @@ import { RootState } from '../../reduxToolkit/store';
 import TextPoppinsMediumBold from '../../shared/fontFamily/TextPoppinsMediumBold';
 import TextPoppinsSemiBold from '../../shared/fontFamily/TextPoppinsSemiBold';
 import { regexImage } from '../../shared/utilities/String';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const CropMapScreen = (params: any) => {
     const navigation: any = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     const profileDetail: any = useSelector((state: RootState) => state.counter.isProfileInfo)
     const totalItems = useSelector((state: RootState) => state.counter.totalItems);
     const { t } = useTranslation();
+    const insets = useSafeAreaInsets()
     const [isLoader, setLoader] = useState(false);
     const [productData, setProductData]: any = useState({});
     const cropData = params.route.params.selectedCrop
@@ -99,7 +101,7 @@ const CropMapScreen = (params: any) => {
     console.log(productData)
 
     return (
-        <SafeAreaView style={ProductListStyle.main}>
+        <SafeAreaView style={[ProductListStyle.main, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
             {headerView(`Hi, ${profileDetail?.client_name || ""}`, "Enjoy our services", onPressSide, totalItems, navigation)}
             {productData?.message ?
                 <NoRecordFound style={ProductListStyle.noDataTxt} /> :

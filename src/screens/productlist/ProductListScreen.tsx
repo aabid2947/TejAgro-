@@ -18,6 +18,7 @@ import { ProductListStyle } from './ProductListStyle';
 import TextPoppinsMediumBold from '../../shared/fontFamily/TextPoppinsMediumBold';
 import { jwtDecode } from 'jwt-decode';
 import CustomCaraosel from "../../components/customCarousel/CustomCarousel";
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const ProductListScreen = ({ navigation }: any) => {
     const { t } = useTranslation();
     const [searchQuery, setSearchQuery] = useState('');
@@ -33,17 +34,18 @@ const ProductListScreen = ({ navigation }: any) => {
     const isUserData = useSelector((state: any) => state.counter.isUserinfo)
     const handleSnapToItem = (index: number) => {
     };
+    const insets = useSafeAreaInsets();
 
     const dispatch = useDispatch()
 
     const loadBanner = async () => {
             // setLoader(true);
-            console.log("Loading banners...");
+            // console.log("Loading banners...");
             try {
                 const bannerResponse = await AuthApi.getBanners()
                 
                 
-                 console.log("Banner response:", bannerResponse.data);
+                //  console.log("Banner response:", bannerResponse.data);
                 if (bannerResponse ) {
                     setBanner(bannerResponse?.data?.dashboard_slider || []);
                 } else {
@@ -158,12 +160,8 @@ const ProductListScreen = ({ navigation }: any) => {
     }
 
     return (
-        <SafeAreaView style={ProductListStyle.main}>
+        <SafeAreaView style={{ ...ProductListStyle.main, paddingTop: insets.top }}>
             {headerView(`Hi, ${profileDetail?.client_name || ""}`, "Enjoy our services", onPressSide, totalItems, navigation)}
-              {banner?.length > 0 && <CustomCaraosel
-                data={banner}
-                onSnapToItem={handleSnapToItem}
-            />}
             <View style={ProductListStyle.container}>
                 <SearchInput
                     placeholder={t('SEARCH_HERE')}
@@ -184,9 +182,15 @@ const ProductListScreen = ({ navigation }: any) => {
                         refreshing={refresh}
                         ListHeaderComponent={() => {
                             return (
-                                <TextPoppinsMediumBold style={ProductListStyle.headerText}>
-                                    {t('ALL_PRODUCT')}
-                                </TextPoppinsMediumBold>
+                                <View>
+                                    {banner?.length > 0 && <CustomCaraosel
+                                        data={banner}
+                                        onSnapToItem={handleSnapToItem}
+                                    />}
+                                    <TextPoppinsMediumBold style={ProductListStyle.headerText}>
+                                        {t('ALL_PRODUCT')}
+                                    </TextPoppinsMediumBold>
+                                </View>
                             )
                         }}
                         onRefresh={onRefresh}

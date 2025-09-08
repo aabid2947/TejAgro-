@@ -1,4 +1,4 @@
-import { Pressable, TextInput, View } from "react-native"
+import { Pressable, TextInput, View, Image } from "react-native"
 import SearchIcon from "../../svg/SearchIcon"
 import { StyleSheet } from "react-native"
 import FilterIconSvg from "../../svg/FilterIconSvg"
@@ -9,6 +9,11 @@ const SearchInput = ({ placeholder, value, onChangeText, setSearchQuery, searchQ
     return (
         <View style={styles.searchView}>
             <View style={styles.searchBarView}>
+                <Image 
+                    source={require('../../assets/tejagro.png')} 
+                    style={styles.logoImage}
+                    resizeMode="contain"
+                />
                 <TextInput
                     style={styles.searchBar}
                     placeholder={placeholder}
@@ -52,5 +57,11 @@ const styles = StyleSheet.create({
         borderColor: '#CFCFCF',
         flexDirection: 'row',
         alignItems: 'center'
+    },
+    logoImage: {
+        width: 30,
+        height: 30,
+        marginRight: 8,
+        borderRadius: 15,
     },
 })

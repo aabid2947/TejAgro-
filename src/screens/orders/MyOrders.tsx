@@ -14,12 +14,14 @@ import { BLACK, GREEN, GREY, WHITE } from "../../shared/common-styles/colors";
 import { RenderItem } from "../../shared/components/CommonUtilities";
 import { DashboardStyle } from "../dashboard/DashboardStyle";
 import { NotifcationScreenStyle } from "../notificationScreen/NotificationScreenStyle";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const sortingList = [{ id: 1, name: "List: ", isSelected: true, selectedBG: GREEN, selectedColor: WHITE, color: BLACK, },]
 
 const MyOrders = ({ navigation }: any) => {
     const { t } = useTranslation();
     const [loader, setLoader] = useState(false)
+    const insets = useSafeAreaInsets()
     const [sortData, setSortData] = useState(sortingList);
     const [refresh, setRefresh] = useState(false)
     const userData: any = useSelector((state: RootState) => state.counter.isUserinfo)
@@ -97,7 +99,7 @@ const MyOrders = ({ navigation }: any) => {
     };
 
     return (
-        <SafeAreaView style={NotifcationScreenStyle.mainView}>
+        <SafeAreaView style={[NotifcationScreenStyle.mainView, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
             <TopHeaderFixed
                 leftIconSize={20}
                 gobackText={t('MY_ORDERS')}

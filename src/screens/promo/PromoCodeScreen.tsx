@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useTransition } from 'react';
 import { Dimensions, Pressable, ScrollView, StyleSheet, Text, ToastAndroid, View } from 'react-native';
 import { TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useWindowDimensions } from 'react-native';
 import { Image } from 'react-native';
 import { PromoCodeStyle } from './PromoCodeStyle';
@@ -39,7 +39,8 @@ export const SLIDER_WIDTH = Dimensions.get('window').width + 45;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
 export const ITEM_HEIGHT = Dimensions.get('window').width + 0;
 export const PromoCodeScreen = ({ navigation }: any) => {
-    const { t } = useTranslation()
+    const { t } = useTranslation();
+    const insets = useSafeAreaInsets();
     const [selectedOption, setSelectedOption]: any = useState(null);
     const [selectedPromo, setSelectedPromo]: any = useState(null);
     const [promoCodeList, setPromoCodeList] = useState([]);
@@ -185,7 +186,7 @@ export const PromoCodeScreen = ({ navigation }: any) => {
         setSelectedPromo(id)
     };
     return (
-        <SafeAreaView style={ProductListStyle.main}>
+        <SafeAreaView style={{ ...ProductListStyle.main, paddingTop: insets.top }}>
             <TopHeaderFixed
                 leftIconSize={20}
                 headerTxt={t('PROMO_CODE')}

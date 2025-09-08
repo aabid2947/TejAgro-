@@ -24,7 +24,7 @@ import { LogInScreenStyle } from "./LoginScreenStyle";
 import TejAgroIcon from "../../svg/TejAgroLogo";
 import TextPoppinsSemiBold from "../../shared/fontFamily/TextPoppinsSemiBold";
 import TextPoppinsMediumBold from "../../shared/fontFamily/TextPoppinsMediumBold";
-
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 export const LANGUAGES = [
     { name: 'English', value: 'en' },
     { name: 'मराठी', value: 'mr' }
@@ -46,6 +46,7 @@ const LogInScreen = () => {
     const [isLoader, setLoader] = useState(false);
     const languageSelected = useSelector((state: RootState) => state.counter.languageSelected)
     const dispatch = useDispatch()
+    const insets = useSafeAreaInsets();
     const { openModal }: any = useModalContext();
     const renderItem = (placeholder: string, value: any, erroMsg?: any, onchange?: any,) => {
         return (
@@ -145,7 +146,7 @@ const LogInScreen = () => {
     }
 
     return (
-        <SafeAreaView style={LogInScreenStyle.mainView}>
+        <SafeAreaView style={{ ...LogInScreenStyle.mainView, paddingTop: insets.top, paddingBottom: insets.bottom }}>
             <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
                 <TextPoppinsSemiBold style={LogInScreenStyle.loginText}>
                     {t("LOGIN")}

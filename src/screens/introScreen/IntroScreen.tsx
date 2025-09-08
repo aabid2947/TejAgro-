@@ -8,9 +8,11 @@ import { alreadyAccountView, PressableButton } from '../../shared/components/Com
 import TextPoppinsBold from '../../shared/fontFamily/TextPoppinsBold';
 import TextPoppinsMediumBold from '../../shared/fontFamily/TextPoppinsMediumBold';
 import TextPoppinsSemiBold from '../../shared/fontFamily/TextPoppinsSemiBold';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const IntroScreen = ({ navigation }: any) => {
 
+    const insets= useSafeAreaInsets();
     const loginOnPress = () => {
         navigation.navigate(SIGIN_SCREEN)
     }
@@ -20,7 +22,7 @@ const IntroScreen = ({ navigation }: any) => {
     }
 
     return (
-        <SafeAreaView style={IntroScreenStyles.container}>
+        <SafeAreaView style={{ ...IntroScreenStyles.container, paddingTop: insets.top, paddingBottom: insets.bottom }}>
             <View style={IntroScreenStyles.contentContainer}>
                 <Image
                     source={require("../../assets/IntroBackground.png")} // replace with actual image URL

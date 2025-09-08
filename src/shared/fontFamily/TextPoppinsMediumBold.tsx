@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, TextProps, StyleProp, TextStyle } from 'react-native';
-import { TextCommonStyle } from './TextCommonStyle';
+import { TextCommonStyle} from './TextCommonStyle';
 
 interface TextPoppinsMediumBoldProps extends TextProps {
   children: React.ReactNode;
@@ -17,6 +17,10 @@ const TextPoppinsMediumBold: React.FC<TextPoppinsMediumBoldProps> = ({
       allowFontScaling={false}
       {...otherProps}
       style={[TextCommonStyle.textPoppinsMediumBold, style]}
+           // don’t shrink too much
+   numberOfLines={1}
+  ellipsizeMode="clip"
+  // textBreakStrategy="simple"
     >
       {children}
     </Text>
