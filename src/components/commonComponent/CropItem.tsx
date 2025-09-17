@@ -22,7 +22,7 @@ export const CropItem = ({ data, selectedCrop }: any) => {
                     style={style.imgStyle}
                 />
             </View>
-            <View>
+            <View style={{width:"50%"}}>
                 {/* <TextPoppinsMediumBold style={style.productName} numberOfLines={3}>{data.crop_stage_name || "लागवडीची अवस्था "}{'\n'}{data.crop_marathi_stage_name || "लागवडीची अवस्था "}</TextPoppinsMediumBold> */}
                 {/* <TextPoppinsMediumBold style={style.productName}>{data.crop_marathi_stage_name || "लागवडीची अवस्था "}</TextPoppinsMediumBold> */}
                 <TextPoppinsMediumBold style={style.productName} numberOfLines={3}>
@@ -60,19 +60,21 @@ const style = StyleSheet.create({
         fontSize: 14,
         lineHeight: 20,
         color: BLACK,
-        textAlign: 'center',
+        textAlign: 'left',
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center',
         textAlignVertical: 'center',
         alignContent: 'center',
         flex: 1,
+        width: '100%',
         maxWidth: widthPercentageToDP(50),
         fontFamily: PoppinsMedium,
         paddingHorizontal: widthPercentageToDP(2),
         flexShrink: 1,
         marginVertical: heightPercentageToDP(1),
-        right: 8
+        right: 8,
+        // borderWidth:1
     },
     imgStyle: {
         width: widthPercentageToDP(40),

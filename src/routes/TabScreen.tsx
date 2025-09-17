@@ -83,9 +83,9 @@ const TabScreen = () => {
           component={ProductListScreen}
           options={{
             tabBarLabel: ({ focused }) => (
-              <TextPoppinsSemiBold style={{ color: focused ? MDBLUE : UNFOCUSED, fontSize: 14 }}>
+              <Text style={{ color: focused ? MDBLUE : UNFOCUSED, fontSize: 14 }}>
                 {t('PRODUCT')}
-              </TextPoppinsSemiBold>
+              </Text>
             ),
             tabBarIcon: ({ focused }) =>
               focused ? (
@@ -100,9 +100,9 @@ const TabScreen = () => {
           component={Dashboard}
           options={{
             tabBarLabel: ({ focused }) => (
-              <TextPoppinsSemiBold style={{ color: focused ? MDBLUE : UNFOCUSED, fontSize: 14 }}>
+              <Text style={{ color: focused ? MDBLUE : UNFOCUSED, fontSize: 14 }}>
                 {t('HOME')}
-              </TextPoppinsSemiBold>
+              </Text>
             ),
             tabBarIcon: ({ focused }) =>
               focused ? (
@@ -117,9 +117,9 @@ const TabScreen = () => {
           component={MyCartScreen}
           options={{
             tabBarLabel: ({ focused }) => (
-              <TextPoppinsSemiBold style={{ color: focused ? MDBLUE : UNFOCUSED, fontSize: 14 }}>
+              <Text style={{ color: focused ? MDBLUE : UNFOCUSED, fontSize: 14 }}>
                 {t('MY_CART')}
-              </TextPoppinsSemiBold>
+              </Text>
             ),
             tabBarIcon: ({ focused }) => (
               <View style={{ position: 'relative' }}>

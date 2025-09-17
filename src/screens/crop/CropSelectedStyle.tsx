@@ -133,10 +133,11 @@ export const CropSelectedStyle = StyleSheet.create({
     },
     productName: {
         fontSize: 14,
-        lineHeight: 20,
-        textAlign: 'center',
+        lineHeight: 22,
+        textAlign: 'left',
         marginBottom: 5,
         color: BLACK,
+         marginLeft: 10,
         fontFamily: PoppinsLight
     },
     buyButton: {

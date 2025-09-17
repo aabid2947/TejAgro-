@@ -71,8 +71,8 @@ const style = StyleSheet.create({
     },
     productName: {
         // borderWidth:  1,
-        width: '100%',
-        textAlign: 'center',
+        // width: '100%',s
+        textAlign: 'left',
         fontSize: 14,
         color: BLACK,
         fontFamily: PoppinsMedium,

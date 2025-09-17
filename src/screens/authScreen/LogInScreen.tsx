@@ -89,7 +89,6 @@ const LogInScreen = () => {
             return;
         }
         try {
-            console.log(9)
             setLoader(true);
             let response = await AuthApi.mobileSignIn({ mobile_no: Number(formValue.phoneNumber) });
             console.log(response.data, "mobileSignIn_response");
@@ -99,12 +98,13 @@ const LogInScreen = () => {
             }
         } catch (error: any) {
             console.log(error, "anyffff");
-
             setMobileNumberError("Please enter a valid 10 digit mobile number");
-            setLoader(false)
+        } finally {
+            setLoader(false);
         }
     };
 
+    
     const handlePrivacyPolicyClick = (url: string) => {
         openModal("Privacy policy link not available")
     }
@@ -161,7 +161,7 @@ const LogInScreen = () => {
                 <View style={LogInScreenStyle.inputView}>
                     {MobileNumber("Phone Number *", "Enter your mobile number", mobileNumber, '', (text: any) => onChangeFormName(text), LogInScreenStyle.dataView, LogInScreenStyle.mainBody)}
                     {mobileNumberError && <TextPoppinsSemiBold style={LogInScreenStyle.errorFormTextLogin}>{t('VALID_NUMBER')}</TextPoppinsSemiBold>}
-                    {PressableButton(t('CONTINUE_BUTTON'), onClickSignIn)}
+                    {PressableButton(isLoader ? t('LOADING') : t('CONTINUE_BUTTON'), onClickSignIn, isLoader)}
                     {/* {alreadyAccountView(t('NO_ACCOUNT'), t('SIGN_UP'), getStartedPress)} */}
                 </View>
             </KeyboardAwareScrollView>

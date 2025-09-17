@@ -1,5 +1,8 @@
 import { useTranslation } from "react-i18next"
-import { Alert, BackHandler, Linking, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Alert, BackHandler, Image, Linking, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { useSelector } from "react-redux"
+import React, { useState } from "react"
+import { RootState } from "../../reduxToolkit/store"
 import { MyOrdersStyle } from "../../screens/orders/MyOrdersStyle"
 import RightArrowIcon from "../../svg/RightArrowIcon"
 import { BLACK, GRAY, GREEN, GREY, MD_GRAY_Dark, MDBLUE, PoppinsMedium, WHITE, WHITE_GRAY } from "../common-styles/colors"
@@ -102,12 +105,51 @@ export const CustomButton = (title: any, onPress: any) => {
         </TouchableOpacity>
     )
 }
+// Profile Image Component with fallback handling
+const ProfileImageWithFallback = ({ profileDetail, style, onPress }: any) => {
+    const [imageError, setImageError] = useState(false);
+    const regexImage = /^https?:\/\/.*\.(jpg|jpeg|png|gif|bmp|webp)$/i;
+    
+    // Check if user has a valid profile image
+    const hasValidImage = !imageError && 
+                         profileDetail?.client_image && 
+                         typeof profileDetail.client_image === 'string' && 
+                         profileDetail.client_image.trim() !== '' && 
+                         regexImage.test(profileDetail.client_image);
+    
+    return (
+        <Pressable onPress={onPress} style={style}>
+            {hasValidImage ? (
+                <Image
+                    source={{ uri: profileDetail.client_image }}
+                    style={styles.profileImage}
+                    resizeMode={'cover'}
+                    onError={() => {
+                        console.log('Failed to load profile image, using default');
+                        setImageError(true);
+                    }}
+                />
+            ) : (
+                <Image 
+                    source={require("../../assets/defaultProfile.png")}
+                    style={styles.profileImage}
+                    resizeMode="cover"
+                />
+            )}
+        </Pressable>
+    );
+};
+
 export const headerView = (title: any, subTitle: any, sideBarPress: any, totalItems: any, navigation: any) => {
+    const profileDetail: any = useSelector((state: RootState) => state.counter.isProfileInfo);
+    
     return (
         <View style={DashboardStyle.mainViewHeader}>
-            <Pressable onPress={sideBarPress}>
-                <SideBarSvg height={41} width={40} />
-            </Pressable>
+            <ProfileImageWithFallback 
+                profileDetail={profileDetail}
+                style={styles.profileImageContainer}
+                onPress={sideBarPress}
+            />
             <View style={{ flex: 1, marginLeft: 10 }}>
                 <TextPoppinsMediumBold style={DashboardStyle.titleSytle}>
                     {title}
@@ -128,12 +170,17 @@ export const headerView = (title: any, subTitle: any, sideBarPress: any, totalIt
         </View>
     )
 }
+
 export const headerViewReferral = (title: any, subTitle: any, sideBarPress: any) => {
+    const profileDetail: any = useSelector((state: RootState) => state.counter.isProfileInfo);
+    
     return (
         <View style={DashboardStyle.mainViewHeader}>
-            <Pressable onPress={sideBarPress}>
-                <SideBarSvg height={41} width={40} color={WHITE} />
-            </Pressable>
+            <ProfileImageWithFallback 
+                profileDetail={profileDetail}
+                style={styles.profileImageContainer}
+                onPress={sideBarPress}
+            />
             <View style={{ flex: 1 }}>
                 <Text style={DashboardStyle.titleSytleReferral}>
                     {title}
@@ -265,5 +312,18 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
         height: 52,
         marginBottom: 10
+    },
+    profileImageContainer: {
+        width: 41,
+        height: 41,
+        borderRadius: 20.5,
+        overflow: 'hidden',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    profileImage: {
+        width: 41,
+        height: 41,
+        borderRadius: 20.5,
     }
 })

@@ -71,7 +71,7 @@ const CropMapScreen = (params: any) => {
                     />
                 }
 
-                <TextPoppinsSemiBold style={CropSelectedStyle.productName}>{item.item?.product_marathi_name || item.item?.product_name}</TextPoppinsSemiBold>
+                <TextPoppinsMediumBold style={CropSelectedStyle.productName}>{item.item?.product_marathi_name || item.item?.product_name}</TextPoppinsMediumBold>
                 <View style={{ marginTop: 'auto' }}>
                     <View style={[CropSelectedStyle.priceContainer]}>
                         <TextPoppinsSemiBold style={CropSelectedStyle.sellingPriceText}>₹{item.item?.total_amount ? item.item?.total_amount : item.item?.total_amount}</TextPoppinsSemiBold>

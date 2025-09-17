@@ -368,6 +368,58 @@ const MyCartScreen = ({ navigation, route }: any) => {
         );
     };
 
+    const OrderSummaryComponent = () => {
+        const totalAmount = selectedPromoCodeValue?.total_amount || totalCartPrice;
+        const finalAmount = walletUsed?.use_wallet_amount > 0 ? walletUsed?.grand_amount : (selectedPromoCodeValue?.final_amount || totalCartPrice);
+        const promoCodeDiscount = selectedPromoCodeValue?.promo_code_discount || 0;
+        
+        return (
+            <View style={cartStyles.orderSummaryContainer}>
+                <View style={cartStyles.orderSummaryHeader}>
+                    <TextPoppinsSemiBold style={cartStyles.orderSummaryTitle}>
+                        {t('Order_Summary')}
+                    </TextPoppinsSemiBold>
+                </View>
+                <View style={cartStyles.orderSummaryCard}>
+                    <View style={cartStyles.orderSummaryRow}>
+                        <Text style={cartStyles.summaryLabel}>{t('PRICE')}</Text>
+                        <Text style={cartStyles.summaryValue}>₹{totalAmount}</Text>
+                    </View>
+                    
+                    {promoCodeDiscount > 0 && (
+                        <View style={cartStyles.orderSummaryRow}>
+                            <Text style={cartStyles.summaryLabel}>{t('PROMO_CODE_DISCOUNT')}</Text>
+                            <Text style={[cartStyles.summaryValue, cartStyles.discountValue]}>-₹{promoCodeDiscount}</Text>
+                        </View>
+                    )}
+                    
+                    {walletUsed?.use_wallet_amount > 0 && (
+                        <View style={cartStyles.orderSummaryRow}>
+                            <Text style={cartStyles.summaryLabel}>{t('WALLET_DISCOUNT')}</Text>
+                            <Text style={[cartStyles.summaryValue, cartStyles.walletValue]}>-₹{walletUsed?.use_wallet_amount}</Text>
+                        </View>
+                    )}
+                    
+                    <View style={cartStyles.orderSummaryRow}>
+                        <Text style={cartStyles.summaryLabel}>{t('Delivery_Charge')}</Text>
+                        <Text style={[cartStyles.summaryValue, cartStyles.freeValue]}>{t('FREE')}</Text>
+                    </View>
+                    
+                    <View style={cartStyles.dividerLine} />
+                    
+                    <View style={[cartStyles.orderSummaryRow, cartStyles.totalRow]}>
+                        <Text style={cartStyles.totalLabel}>{t('TOTAL')}</Text>
+                        <TextPoppinsSemiBold style={cartStyles.totalValue}>₹{finalAmount}</TextPoppinsSemiBold>
+                    </View>
+                    
+                    <Text style={cartStyles.taxIncludedText}>
+                        देय रक्कमध्ये जीएसटी व अन्य कराचा समावेश
+                    </Text>
+                </View>
+            </View>
+        );
+    };
+
     const listFooterComponent = () => {
         return (
             <>
@@ -413,13 +465,7 @@ const MyCartScreen = ({ navigation, route }: any) => {
                         totalCartPrice={Number(selectedPromoCodeValue?.final_amount || totalCartPrice)}
                     />
                 )}
-                <View style={MyOrdersStyle.renderView2}>
-                    {(!selectedPromoCodeValue || Object.keys(selectedPromoCodeValue).length === 0)
-                        ? SubtotalCart(totalCartPrice, walletUsed?.use_wallet_amount > 0 ? walletUsed?.grand_amount : totalCartPrice, 0, walletUsed?.use_wallet_amount)
-                        : SubtotalCart(selectedPromoCodeValue.total_amount,
-                            walletUsed?.use_wallet_amount > 0 ? walletUsed?.grand_amount : selectedPromoCodeValue.final_amount,
-                            selectedPromoCodeValue.promo_code_discount, walletUsed?.use_wallet_amount)}
-                </View>
+                <OrderSummaryComponent />
             </>
         )
     }
@@ -570,11 +616,99 @@ const styles = StyleSheet.create({
         color: '#888',
         marginTop: 0,
         marginLeft: 8
+        
     },
     checkboxLabel: {
         marginLeft: 8,
         fontSize: 16,
         color: '#333',
         fontWeight: "bold"
+    },
+});
+
+const cartStyles = StyleSheet.create({
+    orderSummaryContainer: {
+        backgroundColor: '#fff',
+        marginHorizontal: 20,
+        marginBottom: 10,
+        marginTop: 10,
+        elevation: 3,
+        shadowColor: "#737373",
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.6,
+        borderRadius: 8,
+    },
+    orderSummaryHeader: {
+        paddingHorizontal: 16,
+        paddingVertical: 16,
+        borderBottomWidth: 1,
+        borderBottomColor: '#f0f0f0',
+    },
+    orderSummaryTitle: {
+        paddingTop:2,
+        fontSize: 16,
+        color: BLACK,
+        fontWeight: '600',
+    },
+    orderSummaryCard: {
+        margin: 16,
+        backgroundColor: '#f8f8f8',
+        borderRadius: 8,
+        padding: 16,
+        borderWidth: 1,
+        borderColor: '#e0e0e0',
+    },
+    orderSummaryRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingVertical: 6,
+    },
+    summaryLabel: {
+        fontSize: 15,
+        color: '#4CAF50',
+        flex: 1,
+    },
+    summaryValue: {
+        fontSize: 15,
+        color: '#333',
+        fontWeight: '500',
+        textAlign: 'right',
+    },
+    discountValue: {
+        color: '#4CAF50',
+    },
+    walletValue: {
+        color: '#4CAF50',
+    },
+    freeValue: {
+        color: '#4CAF50',
+    },
+    dividerLine: {
+        height: 1,
+        backgroundColor: '#ddd',
+        marginVertical: 8,
+        borderStyle: 'dashed',
+    },
+    totalRow: {
+        paddingTop: 4,
+        paddingBottom: 8,
+    },
+    totalLabel: {
+        fontSize: 16,
+        color: BLACK,
+        fontWeight: 'bold',
+    },
+    totalValue: {
+        fontSize: 18,
+        color: BLACK,
+        fontWeight: 'bold',
+    },
+    taxIncludedText: {
+        fontSize: 12,
+        color: '#666',
+        textAlign: 'center',
+        marginTop: 8,
+        lineHeight: 16,
     },
 });

@@ -101,6 +101,12 @@ const DashBoard = ({ navigation }: any) => {
                     ...categoryArray,
                 ];
                 setOriginalCategoryData(originalCategories);
+                console.log("Original Categories:", originalCategories);
+                originalCategories.forEach((cat: any) => {
+                 
+                    cat.marathi_crop_category_name = cat?.marathi_crop_category_name?.replace(/\s/g, '\u00A0');
+                  
+                })
                 setCategoryData(originalCategories);
             }
 

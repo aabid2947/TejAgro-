@@ -21,7 +21,6 @@ export const ShippingAddressStyle = StyleSheet.create({
         lineHeight: 22,
         width: '100%',
         textAlign: 'left',
-        borderWidth: 1,
     },
     tickTextDisable: {
         color: GRAY,

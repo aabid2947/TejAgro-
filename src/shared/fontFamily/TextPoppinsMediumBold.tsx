@@ -18,8 +18,8 @@ const TextPoppinsMediumBold: React.FC<TextPoppinsMediumBoldProps> = ({
       {...otherProps}
       style={[TextCommonStyle.textPoppinsMediumBold, style]}
            // don’t shrink too much
-   numberOfLines={1}
-  ellipsizeMode="clip"
+   numberOfLines={2}
+  ellipsizeMode="tail"
   // textBreakStrategy="simple"
     >
       {children}

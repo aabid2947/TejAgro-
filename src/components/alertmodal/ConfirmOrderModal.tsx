@@ -22,7 +22,7 @@ const ConfirmOrderModal = ({ modalVisible, onClose }:any) => {
                         <PromoCodeIcon height={120} width={120} />
                     </View>
                     <View style={{ alignSelf: "center", marginVertical: 15 }}>
-                        <TextPoppinsMediumBold style={{ fontSize: 22, lineHeight: 32, color: GREEN }}>{t("Order_Placed")}</TextPoppinsMediumBold>
+                        <TextPoppinsMediumBold style={{ fontSize: 18, lineHeight: 22, color: GREEN }}>{t("Order_Placed")}</TextPoppinsMediumBold>
                     </View>
                 </View>
                 <Pressable style={{ marginVertical: 10 }} onPress={()=>onClose()}>

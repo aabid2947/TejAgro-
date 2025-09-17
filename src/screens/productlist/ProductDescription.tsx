@@ -52,8 +52,8 @@ const ProductDescription = (productId: any) => {
                             
                             {isExpanded && (
                                 <View style={{ marginTop: 10 }}>
-                                    <TextPoppinsSemiBold style={ProductStyle.productDescription}>{item.work}</TextPoppinsSemiBold>
-                                    <TextPoppinsSemiBold style={ProductStyle.productDescription}>{item.marathi_work}</TextPoppinsSemiBold>
+                                    <Text numberOfLines={8} style={ProductStyle.productDescription}>{item.work}</Text>
+                                    <Text numberOfLines={8} style={ProductStyle.productDescription}>{item.marathi_work}</Text>
                                 </View>
                             )}
                         </View>

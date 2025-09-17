@@ -153,6 +153,8 @@ const PaymentSuccessScreen: React.FC<PaymentSuccessScreenProps> = ({ route }) =>
     };
 
     const formatAmount = (amt: string | number) => {
+        console.log(amt, "amtamt");
+        console.log(parseFloat(amt.toString()).toFixed(2))
         return `₹${parseFloat(amt.toString()).toFixed(2)}`;
     };
 
@@ -292,9 +294,11 @@ const PaymentSuccessScreen: React.FC<PaymentSuccessScreenProps> = ({ route }) =>
                             <CustomFontText style={styles.detailLabel}>
                                 💰 Amount Paid:
                             </CustomFontText>
-                            <TextPoppinsSemiBold style={[styles.detailValue, styles.amountValue]}>
+                            <Text style={[styles.detailValue, styles.amountValue]}>
                                 {formatAmount(amount)}
-                            </TextPoppinsSemiBold>
+                                
+                                 {/* {amount} */}
+                            </Text>
                         </View>
                     )}
 
