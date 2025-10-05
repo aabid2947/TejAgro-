@@ -75,6 +75,30 @@ const removeCartItem = (requestBody: any,accessToken:any) => {
      return authAxios.delete(url, {data:requestBody});
 }
 
+const createPost = (requestBody: any) => {
+    const url = `${AUTH_API_URL}farmer-post-get-details.php?action=add_post`;
+    return authAxios.get(url, requestBody);
+}
+const getPosts = () => {
+    const url = `${AUTH_API_URL}farmer-post-get-details.php?action=get_posts`;
+    return authAxios.get(url);
+}
+
+const likePost = (requestBody: any) => {
+    const url = `${AUTH_API_URL}farmer-post-get-details.php?action=like_post`;
+    return authAxios.get(url, requestBody);
+}
+
+
+const addComment = (requestBody: any) => {
+    const url = `${AUTH_API_URL}farmer-post-get-details.php?action=add_comment`;
+    return authAxios.get(url, requestBody);
+}
+const getOffer = (requestBody: any) => {
+    const url = `${AUTH_API_URL}offer.php`;
+    return authAxios.get(url, requestBody);
+}
+
 const confirmOrder = (requestBody: any) => {
     const url = `${AUTH_API_URL}order-place.php`;
     return authAxios.post(url, requestBody)
@@ -82,6 +106,11 @@ const confirmOrder = (requestBody: any) => {
 
 const getBanners = () => {
     const url = `${AUTH_API_URL}banners.php`;
+    return authAxios.get(url);
+}
+
+const getYouTubeVideos = () => {
+    const url = `${AUTH_API_URL}youtube-link.php`;
     return authAxios.get(url);
 }
 
@@ -231,6 +260,10 @@ export default {
     getCartDetails,
     updateCart,
     removeCartItem,
+    createPost,
+    getPosts,
+    likePost,
+    addComment,
     confirmOrder,
     getBanners,
     CropProduct,
@@ -241,6 +274,7 @@ export default {
     addToMyCrops,
     updateMyCrops,
     deleteMyCrops,
+    getOffer,
     orderHistory,
     cropStages,
     cropMapping,
@@ -250,6 +284,7 @@ export default {
     addShppingAddress,
     updateShppingAddress,
     getCategory,
+    getYouTubeVideos,
     getCropByCategoryId,
     getPromoCodeList,
     updatePromoCode,
@@ -258,3 +293,4 @@ export default {
     getWalletDetails,
     useWallet
 }
+

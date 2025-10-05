@@ -14,7 +14,9 @@ import TextPoppinsSemiBold from "../fontFamily/TextPoppinsSemiBold"
 import TextPoppinsMediumBold from "../fontFamily/TextPoppinsMediumBold"
 import { widthPercentageToDP } from "react-native-responsive-screen"
 import CartSvg from "../../svg/CartSvg"
-import { MYCART_SCREEN } from "../../routes/Routes"
+import MessageIcon from "../../svg/MessageIcon"
+import OfferIcon from "../../svg/OfferIcon"
+import { MYCART_SCREEN, CHAT_SCREEN, OFFER_SCREEN } from "../../routes/Routes"
 import { ShippingAddressStyle } from "../../screens/shippingAddress/ShippingAddressStyle"
 import PlusButtonIcon from "../../svg/PlusButtonIcon"
 import { checkVersion } from "react-native-check-version"
@@ -140,7 +142,7 @@ const ProfileImageWithFallback = ({ profileDetail, style, onPress }: any) => {
     );
 };
 
-export const headerView = (title: any, subTitle: any, sideBarPress: any, totalItems: any, navigation: any) => {
+export const headerView = (title: any, subTitle: any, sideBarPress: any, totalItems: any, navigation: any, currentRoute?: string) => {
     const profileDetail: any = useSelector((state: RootState) => state.counter.isProfileInfo);
     
     return (
@@ -158,6 +160,24 @@ export const headerView = (title: any, subTitle: any, sideBarPress: any, totalIt
                     {subTitle}
                 </TextPoppinsSemiBold>
             </View>
+            <TouchableOpacity 
+                style={{ 
+                    marginRight: 15,
+                    backgroundColor: currentRoute === OFFER_SCREEN ? 'transparent' : 'transparent',
+                    borderRadius: 20,
+                    padding: 8
+                }} 
+                onPress={() => navigation.navigate(OFFER_SCREEN)}
+            >
+                <OfferIcon 
+                    width={24} 
+                    height={24} 
+                    color={currentRoute === OFFER_SCREEN ? WHITE : BLACK} 
+                />
+            </TouchableOpacity>
+            <TouchableOpacity style={{ marginRight: 15 }} onPress={() => navigation.navigate(CHAT_SCREEN)} >
+                <MessageIcon width={24} height={24} color={BLACK} />
+            </TouchableOpacity>
             <TouchableOpacity style={{ position: "relative", marginRight: 10 }} onPress={() => navigation.navigate(MYCART_SCREEN, { showPromoCodePopup: false })} >
                 <CartSvg width={24} height={24} />
                 {totalItems > 0 && (

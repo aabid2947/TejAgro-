@@ -36,6 +36,7 @@ const CheckOutScreen = (props: any) => {
     const isUserData: any = useSelector((state: RootState) => state.counter.isUserinfo);
     const profileInfo: any = useSelector((state: RootState) => state.counter.isProfileInfo)
 
+
     const [isLoader, setLoader] = useState(false);
     const [isLoaderSubmit, setLoaderSubmit] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState("Cash on Delivery");
@@ -71,6 +72,13 @@ const CheckOutScreen = (props: any) => {
         transactionId?: string,
         paymentId?: string
     ) => {
+        // Ensure the user's profile has a name before placing an order
+        if (!profileInfo?.client_name || String(profileInfo.client_name).trim().length === 0) {
+            ToastAndroid.show("Set name first", ToastAndroid.SHORT);
+            navigation.navigate(MY_PROFILE);
+            return;
+        }
+
         const payload = {
             client_id: decodedToken?.data?.client_id,
             promo_code_id: (Object.keys(selectedPromoCode).length > 0) ? selectedPromoCode?.promo_code_id : "",
@@ -148,6 +156,12 @@ const CheckOutScreen = (props: any) => {
     const handleEasebuzzPayment = async () => {
         let paymentResult: any = null;
         let accessKey: string = "";
+        // Ensure the user's profile has a name before initiating online payment
+        if (!profileInfo?.client_name || String(profileInfo.client_name).trim().length === 0) {
+            ToastAndroid.show("Set name first", ToastAndroid.SHORT);
+            navigation.navigate(MY_PROFILE);
+            return;
+        }
 
         try {
             setLoaderSubmit(true);
@@ -157,6 +171,7 @@ const CheckOutScreen = (props: any) => {
                 client_id: decodedToken?.data?.client_id,
                 grand_total: finalAmount
             };
+            console.log("Initiate Payment Payload:", initiatePayload);
 
             const initiateResponse = await AuthApi.initiatePayment(initiatePayload);
             if (!initiateResponse?.data?.status || !initiateResponse?.data?.accessKey) {

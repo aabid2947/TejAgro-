@@ -502,7 +502,7 @@ const MyCartScreen = ({ navigation, route }: any) => {
 );
 
     return (
-        <SafeAreaView style={{ ...MyCartStyle.container, paddingTop: insets.top }} >
+        <SafeAreaView style={{ ...MyCartStyle.container, paddingTop: insets.top ,paddingBottom:insets.bottom}} >
             <TopHeaderFixed
                 leftIconSize={20}
                 headerTxt={t("MY_CART")}

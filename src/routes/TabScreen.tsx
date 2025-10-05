@@ -1,6 +1,11 @@
-/* eslint-disable prettier/prettier */
+/* eslint-disable primport ReferralScreen from '../screens/ReferralTab/ReferralScreen';
+import YouTubeVideosScreen from '../screens/youtubeVideos/YouTubeVideosScreen';
+import KrishiCharchaScreen from '../screens/krishiCharcha/KrishiCharchaScreen';
+import OfferScreen from '../screens/offerScreen/OfferScreen';
+import TextPoppinsSemiBold from '../shared/fontFamily/TextPoppinsSemiBold';er/prettier */
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React, { useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Text, View, Linking, TouchableOpacity, StyleSheet } from 'react-native';
 import MyCartScreen from '../screens/cartScreen/MyCartScreen';
@@ -14,21 +19,30 @@ import ProductIconSvg from '../svg/ProductIconSvg';
 import ReferralSvg from '../svg/ReferralSvg';
 import Call from '../svg/CallSvg'; 
 import WhatsAppIcon from '../svg/WhatsAppIcon'; // Import the improved WhatsApp icon
+import PlusIcon from '../svg/PlusIcon';
+import YouTubeIcon from '../svg/YouTubeIcon';
+import KrishiCharchaIcon from '../svg/KrishiCharchaIcon';
+import OfferIcon from '../svg/OfferIcon';
 import ReferralScreen from '../screens/ReferralTab/ReferralScreen';
+import YouTubeVideosScreen from '../screens/youtubeVideos/YouTubeVideosScreen';
+import KrishiCharchaScreen from '../screens/krishiCharcha/KrishiCharchaScreen';
+import OfferScreen from '../screens/offerScreen/OfferScreen';
 import TextPoppinsSemiBold from '../shared/fontFamily/TextPoppinsSemiBold';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../reduxToolkit/store';
 import AuthApi from '../api/AuthApi';
 import { profileDetail } from '../reduxToolkit/counterSlice';
-import { MYCART_SCREEN } from './Routes';
+import { MYCART_SCREEN, CREATE_POST_SCREEN, OFFER_SCREEN } from './Routes';
 
 const Tab = createBottomTabNavigator();
 
 const TabScreen = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const totalItems = useSelector((state: RootState) => state.counter.totalItems);
   const isLoggedIn: any = useSelector((state: RootState) => state.counter.login);
+  const [currentTab, setCurrentTab] = useState('Product');
 
   useEffect(() => {}, [totalItems]);
   console.log('🔔 ProductListScreen render');
@@ -81,6 +95,9 @@ const TabScreen = () => {
         <Tab.Screen
           name="Product"
           component={ProductListScreen}
+          listeners={{
+            tabPress: () => setCurrentTab('Product'),
+          }}
           options={{
             tabBarLabel: ({ focused }) => (
               <Text style={{ color: focused ? MDBLUE : UNFOCUSED, fontSize: 14 }}>
@@ -98,6 +115,9 @@ const TabScreen = () => {
         <Tab.Screen
           name="Home"
           component={Dashboard}
+          listeners={{
+            tabPress: () => setCurrentTab('Home'),
+          }}
           options={{
             tabBarLabel: ({ focused }) => (
               <Text style={{ color: focused ? MDBLUE : UNFOCUSED, fontSize: 14 }}>
@@ -112,9 +132,12 @@ const TabScreen = () => {
               ),
           }}
         />
-        <Tab.Screen
+        {/* <Tab.Screen
           name={MYCART_SCREEN}
           component={MyCartScreen}
+          listeners={{
+            tabPress: () => setCurrentTab(MYCART_SCREEN),
+          }}
           options={{
             tabBarLabel: ({ focused }) => (
               <Text style={{ color: focused ? MDBLUE : UNFOCUSED, fontSize: 14 }}>
@@ -150,8 +173,71 @@ const TabScreen = () => {
               </View>
             ),
           }}
+        /> */}
+        {/* YouTube Videos tab */}
+        <Tab.Screen
+          name="Videos"
+          component={YouTubeVideosScreen}
+          listeners={{
+            tabPress: () => setCurrentTab('Videos'),
+          }}
+          options={{
+            tabBarLabel: ({ focused }) => (
+              <Text style={{ color: focused ? MDBLUE : UNFOCUSED, fontSize: 14 }}>
+                {t('VIDEOS')}
+              </Text>
+            ),
+            tabBarIcon: ({ focused }) =>
+              focused ? (
+                <YouTubeIcon width={24} height={24} color={MDBLUE} />
+              ) : (
+                <YouTubeIcon width={24} height={24} color={UNFOCUSED} />
+              ),
+          }}
         />
-        {/* New Call tab */}
+        {/* Krishi Charcha tab */}
+        <Tab.Screen
+          name="KrishiCharcha"
+          component={KrishiCharchaScreen}
+          listeners={{
+            tabPress: () => setCurrentTab('KrishiCharcha'),
+          }}
+          options={{
+            tabBarLabel: ({ focused }) => (
+              <Text style={{ color: focused ? MDBLUE : UNFOCUSED, fontSize: 14 }}>
+                {t('KRISHI_CHARCHA')}
+              </Text>
+            ),
+            tabBarIcon: ({ focused }) =>
+              focused ? (
+                <KrishiCharchaIcon width={24} height={24} color={MDBLUE} />
+              ) : (
+                <KrishiCharchaIcon width={24} height={24} color={UNFOCUSED} />
+              ),
+          }}
+        />
+        {/* Offers tab */}
+        {/* <Tab.Screen
+          name={OFFER_SCREEN}
+          component={OfferScreen}
+          listeners={{
+            tabPress: () => setCurrentTab(OFFER_SCREEN),
+          }}
+          options={{
+            tabBarLabel: ({ focused }) => (
+              <Text style={{ color: focused ? MDBLUE : UNFOCUSED, fontSize: 14 }}>
+                {t('OFFERS')}
+              </Text>
+            ),
+            tabBarIcon: ({ focused }) =>
+              focused ? (
+                <OfferIcon width={24} height={24} color={MDBLUE} />
+              ) : (
+                <OfferIcon width={24} height={24} color={UNFOCUSED} />
+              ),
+          }}
+        /> */}
+        {/* Call tab - Commented out */}
         <Tab.Screen
           name="Call"
           component={() => null}
@@ -177,7 +263,25 @@ const TabScreen = () => {
         />
       </Tab.Navigator>
       
+      {/* Create Post Floating Button - Only show on Krishi Charcha tab */}
+      {currentTab === 'KrishiCharcha' && (
+        <TouchableOpacity
+          style={styles.createPostButton}
+          onPress={() => navigation.navigate(CREATE_POST_SCREEN as never)}
+          activeOpacity={0.8}
+        >
+          <PlusIcon width={24} height={24} color="#FFFFFF" />
+        </TouchableOpacity>
+      )}
+      
       {/* WhatsApp Floating Button */}
+      <TouchableOpacity
+        style={styles.whatsappButton}
+        onPress={handleWhatsAppPress}
+        activeOpacity={0.8}
+      >
+        <WhatsAppIcon width={28} height={28} color="#FFFFFF" />
+      </TouchableOpacity>
   
     </View>
   );
@@ -186,6 +290,25 @@ const TabScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  createPostButton: {
+    position: 'absolute',
+    bottom: 160, // Position above the WhatsApp button
+    right: 20,
+    width: 56,
+    height: 56,
+    backgroundColor: MDBLUE,
+    borderRadius: 28,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 8, // Android shadow
+    shadowColor: '#000', // iOS shadow
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
   },
   whatsappButton: {
     position: 'absolute',

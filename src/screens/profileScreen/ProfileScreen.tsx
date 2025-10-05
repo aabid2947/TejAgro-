@@ -128,6 +128,8 @@ const ProfileScreen = (props: any) => {
             setIsLoader(false);
             return;
         }
+        // remove any leading and end spaces from full name 
+        formValue.fullName = formValue.fullName.trim();
         const payload = {
             // "client_id": decodedToken?.data?.client_id,
             "farmer_name": formValue?.fullName,

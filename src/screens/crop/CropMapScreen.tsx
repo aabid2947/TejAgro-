@@ -19,6 +19,26 @@ import TextPoppinsSemiBold from '../../shared/fontFamily/TextPoppinsSemiBold';
 import { regexImage } from '../../shared/utilities/String';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+const formatMarathiStrings = (data: any): any => {
+    if (typeof data === 'string') {
+        // Check if the string contains common Marathi characters to apply formatting
+        // This is a rough check. A more robust solution would be needed in a real app.
+        // For this task, we'll apply it to all strings as requested.
+        return data.replace(/ /g, '\u00A0');
+    }
+    if (Array.isArray(data)) {
+        return data.map(item => formatMarathiStrings(item));
+    }
+    if (typeof data === 'object' && data !== null) {
+        return Object.keys(data).reduce((acc: any, key) => {
+            acc[key] = formatMarathiStrings(data[key]);
+            return acc;
+        }, {});
+    }
+    return data;
+};
+
+
 const CropMapScreen = (params: any) => {
     const navigation: any = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     const profileDetail: any = useSelector((state: RootState) => state.counter.isProfileInfo)
@@ -47,7 +67,9 @@ const CropMapScreen = (params: any) => {
         try {
             setLoader(true)
             const response = await AuthApi.cropMapping(payload)
-            setProductData(response?.data)
+             const modifiedData = formatMarathiStrings(response?.data);
+            console.log(modifiedData, "cropMappingcropMapping");
+            setProductData(modifiedData); // Set the modified data
             setLoader(false)
         } catch (error: any) {
             console.log(error.response.data.error, "errorerror");

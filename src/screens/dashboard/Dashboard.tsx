@@ -348,7 +348,7 @@ const DashBoard = ({ navigation }: any) => {
 
     return (
         <SafeAreaView style={{ ...DashboardStyle.mainCardView, paddingTop: insets.top }} >
-            {headerView(`Hi, ${profileDetail?.client_name || ""}`, "Enjoy our services", onPressSide, totalItems, navigation)}
+            {headerView(`Hi, ${profileDetail?.client_name || ""}`, "Enjoy our services", onPressSide, totalItems, navigation, undefined)}
             
             {/* My Crops Section - Replacing Banner */}
             <View style={DashboardStyle.myCropsSection}>

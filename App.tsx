@@ -32,6 +32,9 @@ import {
   configureReanimatedLogger,
   ReanimatedLogLevel,
 } from 'react-native-reanimated';
+
+// Removed SmsRetriever.getAppHash() as it's not available in current version
+const APP_HASH = '8OI9CriExX5'; // Replace with your actual app hash
 const MyTheme = {
   ...DefaultTheme,
   colors: {

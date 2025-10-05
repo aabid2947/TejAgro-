@@ -1,4 +1,6 @@
-{
-        "ENDPOINT": "https://tejagrotech.com/tejagro_sale_demo/Webservices/"
 
-}
+curl -X GET "https://tejagrotech.com/tejagro_sale_demo/Webservices/farmer-post-get-details.php" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)" -d '{"action":"get_posts"}' 
+
+curl -X GET "https://tejagrotech.com/tejagro_sale_demo/Webservices/farmer-post-get-details.php?action=get_posts" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)"  
+
+curl -X GET "https://tejagrotech.com/tejagro_sale_demo/Webservices/farmer-post-get-details.php?action=add_post" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)" -d '{"client_id": "567379", "post_category": "personal", "post_description": "Test", "post_file": null}'

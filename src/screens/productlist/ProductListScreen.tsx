@@ -161,7 +161,7 @@ const ProductListScreen = ({ navigation }: any) => {
 
     return (
         <SafeAreaView style={{ ...ProductListStyle.main, paddingTop: insets.top }}>
-            {headerView(`Hi, ${profileDetail?.client_name || ""}`, "Enjoy our services", onPressSide, totalItems, navigation)}
+            {headerView(`Hi, ${profileDetail?.client_name || ""}`, "Enjoy our services", onPressSide, totalItems, navigation, undefined)}
             <View style={ProductListStyle.container}>
                 <SearchInput
                     placeholder={t('SEARCH_HERE')}
