@@ -38,6 +38,7 @@ interface PostItemProps {
 
 const PostItem: React.FC<PostItemProps> = ({ post, onPress, onLike }) => {
   const { t } = useTranslation();
+  console.log('PostItem rendered with post:',post.content, post.image);
 
   const getInitials = (name: string) => {
     return name

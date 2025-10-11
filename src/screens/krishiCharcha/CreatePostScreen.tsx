@@ -33,6 +33,7 @@ import TagIcon from '../../svg/TagIcon';
 import AuthApi from '../../api/AuthApi';
 import { regexImage } from '../../shared/utilities/String';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+// import file system
 
 // type NavigationProp = StackNavigationProp<any>;
 
@@ -271,20 +272,18 @@ const CreatePostScreen: React.FC = () => {
       const payload = {
         client_id: currentClientId.toString(),
         post_description: description.trim(),
-        post_category: 'personal',
+        post_category: "personal",
         post_file: imageBase64
       };
 
-      console.log('Submitting post with payload:', {
-        client_id: payload.client_id,
-        post_description: payload.post_description,
-        post_category: payload.post_category,
-      });
+    
 
+      // save this payload in a file
+      
       // Call the createPost API
       const response = await AuthApi.createPost(payload);
 
-      // console.log('Create post response:', response);
+      console.log('Create post response:', response);
 
       if (response && response.data) {
         if (response.data.status === true || response.data.success === true) {

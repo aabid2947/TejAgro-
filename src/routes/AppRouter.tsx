@@ -10,7 +10,7 @@ import ProductScreen from '../screens/productlist/ProductScreen';
 import ProfileScreen from '../screens/profileScreen/ProfileScreen';
 import ProfileSettingScreen from '../screens/setting/ProfileSettingScreen';
 import ShippingAddressScreen from '../screens/shippingAddress/ShippingAddressScreen';
-import { ADD_NEW_SHIPPING_SCREEN, ADD_PAYMENT_SCREEN, CHAT_CONVERSATION_SCREEN, CHAT_SCREEN, CHECKOUT_SCREEN, CREATE_POST_SCREEN, CROP_MAP_SCREEN, HOME_SCREEN, KRISHI_CHARCHA_SCREEN, MENUBAR_SCREEN, MY_PROFILE, MY_REWARD_SCREEN, MYCART_SCREEN, NOTIFICATION_SCREEN, OFFER_SCREEN, ORDER_DETAIL_SCREEN, ORDER_SCREEN, PAYMENT_SUCCESS_SCREEN, POST_DETAILS_SCREEN, PRODUCT_SCREEN, PROFILE_SETTING_SCREEN, PROMO_CODE_SCREEN, SELECTED_CROP_SCREEN, SHIPPING_ADDRESS_SCREEN } from './Routes';
+import { ADD_NEW_SHIPPING_SCREEN, ADD_PAYMENT_SCREEN, CHAT_CONVERSATION_SCREEN, CHAT_SCREEN, CHECKOUT_SCREEN, CREATE_POST_SCREEN, CROP_MAP_SCREEN, HOME_SCREEN, KRISHI_CHARCHA_SCREEN, LUCKY_DRAW_WINNERS_SCREEN, LUCKY_DRAW_PDF_VIEWER_SCREEN, MENUBAR_SCREEN, MY_PROFILE, MY_REWARD_SCREEN, MYCART_SCREEN, NOTIFICATION_SCREEN, OFFER_SCREEN, ORDER_DETAIL_SCREEN, ORDER_SCREEN, PAYMENT_SUCCESS_SCREEN, POST_DETAILS_SCREEN, PRODUCT_SCREEN, PROFILE_SETTING_SCREEN, PROMO_CODE_SCREEN, SELECTED_CROP_SCREEN, SHIPPING_ADDRESS_SCREEN } from './Routes';
 import TabScreen from './TabScreen';
 import AddNewShipping from '../screens/shippingAddress/AddNewShipping';
 import MenuBarScreen from '../screens/menuScreen/MenuBarScreen';
@@ -23,6 +23,8 @@ import KrishiCharchaScreen from '../screens/krishiCharcha/KrishiCharchaScreen';
 import PostDetailsScreen from '../screens/krishiCharcha/PostDetailsScreen';
 import CreatePostScreen from '../screens/krishiCharcha/CreatePostScreen';
 import OfferScreen from '../screens/offerScreen/OfferScreen';
+import LuckyDrawWinnersScreen from '../screens/luckyDrawWinners/LuckyDrawWinnersScreen';
+import LuckyDrawPDFViewerScreen from '../screens/luckyDrawPDFViewer/LuckyDrawPDFViewerScreen';
 import ChatScreen from '../screens/chat/ChatScreen';
 import ChatConversationScreen from '../screens/chat/ChatScreen';
 import { versionApp } from '../shared/components/CommonUtilities';
@@ -52,6 +54,8 @@ export type RootStackParamList = {
     PostDetails: any
     CreatePost: any
     OfferScreen: any
+    LuckyDrawWinners: any
+    LuckyDrawPDFViewer: any
     ChatScreen: any
     ChatConversation: any
 }
@@ -87,6 +91,8 @@ function AppRouter(): JSX.Element {
                 <RootStack.Screen name={POST_DETAILS_SCREEN} options={{ headerShown: false }} component={PostDetailsScreen} />
                 <RootStack.Screen name={CREATE_POST_SCREEN} options={{ headerShown: false }} component={CreatePostScreen} />
                 <RootStack.Screen name={OFFER_SCREEN} options={{ headerShown: false }} component={OfferScreen} />
+                <RootStack.Screen name={LUCKY_DRAW_WINNERS_SCREEN} options={{ headerShown: false }} component={LuckyDrawWinnersScreen} />
+                <RootStack.Screen name={LUCKY_DRAW_PDF_VIEWER_SCREEN} options={{ headerShown: false }} component={LuckyDrawPDFViewerScreen} />
                 <RootStack.Screen name={CHAT_SCREEN} options={{ headerShown: false }} component={ChatScreen} />
                 <RootStack.Screen name={CHAT_CONVERSATION_SCREEN} options={{ headerShown: false }} component={ChatConversationScreen} />
             </RootStack.Navigator >

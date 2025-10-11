@@ -76,8 +76,9 @@ const removeCartItem = (requestBody: any,accessToken:any) => {
 }
 
 const createPost = (requestBody: any) => {
+
     const url = `${AUTH_API_URL}farmer-post-get-details.php?action=add_post`;
-    return authAxios.get(url, requestBody);
+    return authAxios.post(url, requestBody);
 }
 const getPosts = () => {
     const url = `${AUTH_API_URL}farmer-post-get-details.php?action=get_posts`;
@@ -86,13 +87,13 @@ const getPosts = () => {
 
 const likePost = (requestBody: any) => {
     const url = `${AUTH_API_URL}farmer-post-get-details.php?action=like_post`;
-    return authAxios.get(url, requestBody);
+    return authAxios.post(url, requestBody);
 }
 
 
 const addComment = (requestBody: any) => {
     const url = `${AUTH_API_URL}farmer-post-get-details.php?action=add_comment`;
-    return authAxios.get(url, requestBody);
+    return authAxios.post(url, requestBody);
 }
 const getOffer = (requestBody: any) => {
     const url = `${AUTH_API_URL}offer.php`;

@@ -20,6 +20,7 @@ import AuthGuard from './src/components/guards/AuthGuard';
 import InternetAuthGuard from './src/components/guards/InternetAuthGuard';
 import { LoaderScreen } from './src/components/loaderview/LoaderScreen';
 import { ModalProvider } from './src/components/modalContext/ModalContext';
+import { LuckyDrawProvider } from './src/contexts/LuckyDrawContext';
 import { persistor, RootState, store } from './src/reduxToolkit/store';
 import AppRouter from './src/routes/AppRouter';
 import { PRIMARY, WHITE } from './src/shared/common-styles/colors';
@@ -111,31 +112,33 @@ function App(): JSX.Element {
     , [languageSelected])
 
   return (
-    <GestureHandlerRootView style={style.rootStyle}>
-      <StatusBar backgroundColor={WHITE} barStyle="dark-content" />
-      <NavigationContainer theme={MyTheme}>
-        <>
-          {loader ?
-            <InternetAuthGuard>
-              <AuthGuard>
-                {/* <AuthGuardReferralCode> */}
-                  <AppRouter />
-                {/* </AuthGuardReferralCode> */}
-              </AuthGuard>
-            </InternetAuthGuard>
-            :
-            <LoaderScreen />
-          }
-              <TouchableOpacity
-                  style={style.whatsappButton}
-                  onPress={handleWhatsAppPress}
-                  activeOpacity={0.8}
-                >
-                  <WhatsAppIcon width={28} height={28} />
-                </TouchableOpacity>
-        </>
-      </NavigationContainer>
-    </GestureHandlerRootView >
+    <LuckyDrawProvider>
+      <GestureHandlerRootView style={style.rootStyle}>
+        <StatusBar backgroundColor={WHITE} barStyle="dark-content" />
+        <NavigationContainer theme={MyTheme}>
+          <>
+            {loader ?
+              <InternetAuthGuard>
+                <AuthGuard>
+                  {/* <AuthGuardReferralCode> */}
+                    <AppRouter />
+                  {/* </AuthGuardReferralCode> */}
+                </AuthGuard>
+              </InternetAuthGuard>
+              :
+              <LoaderScreen />
+            }
+                <TouchableOpacity
+                    style={style.whatsappButton}
+                    onPress={handleWhatsAppPress}
+                    activeOpacity={0.8}
+                  >
+                    <WhatsAppIcon width={28} height={28} />
+                  </TouchableOpacity>
+          </>
+        </NavigationContainer>
+      </GestureHandlerRootView >
+    </LuckyDrawProvider>
   );
 }
 

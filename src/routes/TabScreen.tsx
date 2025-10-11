@@ -33,6 +33,8 @@ import { RootState } from '../reduxToolkit/store';
 import AuthApi from '../api/AuthApi';
 import { profileDetail } from '../reduxToolkit/counterSlice';
 import { MYCART_SCREEN, CREATE_POST_SCREEN, OFFER_SCREEN } from './Routes';
+import { useLuckyDraw } from '../contexts/LuckyDrawContext';
+import LuckyDrawPopup from '../components/luckyDrawPopup/LuckyDrawPopup';
 
 const Tab = createBottomTabNavigator();
 
@@ -43,6 +45,8 @@ const TabScreen = () => {
   const totalItems = useSelector((state: RootState) => state.counter.totalItems);
   const isLoggedIn: any = useSelector((state: RootState) => state.counter.login);
   const [currentTab, setCurrentTab] = useState('Product');
+  const { hasVisitedLuckyDraw, isLoading } = useLuckyDraw();
+  const [showLuckyDrawPopup, setShowLuckyDrawPopup] = useState(false);
 
   useEffect(() => {}, [totalItems]);
   console.log('🔔 ProductListScreen render');
@@ -50,6 +54,18 @@ const TabScreen = () => {
   useEffect(() => {
     getProfile();
   }, [isLoggedIn]);
+
+  // Show lucky draw popup when app loads if user hasn't visited
+  useEffect(() => {
+    if (!isLoading && !hasVisitedLuckyDraw && isLoggedIn) {
+      // Add a small delay to ensure the app is fully loaded
+      const timer = setTimeout(() => {
+        setShowLuckyDrawPopup(true);
+      }, 1000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [isLoading, hasVisitedLuckyDraw, isLoggedIn]);
 
   const getProfile = async () => {
     try {
@@ -283,6 +299,11 @@ const TabScreen = () => {
         <WhatsAppIcon width={28} height={28} color="#FFFFFF" />
       </TouchableOpacity>
   
+      {/* Lucky Draw Popup */}
+      <LuckyDrawPopup 
+        visible={showLuckyDrawPopup} 
+        onClose={() => setShowLuckyDrawPopup(false)} 
+      />
     </View>
   );
 };
