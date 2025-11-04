@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Text, View, Linking, TouchableOpacity, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MyCartScreen from '../screens/cartScreen/MyCartScreen';
 import Dashboard from '../screens/dashboard/Dashboard';
 import ProductListScreen from '../screens/productlist/ProductListScreen';
@@ -42,6 +43,7 @@ const TabScreen = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
   const totalItems = useSelector((state: RootState) => state.counter.totalItems);
   const isLoggedIn: any = useSelector((state: RootState) => state.counter.login);
   const [currentTab, setCurrentTab] = useState('Product');
@@ -282,7 +284,7 @@ const TabScreen = () => {
       {/* Create Post Floating Button - Only show on Krishi Charcha tab */}
       {currentTab === 'KrishiCharcha' && (
         <TouchableOpacity
-          style={styles.createPostButton}
+          style={[styles.createPostButton, { bottom: 155 + insets.bottom }]}
           onPress={() => navigation.navigate(CREATE_POST_SCREEN as never)}
           activeOpacity={0.8}
         >
@@ -291,13 +293,13 @@ const TabScreen = () => {
       )}
       
       {/* WhatsApp Floating Button */}
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.whatsappButton}
         onPress={handleWhatsAppPress}
         activeOpacity={0.8}
       >
         <WhatsAppIcon width={28} height={28} color="#FFFFFF" />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
   
       {/* Lucky Draw Popup */}
       <LuckyDrawPopup 
@@ -314,7 +316,7 @@ const styles = StyleSheet.create({
   },
   createPostButton: {
     position: 'absolute',
-    bottom: 160, // Position above the WhatsApp button
+    // bottom will be set dynamically with insets (230 + insets.bottom)
     right: 20,
     width: 56,
     height: 56,

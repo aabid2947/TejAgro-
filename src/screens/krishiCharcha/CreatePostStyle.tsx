@@ -56,6 +56,7 @@ export const styles = StyleSheet.create({
     marginVertical: 8,
     borderRadius: 12,
     padding: 16,
+    
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -198,6 +199,7 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
   },
   stepTitle: {
+    paddingTop: 4,
     fontSize: 20,
     color: BLACK,
     textAlign: 'center',
@@ -303,6 +305,7 @@ export const styles = StyleSheet.create({
     backgroundColor: GRAY,
   },
   navButtonText: {
+    paddingTop: 4,
     color: WHITE,
     fontSize: 16,
   },

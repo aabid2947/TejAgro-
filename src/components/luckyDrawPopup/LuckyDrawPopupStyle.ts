@@ -148,4 +148,38 @@ export const styles = StyleSheet.create({
     color: WHITE,
     fontSize: 16,
   },
+  mainHeading: {
+    fontSize: 18,
+    color: MDBLUE,
+    textAlign: 'center',
+    marginBottom: 16,
+    fontWeight: 'bold',
+  },
+  mainDescription: {
+    fontSize: 14,
+    color: GREY,
+    textAlign: 'center',
+    lineHeight: 20,
+    marginBottom: 20,
+    paddingHorizontal: 8,
+  },
+  errorText: {
+    fontSize: 14,
+    color: 'red',
+    textAlign: 'center',
+    padding: 20,
+  },
+  subDescContainer: {
+    backgroundColor: '#F8F9FA',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E0E0E0',
+  },
+  subDescription: {
+    fontSize: 14,
+    color: GREY,
+    lineHeight: 20,
+    textAlign: 'center',
+  },
 });

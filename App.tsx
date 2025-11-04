@@ -4,8 +4,8 @@
  *
  * @format
  */
- import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
+ import { useSafeAreaInsets, SafeAreaProvider } from "react-native-safe-area-context";
+import { DefaultTheme, NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import i18n from 'i18next';
 import React, { useEffect, useMemo, useState } from 'react';
 import { initReactI18next } from 'react-i18next';
@@ -25,7 +25,7 @@ import { persistor, RootState, store } from './src/reduxToolkit/store';
 import AppRouter from './src/routes/AppRouter';
 import { PRIMARY, WHITE } from './src/shared/common-styles/colors';
 import AuthGuardReferralCode from './src/components/guards/AuthGuardReferralCode';
-import WhatsAppIcon from './src/svg/WhatsAppIcon'; // Import the improved WhatsApp icon
+import SocialMediaFab from './src/components/SocialMediaFab/SocialMediaFab';
 // import { initializeAuthAxios } from './src/api/axiosAuth';
 
 import { Linking } from 'react-native';
@@ -34,8 +34,8 @@ import {
   ReanimatedLogLevel,
 } from 'react-native-reanimated';
 
-// Removed SmsRetriever.getAppHash() as it's not available in current version
-const APP_HASH = '8OI9CriExX5'; // Replace with your actual app hash
+// App hash for SMS Retriever (should match your SMS format)
+const APP_HASH = '8OI9CriExX5'; // Make sure this matches your backend SMS format
 const MyTheme = {
   ...DefaultTheme,
   colors: {
@@ -43,11 +43,13 @@ const MyTheme = {
     background: 'transparent',
   },
 };
-// const insets = useSafeAreaInsets();
 
 function App(): JSX.Element {
-  const [loader, setLoader] = useState(false)
-  console.log("starting")
+  const insets = useSafeAreaInsets();
+  const navigationRef = useNavigationContainerRef();
+  const [loader, setLoader] = useState(false);
+  const [currentRouteName, setCurrentRouteName] = useState<string>('');
+
   useEffect(() => {
     
     const timeoutId = setTimeout(() => {
@@ -55,22 +57,6 @@ function App(): JSX.Element {
     }, 0)
     return () => clearTimeout(timeoutId)
   }, [])
-
-  const handleWhatsAppPress = () => {
-      const phoneNumber = '+919130530591';
-      const whatsappUrl = `whatsapp://send?phone=${phoneNumber}`;
-      
-      Linking.canOpenURL(whatsappUrl)
-        .then((supported) => {
-          if (supported) {
-            return Linking.openURL(whatsappUrl);
-          } else {
-            // Fallback to web WhatsApp
-            return Linking.openURL(`https://wa.me/${phoneNumber.replace('+', '')}`);
-          }
-        })
-        .catch((err) => console.error('Error opening WhatsApp:', err));
-    };
 
   configureReanimatedLogger({
     level: ReanimatedLogLevel.warn,
@@ -115,7 +101,17 @@ function App(): JSX.Element {
     <LuckyDrawProvider>
       <GestureHandlerRootView style={style.rootStyle}>
         <StatusBar backgroundColor={WHITE} barStyle="dark-content" />
-        <NavigationContainer theme={MyTheme}>
+        <NavigationContainer 
+          ref={navigationRef}
+          theme={MyTheme}
+          onReady={() => {
+            setCurrentRouteName(navigationRef.getCurrentRoute()?.name || '');
+          }}
+          onStateChange={() => {
+            const currentRoute = navigationRef.getCurrentRoute();
+            setCurrentRouteName(currentRoute?.name || '');
+          }}
+        >
           <>
             {loader ?
               <InternetAuthGuard>
@@ -128,13 +124,15 @@ function App(): JSX.Element {
               :
               <LoaderScreen />
             }
-                <TouchableOpacity
-                    style={style.whatsappButton}
-                    onPress={handleWhatsAppPress}
-                    activeOpacity={0.8}
-                  >
-                    <WhatsAppIcon width={28} height={28} />
-                  </TouchableOpacity>
+                {/* Hide FAB buttons on intro, login and OTP screens */}
+                {currentRouteName !== 'IntroScreen' && currentRouteName !== 'SignIn' && currentRouteName !== 'OtpScreen' && (
+                  <SocialMediaFab 
+                    style={[
+                      style.socialMediaButton, 
+                      { bottom: 90 + insets.bottom }
+                    ]} 
+                  />
+                )}
           </>
         </NavigationContainer>
       </GestureHandlerRootView >
@@ -145,11 +143,13 @@ function App(): JSX.Element {
 export default () => (
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-      <ModalProvider>
-        {/* <MyContextProvider> */}
-        <App />
-        {/* </MyContextProvider> */}
-      </ModalProvider>
+      <SafeAreaProvider>
+        <ModalProvider>
+          {/* <MyContextProvider> */}
+          <App />
+          {/* </MyContextProvider> */}
+        </ModalProvider>
+      </SafeAreaProvider>
     </PersistGate>
   </Provider>
 );
@@ -180,23 +180,9 @@ const style = StyleSheet.create({
     opacity: 0.65,
     zIndex: 1000
   },
-    whatsappButton: {
+  socialMediaButton: {
     position: 'absolute',
-    bottom: 90, // Position above the tab bar
+    // bottom will be set dynamically with insets
     right: 20,
-    width: 56,
-    height: 56,
-    backgroundColor: '#25D366',
-    borderRadius: 28,
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 8, // Android shadow
-    shadowColor: '#000', // iOS shadow
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
   },
 })

@@ -95,7 +95,8 @@ export const LogInScreenStyle = StyleSheet.create({
     },
     inputView: {
         flex: 1,
-        gap: 8
+       
+      
     },
     txtPrivacy: {
         color: MDBLUE,

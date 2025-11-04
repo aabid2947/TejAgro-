@@ -1,6 +1,9 @@
 
-curl -X GET "https://tejagrotech.com/tejagro_sale_demo/Webservices/farmer-post-get-details.php" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)" -d '{"action":"get_posts"}' 
+curl -X POST "https://tejagrosales.tejgroup.in/Webservices/otp.php" -H "Content-Type:application/json"   -d '{"mobile_no":"9548299969"}' 
 
 curl -X GET "https://tejagrotech.com/tejagro_sale_demo/Webservices/farmer-post-get-details.php?action=get_posts" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)" 
+curl -X GET "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/referral-code.php" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)"  
+curl -X GET "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/popup-notification.php" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)"
 
-curl -X POST "https://tejagrotech.com/tejagro_sale_demo/Webservices/farmer-post-get-details.php?action=add_post" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)" -d '{"client_id": "567379", "post_category": "personal", "post_description": "Test", "post_file": "$(cat t.text)"}'
+curl -X POST "https://tejagrotech.com/tejagro_sale_demo/Webservices/order-place.php" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)" -d '{"client_id": "568520", "payment_id": "", "payment_method": "Cash on Delivery", "payment_response": "", "payment_status": "pending", "product_details": [{"discount_amount": "108.00", "discount_percent": "10.074626865671647", "gst_amount": "45.90", "gst_percent": "5", "mrp": "1072", "product_id": "59", "quantity": "1", "total_amount": "964.00"}], "promo_code_amount": "0", "promo_code_id": "", "referral_code": "3F385F", "shipping_address_id": "39", "transaction_id": "", "use_wallet_amount": ""}'
+curl -X POST "https://tejagrotech.com/tejagro_sale_demo/Webservices/order-history.php" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)" -d '{"client_id": "568520"}'

@@ -14,6 +14,7 @@ import {
   FlatList,
   ToastAndroid,
   SafeAreaView,
+  PermissionsAndroid,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
@@ -33,12 +34,13 @@ import TagIcon from '../../svg/TagIcon';
 import AuthApi from '../../api/AuthApi';
 import { regexImage } from '../../shared/utilities/String';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { TextCommonStyle } from '../../shared/fontFamily/TextCommonStyle';
 // import file system
 
 // type NavigationProp = StackNavigationProp<any>;
 
 const CreatePostScreen: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets()
@@ -71,6 +73,88 @@ const CreatePostScreen: React.FC = () => {
   const decodedToken: any = decodeToken(token);
   const currentClientId = decodedToken?.data?.client_id;
 
+  // Request Camera Permission for Android
+  const requestCameraPermission = async (): Promise<boolean> => {
+    if (Platform.OS !== 'android') {
+      return true;
+    }
+
+    try {
+      const androidVersion = Platform.Version;
+      
+      // Android 13+ (API 33+) doesn't need WRITE_EXTERNAL_STORAGE
+      if (androidVersion >= 33) {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.CAMERA,
+          {
+            title: t('CAMERA_PERMISSION_TITLE'),
+            message: t('CAMERA_PERMISSION_MESSAGE'),
+            buttonNeutral: t('ASK_ME_LATER'),
+            buttonNegative: t('CANCEL'),
+            buttonPositive: t('OK'),
+          }
+        );
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      } else {
+        // Android 12 and below
+        const grants = await PermissionsAndroid.requestMultiple([
+          PermissionsAndroid.PERMISSIONS.CAMERA,
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        ]);
+
+        return (
+          grants[PermissionsAndroid.PERMISSIONS.CAMERA] === PermissionsAndroid.RESULTS.GRANTED &&
+          grants[PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE] === PermissionsAndroid.RESULTS.GRANTED
+        );
+      }
+    } catch (err) {
+      console.warn('Error requesting camera permission:', err);
+      return false;
+    }
+  };
+
+  // Request Gallery Permission for Android
+  const requestGalleryPermission = async (): Promise<boolean> => {
+    if (Platform.OS !== 'android') {
+      return true;
+    }
+
+    try {
+      const androidVersion = Platform.Version;
+      
+      // Android 13+ (API 33+) uses READ_MEDIA_IMAGES
+      if (androidVersion >= 33) {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
+          {
+            title: t('GALLERY_PERMISSION_TITLE'),
+            message: t('GALLERY_PERMISSION_MESSAGE'),
+            buttonNeutral: t('ASK_ME_LATER'),
+            buttonNegative: t('CANCEL'),
+            buttonPositive: t('OK'),
+          }
+        );
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      } else {
+        // Android 12 and below uses READ_EXTERNAL_STORAGE
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+          {
+            title: t('GALLERY_PERMISSION_TITLE'),
+            message: t('GALLERY_PERMISSION_MESSAGE'),
+            buttonNeutral: t('ASK_ME_LATER'),
+            buttonNegative: t('CANCEL'),
+            buttonPositive: t('OK'),
+          }
+        );
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      }
+    } catch (err) {
+      console.warn('Error requesting gallery permission:', err);
+      return false;
+    }
+  };
+
   // Fetch crops on component mount
   useEffect(() => {
     fetchCrops();
@@ -80,6 +164,7 @@ const CreatePostScreen: React.FC = () => {
     try {
       setIsLoadingCrops(true);
       const cropResponse = await AuthApi.getCrops();
+      console.log('Crop response:', cropResponse);
       if (cropResponse && cropResponse.data && Array.isArray(cropResponse.data)) {
         setCropList(cropResponse?.data);
       } else {
@@ -148,18 +233,45 @@ const CreatePostScreen: React.FC = () => {
     }
   };
 
-  const openCamera = () => {
+  const openCamera = async () => {
+    const hasPermission = await requestCameraPermission();
+    
+    if (!hasPermission) {
+      Alert.alert(
+        t('PERMISSION_DENIED'),
+        t('CAMERA_PERMISSION_REQUIRED'),
+        [
+          { text: t('OK'), style: 'default' }
+        ]
+      );
+      return;
+    }
+
     const options = {
       mediaType: 'photo' as const,
       includeBase64: false,
       maxHeight: 2000,
       maxWidth: 2000,
+      saveToPhotos: true,
     };
 
     launchCamera(options, handleImageResponse);
   };
 
-  const openGallery = () => {
+  const openGallery = async () => {
+    const hasPermission = await requestGalleryPermission();
+    
+    if (!hasPermission) {
+      Alert.alert(
+        t('PERMISSION_DENIED'),
+        t('GALLERY_PERMISSION_REQUIRED'),
+        [
+          { text: t('OK'), style: 'default' }
+        ]
+      );
+      return;
+    }
+
     const options = {
       mediaType: 'photo' as const,
       includeBase64: false,
@@ -171,16 +283,44 @@ const CreatePostScreen: React.FC = () => {
   };
 
   const handleImageResponse = (response: ImagePickerResponse) => {
-    if (response.didCancel || response.errorMessage) {
-      console.log('Image picker cancelled or error:', response.errorMessage);
+    if (response.didCancel) {
+      console.log('User cancelled image picker');
       return;
     }
 
-    if (response.assets && response.assets[0] && response.assets[0].uri) {
-      setSelectedImage(response.assets[0].uri);
-      console.log('Image selected:', response.assets[0].uri);
+    if (response.errorCode) {
+      console.log('ImagePicker Error: ', response.errorCode);
+      console.log('ImagePicker Error Message: ', response.errorMessage);
+      
+      if (response.errorCode === 'camera_unavailable') {
+        Alert.alert(t('ERROR'), t('CAMERA_NOT_AVAILABLE'));
+      } else if (response.errorCode === 'permission') {
+        Alert.alert(t('ERROR'), t('PERMISSION_REQUIRED_TO_ACCESS_CAMERA'));
+      } else {
+        Alert.alert(t('ERROR'), response.errorMessage || t('IMAGE_SELECTION_FAILED'));
+      }
+      return;
+    }
+
+    if (response.assets && response.assets.length > 0 && response.assets[0].uri) {
+      const imageUri = response.assets[0].uri;
+      setSelectedImage(imageUri);
+      console.log('Image selected successfully:', imageUri);
+      console.log('Image details:', {
+        fileName: response.assets[0].fileName,
+        fileSize: response.assets[0].fileSize,
+        type: response.assets[0].type,
+        width: response.assets[0].width,
+        height: response.assets[0].height,
+      });
+      
+      // Show success message
+      if (Platform.OS === 'android') {
+        ToastAndroid.show(t('IMAGE_SELECTED_SUCCESS'), ToastAndroid.SHORT);
+      }
     } else {
       console.log('No image selected or invalid response:', response);
+      Alert.alert(t('ERROR'), t('NO_IMAGE_SELECTED'));
     }
   };
 
@@ -217,13 +357,17 @@ const CreatePostScreen: React.FC = () => {
           />
         )}
         <TextPoppinsRegular style={styles.cropName}>
-          {item.crop_name || item.marathi_crop_name}
+          {i18n.language === 'en' ? item?.crop_name : item?.crop_marathi_name}
         </TextPoppinsRegular>
       </TouchableOpacity>
     );
   };
 
   const validateStep = () => {
+    if (currentStep === 1 && !selectedImage) {
+      Alert.alert(t('ERROR'), t('PLEASE_SELECT_IMAGE'));
+      return false;
+    }
     if (currentStep === 2 && !description.trim()) {
       Alert.alert(t('ERROR'), t('PLEASE_ENTER_DESCRIPTION'));
       return false;
@@ -310,6 +454,7 @@ const CreatePostScreen: React.FC = () => {
   };
 
   const canProceed = () => {
+    if (currentStep === 1) return selectedImage !== null;
     if (currentStep === 2) return description.trim().length > 0;
     return true;
   };
@@ -325,9 +470,9 @@ const CreatePostScreen: React.FC = () => {
         <View style={styles.stepIcon}>
           <CameraIcon width={40} height={40} color="#D32F2F" />
         </View>
-        <TextPoppinsSemiBold style={styles.stepTitle}>
+        <Text style={{ ...TextCommonStyle.textPoppinsSemiBold, ...styles.stepTitle }}>
           {t('CROP_DAMAGE_PHOTO_INSTRUCTIONS')}
-        </TextPoppinsSemiBold>
+        </Text>
         <TextPoppinsRegular style={styles.stepSubtitle}>
           {t('CROP_DAMAGE_PHOTO_CLOSE')}
         </TextPoppinsRegular>
@@ -340,9 +485,9 @@ const CreatePostScreen: React.FC = () => {
           >
             <View style={styles.imageSectionHeader}>
               <CameraIcon width={20} height={20} color={MDBLUE} />
-              <TextPoppinsSemiBold style={styles.imageSectionTitle}>
-                फोटो अपलोड करें
-              </TextPoppinsSemiBold>
+              <TextPoppinsRegular style={styles.imageSectionTitle}>
+                {t('UPLOAD_PHOTO')}
+              </TextPoppinsRegular>
             </View>
           </TouchableOpacity>
 
@@ -481,7 +626,7 @@ const CreatePostScreen: React.FC = () => {
             onPress={handlePreviousStep}
             activeOpacity={0.7}
           >
-            <TextPoppinsSemiBold style={styles.navButtonText}>{t('PREVIOUS')}</TextPoppinsSemiBold>
+            <Text style={{ ...styles.navButtonText, ...TextCommonStyle.textPoppinsBold }}>{t('PREVIOUS')}</Text>
           </TouchableOpacity>
         ) : (
           <View />
@@ -502,7 +647,7 @@ const CreatePostScreen: React.FC = () => {
             disabled={!canProceed()}
             activeOpacity={0.7}
           >
-            <TextPoppinsSemiBold style={styles.navButtonText}>{t('NEXT')}</TextPoppinsSemiBold>
+            <Text style={{ ...styles.navButtonText, ...TextCommonStyle.textPoppinsBold }}>{t('NEXT')}</Text>
           </TouchableOpacity>
         ) : (
           <TouchableOpacity

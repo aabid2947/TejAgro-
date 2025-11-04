@@ -7,6 +7,9 @@ const mobileSignIn = (requestBody: any) => {
     return axios.post(url, requestBody);
 }
 
+
+
+
 const verifyOTP = (requestBody: any) => {
     const url = `${AUTH_API_URL}login.php`;
     return axios.post(url, requestBody);
@@ -51,6 +54,7 @@ const addToCart = (requestBody: any, accessToken: string) => {
 }
 
 const getCartDetails = (requestBody: any, accessToken: any) => {
+     console.log("Access Token in getWalletDetails:", accessToken);
     const url = `${AUTH_API_URL}cart-details.php`;
     return axios.post(url, requestBody,
         {
@@ -80,9 +84,9 @@ const createPost = (requestBody: any) => {
     const url = `${AUTH_API_URL}farmer-post-get-details.php?action=add_post`;
     return authAxios.post(url, requestBody);
 }
-const getPosts = () => {
+const getPosts = (requestBody: any) => {
     const url = `${AUTH_API_URL}farmer-post-get-details.php?action=get_posts`;
-    return authAxios.get(url);
+    return authAxios.post(url, requestBody);
 }
 
 const likePost = (requestBody: any) => {
@@ -231,6 +235,7 @@ const uploadProfileImage = (payload: any) => {
 }
 
 const getWalletDetails = (payload: any, accessToken?: any) => {
+   
     if (accessToken) {
         const url = `${AUTH_API_URL}wallet-master.php`;
         return axios.post(url, payload, {
@@ -247,6 +252,16 @@ const getWalletDetails = (payload: any, accessToken?: any) => {
 const useWallet = (payload: any) => {
     const url = `use-wallet.php`;
     return authAxios.post(url, payload);
+}
+
+const getReferralInfo = () => {
+    const url = `referral-code.php`;
+    return authAxios.get(url);
+}
+
+const getPopupNotification = () => {
+    const url = `popup-notification.php`;
+    return authAxios.get(url);
 }
 
 
@@ -292,6 +307,8 @@ export default {
     getProfileDetails,
     uploadProfileImage,
     getWalletDetails,
-    useWallet
+    useWallet,
+    getReferralInfo,
+    getPopupNotification
 }
 

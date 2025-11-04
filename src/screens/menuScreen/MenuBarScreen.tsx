@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Alert, Image, Linking, Pressable, SafeAreaView, ScrollView, Text, ToastAndroid, TouchableOpacity, View } from "react-native";
 import TopHeaderFixed from "../../components/headerview/TopHeaderFixed";
-import { ADD_PAYMENT_SCREEN, MY_PROFILE, MY_REWARD_SCREEN, ORDER_SCREEN, PROFILE_SETTING_SCREEN, SHIPPING_ADDRESS_SCREEN } from "../../routes/Routes";
+import { ADD_PAYMENT_SCREEN, MY_PROFILE, MY_REWARD_SCREEN, ORDER_SCREEN, PROFILE_SETTING_SCREEN, REFER_EARN_SCREEN, SHIPPING_ADDRESS_SCREEN } from "../../routes/Routes";
 import { DARK_GREEN_ICON, GREY } from "../../shared/common-styles/colors";
 import AccoountSetting from "../../svg/AccoountSetting";
 import AgroStarSvg from "../../svg/AgroStarSvg";
@@ -36,6 +36,7 @@ import WalletIcon from "../../svg/WalletIcon";
 import InstagramIcon from "../../svg/InstagramIcon";
 import FacebookIcon from "../../svg/FacebookIcon";
 import TwitterIcon from "../../svg/TwitterIcon";
+import ShareIcon from "../../svg/ShareIcon";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 const MenuBarScreen = ({ navigation }: any) => {
     const { t } = useTranslation();
@@ -49,6 +50,7 @@ const MenuBarScreen = ({ navigation }: any) => {
     const [addressData, setAddressData]: any = useState([]);
     const isUserData = useSelector((state: RootState) => state.counter.isUserinfo)
     const profileInfo: any = useSelector((state: RootState) => state.counter.isProfileInfo)
+    const referralCode = useSelector((state: RootState) => state.counter.referralCode)
     const walletInfo = useSelector((state: RootState) => state.counter.wallet);
     console.log("walletInfo : ", walletInfo)
     const onProceed = async () => {
@@ -271,68 +273,12 @@ const MenuBarScreen = ({ navigation }: any) => {
                     </View>
                 </View>
                 {dataItems(WalletIcon, ArrowIcon, `${t('WALLET')}`, undefined, `Balance: ${profileInfo?.my_wallet || 0}`, true)}
+                {dataItems(ShareIcon, ArrowIcon, `${t('REFER_AND_EARN')}`, () => navigation.navigate(REFER_EARN_SCREEN), `Referral Code: ${referralCode || 'Not Available'}`)}
                 {dataItems(CartIcon, ArrowIcon, `${t('MY_ORDERS')}`, () => navigation.navigate(ORDER_SCREEN), `You have ${orderData.length || "0"} orders`)}
                 {dataItems(LocationIcon, ArrowIcon, `${t('SHIPPING_ADDRESS')}`, () => navigation.navigate(SHIPPING_ADDRESS_SCREEN), `${addressData.length || "0"} Addresses`)}
                 {dataItems(SettingIcon, ArrowIcon, `${t('SETTING_PROFILE')}`, () => navigation.navigate(PROFILE_SETTING_SCREEN), `Profile, Contact`)}
                 
-                {/* Social Media Section */}
-                <View style={[commonStyles.mainBody, commonStyles.mainSubBody, { marginTop: 20, paddingTop: 20, borderTopWidth: 1, borderTopColor: "#E5E5E5" }]}>
-                    <TextPoppinsMediumBold style={{paddingTop:8, fontSize: 16, marginBottom: 15, textAlign: "center", color: "#333" }}>
-                        {t("FOLLOW_US_ON")}
-                    </TextPoppinsMediumBold>
-                    <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 25 }}>
-                        <TouchableOpacity 
-                            onPress={() => Linking.openURL("https://instagram.com")}
-                            style={{ 
-                                backgroundColor: "#F8F8F8", 
-                                padding: 15, 
-                                borderRadius: 50, 
-                                elevation: 3,
-                                shadowColor: '#000',
-                                shadowOffset: { width: 0, height: 2 },
-                                shadowOpacity: 0.15,
-                                shadowRadius: 5,
-                            }}
-                            activeOpacity={0.7}
-                        >
-                            <InstagramIcon width={30} height={30} />
-                        </TouchableOpacity>
-                        
-                        <TouchableOpacity 
-                            onPress={() => Linking.openURL("https://facebook.com")}
-                            style={{ 
-                                backgroundColor: "#F8F8F8", 
-                                padding: 15, 
-                                borderRadius: 50, 
-                                elevation: 3,
-                                shadowColor: '#000',
-                                shadowOffset: { width: 0, height: 2 },
-                                shadowOpacity: 0.15,
-                                shadowRadius: 5,
-                            }}
-                            activeOpacity={0.7}
-                        >
-                            <FacebookIcon width={30} height={30} />
-                        </TouchableOpacity>
-                        
-                        <TouchableOpacity 
-                            onPress={() => Linking.openURL("https://twitter.com")}
-                            style={{ 
-                                backgroundColor: "#F8F8F8", 
-                                padding: 15, 
-                                borderRadius: 50, 
-                                elevation: 3,
-                                shadowColor: '#000',
-                                shadowOffset: { width: 0, height: 2 },
-                                shadowOpacity: 0.15,
-                                shadowRadius: 5,
-                            }}
-                            activeOpacity={0.7}
-                        >
-                            <TwitterIcon width={30} height={30} />
-                        </TouchableOpacity>
-                    </View>
-                </View>
+             
             </ScrollView>
             <View style={settingStyle.bottomContainer}>
                 <Pressable style={settingStyle.logOutView} onPress={() => onPressLogout()}>

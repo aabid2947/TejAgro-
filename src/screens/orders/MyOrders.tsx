@@ -42,6 +42,7 @@ const MyOrders = ({ navigation }: any) => {
 
     useEffect(() => {
         getOrderHistory()
+
         setTimeout(() => {
         }, 1000)
     }, [])
@@ -52,6 +53,7 @@ const MyOrders = ({ navigation }: any) => {
         try {
             setLoader(true)
             const response = await AuthApi.orderHistory(payload)
+            console.log(response?.data)
             setOrders(response?.data)
             setLoader(false)
         } catch (error: any) {

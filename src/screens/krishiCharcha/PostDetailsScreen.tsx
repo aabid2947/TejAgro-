@@ -106,7 +106,9 @@ const PostDetailsScreen: React.FC = () => {
       setLoading(true);
       
       // Get all posts and find the specific post
-      const response = await AuthApi.getPosts();
+      const response = await AuthApi.getPosts({client_id: currentClientId});
+      console.log(response.data, "getPostsResponsegetPostsResponse");
+
       
       if (response?.data?.status && response?.data?.posts && response?.data?.posts.length > 0) {
         const postData = response.data.posts.find((p: Post) => p.post_id === currentPost.post_id);
@@ -233,9 +235,9 @@ const PostDetailsScreen: React.FC = () => {
             <TextPoppinsSemiBold style={styles.authorName}>
               {currentPost.client_name}
             </TextPoppinsSemiBold>
-            <TextPoppinsRegular style={styles.location}>
+            {/* <TextPoppinsRegular style={styles.location}>
               {currentPost.client_mob}
-            </TextPoppinsRegular>
+            </TextPoppinsRegular> */}
             <TextPoppinsRegular style={styles.timeAgo}>
               {new Date(currentPost.created_on).toLocaleDateString('en-IN', {
                 day: '2-digit',

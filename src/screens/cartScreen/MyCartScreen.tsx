@@ -1,7 +1,7 @@
 import { useFocusEffect } from '@react-navigation/native';
 import { jwtDecode } from 'jwt-decode';
 import React, { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Pressable, SafeAreaView, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, FlatList, Pressable, SafeAreaView, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View, KeyboardAvoidingView, Platform } from 'react-native';
 import { widthPercentageToDP } from 'react-native-responsive-screen';
 import { useDispatch, useSelector } from 'react-redux';
 import AuthApi from '../../api/AuthApi';
@@ -22,7 +22,7 @@ import { MyOrdersStyle } from '../orders/MyOrdersStyle';
 import { PromoCodeStyle } from '../promo/PromoCodeStyle';
 import { MyCartStyle } from './MyCartStyle';
 import { useTranslation } from 'react-i18next';
-import { clearSelectedPromoCode, profileDetail, selectedPromoCode, setTotalItems, walletDetails, setOrderPlaced } from '../../reduxToolkit/counterSlice';
+import { clearSelectedPromoCode, profileDetail, selectedPromoCode, setTotalItems, walletDetails, setOrderPlaced, setReferralCode } from '../../reduxToolkit/counterSlice';
 import CartSvg from '../../svg/CartSvg';
 // import CheckBox from '@react-native-community/checkbox';
 import { CheckBox } from 'react-native-elements';
@@ -31,7 +31,7 @@ import CheckBoxSvg from '../../svg/CheckboxSvg';
 import ConfirmOrderModal from '../../components/alertmodal/ConfirmOrderModal';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-
+import { CHAT_SCREEN } from '../../routes/Routes';
 
 interface WalletBoxProps {
     walletOpening: number;
@@ -52,7 +52,9 @@ const MyCartScreen = ({ navigation, route }: any) => {
     const selectedShippingAddress: any = useSelector((state: RootState) => state.counter.selectAddress)
     const selectedPromoCodeValue: any = useSelector((state: RootState) => state.counter.promoCodeId)
     const profileInfo: any = useSelector((state: RootState) => state.counter.isProfileInfo)
+    console.log("ll",profileInfo)
     const orderPlaced = useSelector((state: RootState) => state.counter.orderPlaced)
+    const referredUserReferralCode = useSelector((state: RootState) => state.counter.referred_user_referral_code)
     const [isLoader, setLoader] = useState(true);
     const [cartData, setCartData] = useState<any[]>([]);
     const [refresh, setRefresh] = useState(false)
@@ -65,6 +67,10 @@ const MyCartScreen = ({ navigation, route }: any) => {
     const [totalCartPrice, settotalCartPrice] = useState(0)
     const [walletUsed, setWalletUsed] = useState<any>(null)
     const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
+    const [referralCodeInput, setReferralCodeInput] = useState('');
+    const [orderHistory, setOrderHistory] = useState<any[]>([]);
+    const [hasOrders, setHasOrders] = useState(false);
+    const [showReferralField, setShowReferralField] = useState(false);
     const insets = useSafeAreaInsets();
 
     const dispatch = useDispatch()
@@ -82,6 +88,7 @@ const MyCartScreen = ({ navigation, route }: any) => {
         useCallback(() => {
             getCartDetail()
             getProfile();
+            getOrderHistory();
         }, [])
     );
     useEffect(() => {
@@ -109,11 +116,58 @@ const MyCartScreen = ({ navigation, route }: any) => {
 
     }
 
+    const getOrderHistory = async () => {
+        const payload = {
+            "client_id": decodedToken?.data?.client_id
+        }
+        try {
+            const response = await AuthApi.orderHistory(payload);
+            console.log('Order History Response:', response?.data);
+            const orders = response?.data || [];
+            setOrderHistory(orders);
+            
+            // Check if user has any delivered orders
+            const hasDeliveredOrders = orders.some((order: any) => 
+                order.status && order.status.toLowerCase() === 'delivered'
+            );
+            
+            // Show referral field only if:
+            // 1. User has no orders at all, OR
+            // 2. User has orders but none with 'delivered' status
+            // AND referral code exists in Redux
+            const shouldShowReferral = !hasDeliveredOrders && !!referredUserReferralCode;
+            
+            setHasOrders(orders.length > 0);
+            setShowReferralField(shouldShowReferral);
+            
+            if (shouldShowReferral) {
+                setReferralCodeInput(referredUserReferralCode);
+            } else {
+                setReferralCodeInput('');
+            }
+        } catch (error: any) {
+            console.log('Error fetching order history:', error);
+            setOrderHistory([]);
+            setHasOrders(false);
+            
+            // If API fails, show referral field only if referral code exists
+            const shouldShowReferral = !!referredUserReferralCode;
+            setShowReferralField(shouldShowReferral);
+            
+            if (shouldShowReferral) {
+                setReferralCodeInput(referredUserReferralCode);
+            } else {
+                setReferralCodeInput('');
+            }
+        }
+    }
+
     const onRefresh = () => {
         setRefresh(true)
         setTimeout(() => {
             setRefresh(false)
             getCartDetail()
+            getOrderHistory()
         }, 1000)
     }
     const decodeToken = (token: string) => {
@@ -250,7 +304,29 @@ const MyCartScreen = ({ navigation, route }: any) => {
     useEffect(() => {
         getCartDetail()
         getProfile()
+        getOrderHistory()
     }, [])
+    
+    // Watch for changes in referred_user_referral_code from Redux
+    useEffect(() => {
+        // Check if user has any delivered orders
+        const hasDeliveredOrders = orderHistory.some((order: any) => 
+            order.status && order.status.toLowerCase() === 'delivered'
+        );
+        
+        // Show referral field only if:
+        // 1. User has no delivered orders AND
+        // 2. Referral code exists in Redux
+        const shouldShowReferral = !hasDeliveredOrders && !!referredUserReferralCode;
+        
+        setShowReferralField(shouldShowReferral);
+        
+        if (shouldShowReferral) {
+            setReferralCodeInput(referredUserReferralCode);
+        } else {
+            setReferralCodeInput('');
+        }
+    }, [referredUserReferralCode, orderHistory])
     const getCartDetail = async () => {
         const payload = {
             "client_id": decodedToken?.data?.client_id
@@ -298,7 +374,14 @@ const MyCartScreen = ({ navigation, route }: any) => {
         if (!selectedShippingAddress || Object.keys(selectedShippingAddress).length === 0) {
             setModalVisible(true);
         } else {
-            navigation.navigate(CHECKOUT_SCREEN, { cartData, totalCartPrice, promo: selectedPromoCodeValue?.promo_code_discount, totalCartPriceGST: totalCartPrice, walletUsed });
+            navigation.navigate(CHECKOUT_SCREEN, { 
+                cartData, 
+                totalCartPrice, 
+                promo: selectedPromoCodeValue?.promo_code_discount, 
+                totalCartPriceGST: totalCartPrice, 
+                walletUsed,
+                referralCode: showReferralField ? referralCodeInput.trim() : '' // Pass referral code from Redux if user has no orders
+            });
         }
     };
     const removeCode = () => {
@@ -423,48 +506,100 @@ const MyCartScreen = ({ navigation, route }: any) => {
     const listFooterComponent = () => {
         return (
             <>
-                {(!selectedPromoCodeValue || Object.keys(selectedPromoCodeValue).length === 0) ?
-                    <>
-                        {
-                            <Pressable style={{ flexDirection: "row", elevation: 3, backgroundColor: WHITE, height: 60, borderRadius: 8, marginBottom: 10, marginTop: 20, marginHorizontal: 20, shadowColor: "#737373", shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.6 }} onPress={onApply}>
-                                <View style={{ justifyContent: "center", alignItems: "center", width: "15%" }}>
-                                    <TimeIcon width={25} height={25} color="#EE2324" />
-                                </View>
-                                <View style={{ justifyContent: "center", alignSelf: "center", width: "70%" }}>
-                                    <TextPoppinsSemiBold style={{ fontSize: 14, lineHeight: 24, color: BLACK }} numberOfLines={2}>
-                                        {t("APPLY_PROMO")}
-                                    </TextPoppinsSemiBold>
-                                </View>
-                                <View style={{ justifyContent: "center", alignItems: "center", width: "15%", backgroundColor: ORANGE, borderTopRightRadius: 10, borderBottomEndRadius: 10 }}>
-                                    <ArrowIcon width={18} height={20} color="#FFF" />
-                                </View>
-                            </Pressable >
-                        }
-                    </> :
-                    <View style={PromoCodeStyle.couponCard}>
-                        <View style={styles.optionContainer}>
-                            <View style={{ width: widthPercentageToDP(70) }}>
-                                <TextPoppinsSemiBold style={styles.optionText}>
-                                    {selectedPromoCodeValue?.promo_code || "No Promo Code Applied"}
+                {/* Compact Options Container */}
+                <View style={styles.compactOptionsContainer}>
+                    {/* Promo Code Section */}
+                    {(!selectedPromoCodeValue || Object.keys(selectedPromoCodeValue).length === 0) ? (
+                        <Pressable style={styles.compactPromoBox} onPress={onApply}>
+                            <View style={styles.compactPromoContent}>
+                                <TimeIcon width={20} height={20} color="#EE2324" />
+                                <TextPoppinsSemiBold style={styles.compactPromoText}>
+                                    {t("APPLY_PROMO")}
                                 </TextPoppinsSemiBold>
+                                <ArrowIcon width={14} height={16} color="#FFF" />
                             </View>
+                        </Pressable>
+                    ) : (
+                        <View style={styles.compactAppliedPromoBox}>
+                            <TextPoppinsSemiBold style={styles.compactAppliedPromoText} numberOfLines={1}>
+                                {selectedPromoCodeValue?.promo_code}
+                            </TextPoppinsSemiBold>
                             <Pressable onPress={() => removeCode()}>
-                                <TextPoppinsSemiBold style={{ color: BGRED, top: 5 }}>
-                                    Remove
-                                </TextPoppinsSemiBold>
+                                <Text style={styles.compactRemoveText}>×</Text>
                             </Pressable>
                         </View>
-                    </View>
-                }
-                {/* {cartData.length > 0 && walletInfo.min_order_value && Number(profileInfo?.my_wallet) > 0 && ( */}
-                {cartData.length > 0 && Number(profileInfo?.my_wallet) > 0 && (
+                    )}
 
-                    <WalletBox
-                        walletOpening={profileInfo?.my_wallet}
-                        minOrderValue={profileInfo?.min_order_value}
-                        totalCartPrice={Number(selectedPromoCodeValue?.final_amount || totalCartPrice)}
-                    />
-                )}
+                    {/* Referral Code Section - Only show if user has no orders and referral code exists in Redux */}
+                    {showReferralField && (
+                        <View style={styles.compactReferralBox}>
+                            <Text style={styles.referralTitle}>{t("REFERRAL_CODE")}</Text>
+                            <View style={[styles.compactReferralInputContainer, { backgroundColor: '#f0f0f0' }]}>
+                                <TextInput
+                                    style={[styles.compactReferralInput, { color: '#666' }]}
+                                    placeholder={t("REFERRAL_CODE")}
+                                    value={referralCodeInput}
+                                    editable={false} // Make it non-editable
+                                    autoCapitalize="characters"
+                                    maxLength={10}
+                                    placeholderTextColor="#999"
+                                />
+                            </View>
+                            {/* <Text style={styles.referralHelpText}>
+                                {t("AUTO_FILLED_REFERRAL_MESSAGE") || "Referral code auto-filled from login"}
+                            </Text> */}
+                        </View>
+                    )}
+
+                    {/* Wallet Section */}
+                    {cartData.length > 0 && Number(profileInfo?.my_wallet) > 0 && (
+                        <View style={styles.compactWalletBox}>
+                            {isLoading ? (
+                                <ActivityIndicator size="small" color="#FBAB32" />
+                            ) : (
+                                <CheckBox
+                                    disabled={!(profileInfo?.min_order_value <= Number(selectedPromoCodeValue?.final_amount || totalCartPrice)) || isLoading}
+                                    checked={isChecked}
+                                    onPress={() => {
+                                        const newValue = !isChecked;
+                                        const isCheckboxEnabled = profileInfo?.min_order_value <= Number(selectedPromoCodeValue?.final_amount || totalCartPrice);
+                                        
+                                        if (!isCheckboxEnabled) return;
+
+                                        setIsChecked(newValue);
+                                        setWalletUsed(null);
+
+                                        if (newValue) {
+                                            setIsLoading(true);
+                                            const payload = {
+                                                "client_id": decodedToken?.data?.client_id,
+                                                "grand_total": Number(selectedPromoCodeValue?.final_amount || totalCartPrice),
+                                            };
+                                            
+                                            AuthApi.useWallet(payload).then(response => {
+                                                setIsLoading(false);
+                                                if (response.data?.status) {
+                                                    setWalletUsed(response.data);
+                                                }
+                                            }).catch(error => {
+                                                console.log("API Error:", error);
+                                                setIsLoading(false);
+                                            });
+                                        }
+                                    }}
+                                    checkedIcon={<CheckBoxSvg />}
+                                    uncheckedIcon={<UnCheckbox fill={!(profileInfo?.min_order_value <= Number(selectedPromoCodeValue?.final_amount || totalCartPrice)) ? LIGHT_SILVER : undefined} />}
+                                    title={<Text style={styles.compactWalletText}>
+                                        {`${t("WALLET")} ₹${profileInfo?.my_wallet}`}
+                                    </Text>}
+                                    containerStyle={styles.compactWalletCheckboxContainer}
+                                    textStyle={styles.compactWalletTextStyle}
+                                />
+                            )}
+                        </View>
+                    )}
+                </View>
+
                 <OrderSummaryComponent />
             </>
         )
@@ -508,29 +643,38 @@ const MyCartScreen = ({ navigation, route }: any) => {
                 headerTxt={t("MY_CART")}
                 topHeight={100}
                 rightComponent={<ShopMoreComponent />}
+           
             />
-            {isLoader ?
-                <LoaderScreen /> :
-                <>
-                    <FlatList
-                        data={cartData}
-                        renderItem={({ item, index }: any) => <CartItemView item={item} decrementQuantity={decrementQuantity} incrementQuantity={incrementQuantity} index={index} />}
-                        keyExtractor={(item: any) => item.cart_id}
-                        ListEmptyComponent={
-                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: '50%' }}>
-                                <CartSvg width={100} height={100} />
-                                <Text style={{ marginTop: 20, fontSize: 18, color: '#777' }}>
-                                    {t('cart_empty')}
-                                </Text>
-                            </View>
-                        }
-                        showsVerticalScrollIndicator={false}
-                        refreshing={refresh}
-                        ListFooterComponent={cartData.length > 0 ? listFooterComponent : null}
-                        onRefresh={onRefresh}
-                    />
-                </>
-            }
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
+            >
+                {isLoader ?
+                    <LoaderScreen /> :
+                    <>
+                        <FlatList
+                            data={cartData}
+                            renderItem={({ item, index }: any) => <CartItemView item={item} decrementQuantity={decrementQuantity} incrementQuantity={incrementQuantity} index={index} />}
+                            keyExtractor={(item: any) => item.cart_id}
+                            ListEmptyComponent={
+                                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: '50%' }}>
+                                    <CartSvg width={100} height={100} />
+                                    <Text style={{ marginTop: 20, fontSize: 18, color: '#777' }}>
+                                        {t('cart_empty')}
+                                    </Text>
+                                </View>
+                            }
+                            showsVerticalScrollIndicator={false}
+                            refreshing={refresh}
+                            ListFooterComponent={cartData.length > 0 ? listFooterComponent : null}
+                            onRefresh={onRefresh}
+                            keyboardShouldPersistTaps="handled"
+                            keyboardDismissMode="interactive"
+                        />
+                    </>
+                }
+            </KeyboardAvoidingView>
             {/* My wallet code */}
             {/* {cartData.length > 0 && (
                 <WalletBox
@@ -623,6 +767,173 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#333',
         fontWeight: "bold"
+    },
+    referralBox: {
+        marginHorizontal: 20,
+        marginBottom: 10,
+        marginTop: 10,
+        padding: 16,
+        backgroundColor: WHITE,
+        borderRadius: 8,
+        elevation: 3,
+        shadowColor: "#737373",
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.6,
+    },
+    referralTitle: {
+        fontSize: 16,
+        color: BLACK,
+        marginBottom: 12,
+        fontWeight: "600"
+    },
+    referralInputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: '#ddd',
+        borderRadius: 8,
+        backgroundColor: '#f9f9f9',
+        marginBottom: 8,
+    },
+    referralInput: {
+        flex: 1,
+        paddingHorizontal: 12,
+        paddingVertical: 14,
+        fontSize: 16,
+        color: BLACK,
+        fontFamily: 'Poppins-Medium',
+    },
+    clearButton: {
+        paddingHorizontal: 12,
+        paddingVertical: 14,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    clearButtonText: {
+        fontSize: 20,
+        color: '#999',
+        fontWeight: 'bold',
+    },
+    referralHelpText: {
+        fontSize: 12,
+        color: '#666',
+        lineHeight: 16,
+    },
+    // New compact styles
+    compactOptionsContainer: {
+        marginHorizontal: 20,
+        marginTop: 15,
+        marginBottom: 10,
+        backgroundColor: WHITE,
+        borderRadius: 8,
+        elevation: 3,
+        shadowColor: "#737373",
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.6,
+        padding: 12,
+    },
+    compactPromoBox: {
+        flexDirection: "row",
+        backgroundColor: '#f8f9fa',
+        borderRadius: 6,
+        marginBottom: 8,
+        borderWidth: 1,
+        borderColor: '#e0e0e0',
+        overflow: 'hidden',
+    },
+    compactPromoContent: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 12,
+        paddingVertical: 10,
+        flex: 1,
+    },
+    compactPromoText: {
+        fontSize: 13,
+        color: BLACK,
+        flex: 1,
+        marginLeft: 8,
+    },
+    compactAppliedPromoBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        backgroundColor: '#e8f5e8',
+        borderRadius: 6,
+        paddingHorizontal: 12,
+        paddingVertical: 10,
+        marginBottom: 8,
+        borderWidth: 1,
+        borderColor: '#4CAF50',
+    },
+    compactAppliedPromoText: {
+        fontSize: 13,
+        color: '#2E7D32',
+        fontWeight: '600',
+        flex: 1,
+    },
+    compactRemoveText: {
+        fontSize: 18,
+        color: BGRED,
+        fontWeight: 'bold',
+        paddingHorizontal: 5,
+    },
+    compactReferralBox: {
+        marginBottom: 8,
+    },
+    compactReferralInputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: '#ddd',
+        borderRadius: 6,
+        backgroundColor: '#f9f9f9',
+        height: 40,
+    },
+    compactReferralInput: {
+        flex: 1,
+        paddingHorizontal: 10,
+        paddingVertical: 8,
+        fontSize: 13,
+        color: BLACK,
+        fontFamily: 'Poppins-Medium',
+    },
+    compactClearButton: {
+        paddingHorizontal: 10,
+        paddingVertical: 8,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    compactClearButtonText: {
+        fontSize: 16,
+        color: '#999',
+        fontWeight: 'bold',
+    },
+    compactWalletBox: {
+        backgroundColor: '#f8f9fa',
+        borderRadius: 6,
+        paddingVertical: 6,
+        paddingHorizontal: 8,
+        borderWidth: 1,
+        borderColor: '#e0e0e0',
+    },
+    compactWalletCheckboxContainer: {
+        backgroundColor: 'transparent',
+        borderWidth: 0,
+        padding: 0,
+        margin: 0,
+    },
+    compactWalletText: {
+        fontSize: 13,
+        color: BLACK,
+        fontWeight: '600',
+        marginLeft: 5,
+    },
+    compactWalletTextStyle: {
+        fontSize: 13,
+        color: BLACK,
+        fontWeight: '600',
     },
 });
 

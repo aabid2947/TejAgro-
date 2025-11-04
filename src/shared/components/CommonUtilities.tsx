@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next"
 import { Alert, BackHandler, Image, Linking, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { useSelector } from "react-redux"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { RootState } from "../../reduxToolkit/store"
 import { MyOrdersStyle } from "../../screens/orders/MyOrdersStyle"
 import RightArrowIcon from "../../svg/RightArrowIcon"
@@ -16,10 +16,103 @@ import { widthPercentageToDP } from "react-native-responsive-screen"
 import CartSvg from "../../svg/CartSvg"
 import MessageIcon from "../../svg/MessageIcon"
 import OfferIcon from "../../svg/OfferIcon"
+import HighlightedOfferIcon from "../../svg/HighlightedOfferIcon"
 import { MYCART_SCREEN, CHAT_SCREEN, OFFER_SCREEN } from "../../routes/Routes"
 import { ShippingAddressStyle } from "../../screens/shippingAddress/ShippingAddressStyle"
 import PlusButtonIcon from "../../svg/PlusButtonIcon"
 import { checkVersion } from "react-native-check-version"
+import HighlightedMessageIcon from "../../svg/HighlightedMessageIcon"
+import firestore, { FirebaseFirestoreTypes } from '@react-native-firebase/firestore'
+import { jwtDecode } from 'jwt-decode'
+
+interface Message {
+  id: string;
+  text: string;
+  sender: 'user' | 'admin';
+  timestamp: FirebaseFirestoreTypes.Timestamp | null;
+  message_seen?: number;
+}
+
+// Custom hook to fetch unread messages count
+const useUnreadMessages = () => {
+  const [unreadCount, setUnreadCount] = useState(0);
+  const isUserData: any = useSelector((state: RootState) => state.counter.isUserinfo);
+
+  useEffect(() => {
+    let unsubscribe: (() => void) | null = null;
+
+    const setupListener = () => {
+      try {
+        const token = isUserData?.jwt;
+        if (!token) {
+          console.log('No JWT token found for unread messages');
+          return;
+        }
+
+        const decodedToken: any = jwtDecode(token);
+        const clientId = decodedToken?.data?.client_id;
+        
+        if (!clientId) {
+          console.log('No client_id found in token for unread messages');
+          return;
+        }
+
+        const messagesPath = `chats/${clientId}/messages`;
+        console.log('Setting up unread messages listener for:', messagesPath);
+
+        unsubscribe = firestore()
+          .collection(messagesPath)
+          .orderBy('timestamp', 'desc')
+          .onSnapshot(
+            (querySnapshot) => {
+              const messages: Message[] = [];
+              querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                messages.push({
+                  id: doc.id,
+                  text: data.text,
+                  sender: data.sender,
+                  timestamp: data.timestamp,
+                  message_seen: data.message_seen || 0,
+                });
+              });
+
+              // Calculate unread count
+              let count = 0;
+              for (const message of messages) {
+                if (message.sender === 'admin' && message.message_seen === 0) {
+                  count++;
+                } else if (message.sender === 'user') {
+                  break; // Stop counting when we hit a user message
+                }
+              }
+
+              console.log('Unread messages count updated:', count);
+              setUnreadCount(count);
+            },
+            (error) => {
+              console.error('Error listening to unread messages:', error);
+              setUnreadCount(0);
+            }
+          );
+      } catch (error) {
+        console.error('Error setting up unread messages listener:', error);
+        setUnreadCount(0);
+      }
+    };
+
+    setupListener();
+
+    // Cleanup function
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, [isUserData?.jwt]);
+
+  return unreadCount;
+};
 
 
   export const versionApp = async () => {
@@ -144,6 +237,9 @@ const ProfileImageWithFallback = ({ profileDetail, style, onPress }: any) => {
 
 export const headerView = (title: any, subTitle: any, sideBarPress: any, totalItems: any, navigation: any, currentRoute?: string) => {
     const profileDetail: any = useSelector((state: RootState) => state.counter.isProfileInfo);
+    const unreadMessages = useUnreadMessages(); // Fetch unread messages directly
+    const { t } = useTranslation();
+    console.log(currentRoute)
     
     return (
         <View style={DashboardStyle.mainViewHeader}>
@@ -160,33 +256,57 @@ export const headerView = (title: any, subTitle: any, sideBarPress: any, totalIt
                     {subTitle}
                 </TextPoppinsSemiBold>
             </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}> 
             <TouchableOpacity 
-                style={{ 
-                    marginRight: 15,
-                    backgroundColor: currentRoute === OFFER_SCREEN ? 'transparent' : 'transparent',
-                    borderRadius: 20,
-                    padding: 8
-                }} 
+                style={styles.headerIconContainer} 
                 onPress={() => navigation.navigate(OFFER_SCREEN)}
             >
-                <OfferIcon 
-                    width={24} 
-                    height={24} 
-                    color={currentRoute === OFFER_SCREEN ? WHITE : BLACK} 
-                />
+                {currentRoute === OFFER_SCREEN ? (
+                    <HighlightedOfferIcon width={24} height={24} />
+                ) : (
+                    <OfferIcon width={24} height={24} color={BLACK} />
+                )}
+                <Text style={[styles.headerIconText, currentRoute === OFFER_SCREEN && styles.activeIconText]}>
+                    {t('OFFERS_ICON')}
+                </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{ marginRight: 15 }} onPress={() => navigation.navigate(CHAT_SCREEN)} >
-                <MessageIcon width={24} height={24} color={BLACK} />
+            <TouchableOpacity 
+                style={[styles.headerIconContainer, { position: "relative" }]} 
+                onPress={() => navigation.navigate(CHAT_SCREEN)}
+            >
+                {currentRoute === CHAT_SCREEN ? (
+                    <HighlightedMessageIcon width={24} height={24} />
+                ) : (
+                    <MessageIcon width={24} height={24} color={BLACK} />
+                )}
+                {typeof unreadMessages === 'number' && unreadMessages > 0 && currentRoute !== CHAT_SCREEN && (
+                    <View style={styles.badgeContainer}>
+                        <Text style={styles.badgeText}>
+                            {unreadMessages > 99 ? '99+' : String(unreadMessages)}
+                        </Text>
+                    </View>
+                )}
+                <Text style={[styles.headerIconText, currentRoute === CHAT_SCREEN && styles.activeIconText]}>
+                    {t('CHAT_ICON')}
+                </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{ position: "relative", marginRight: 10 }} onPress={() => navigation.navigate(MYCART_SCREEN, { showPromoCodePopup: false })} >
+            <TouchableOpacity 
+                style={[styles.headerIconContainer, { position: "relative", marginRight: 10 }]} 
+                onPress={() => navigation.navigate(MYCART_SCREEN, { showPromoCodePopup: false })}
+            >
                 <CartSvg width={24} height={24} />
                 {totalItems > 0 && (
-                    <View style={{ position: "absolute", top: -5, right: -10, backgroundColor: "red", borderRadius: 10, width: 20, height: 20, justifyContent: "center", alignItems: "center", }}>
-                        <Text style={{ color: "white", fontSize: 12, fontWeight: "bold" }}>
+                    <View style={styles.badgeContainer}>
+                        <Text style={styles.badgeText}>
                             {totalItems}
                         </Text>
-                    </View>)}
+                    </View>
+                )}
+                <Text style={styles.headerIconText}>
+                    {t('CART_ICON')}
+                </Text>
             </TouchableOpacity>
+            </View>
         </View>
     )
 }
@@ -345,5 +465,40 @@ const styles = StyleSheet.create({
         width: 41,
         height: 41,
         borderRadius: 20.5,
-    }
+    },
+    headerIconContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        // marginRight: 15,
+        padding: 4,
+        minWidth: 50,
+    },
+    headerIconText: {
+        fontSize: 10,
+        color: GRAY,
+        textAlign: 'center',
+        marginTop: 2,
+        fontFamily: 'Poppins-Regular',
+    },
+    activeIconText: {
+        color: MDBLUE,
+        fontWeight: '600',
+    },
+    badgeContainer: {
+        position: "absolute", 
+        top: -3, 
+        right: -3, 
+        backgroundColor: "red", 
+        borderRadius: 10, 
+        width: 20, 
+        height: 20, 
+        justifyContent: "center", 
+        alignItems: "center",
+        zIndex: 1,
+    },
+    badgeText: {
+        color: "white", 
+        fontSize: 12, 
+        fontWeight: "bold"
+    },
 })

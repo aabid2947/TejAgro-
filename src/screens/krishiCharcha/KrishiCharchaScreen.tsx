@@ -108,8 +108,10 @@ const KrishiCharchaScreen: React.FC = () => {
       //   page: pageNum
       // };
 
-      const response = await AuthApi.getPosts();
-      console.log(response.data)
+      const response = await AuthApi.getPosts({
+        client_id: currentClientId
+      });
+      
       
       if (response?.data?.status && response?.data?.posts) {
         const apiPosts = response.data.posts;

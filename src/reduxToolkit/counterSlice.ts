@@ -22,6 +22,8 @@ export interface CounterState {
     wallet: WalletInfo,
     orderPlaced: boolean
     selectedMyCrop: [],
+    referralCode: string,
+    referred_user_referral_code: string,
 
 }
 
@@ -40,6 +42,8 @@ const initialState: CounterState = {
     wallet: {},
     orderPlaced: false,
     selectedMyCrop: [],
+    referralCode: '',
+    referred_user_referral_code: '',
 }
 
 export const counterSlice = createSlice({
@@ -61,6 +65,8 @@ export const counterSlice = createSlice({
             state.isProfileInfo = {}
             state.totalItems = 0
             state.orderPlaced = false
+            state.referralCode = ''
+            state.referred_user_referral_code = ''
         },
         isUserVerify: (state, action: PayloadAction<boolean>) => {
             state.isUserVerify = action.payload
@@ -98,8 +104,14 @@ export const counterSlice = createSlice({
          selectedMyCropProduct: (state, action: any) => {
             state.selectedMyCrop = action.payload
         },
+        setReferralCode: (state, action: PayloadAction<string>) => {
+            state.referralCode = action.payload
+        },
+        setReferredUserReferralCode: (state, action: PayloadAction<string>) => {
+            state.referred_user_referral_code = action.payload
+        },
     },
 })
 
-export const { login, isLogOut, isUserVerify, languageSelection, selectedCropProduct, selectedShippingAddress, selectedPromoCode, clearSelectedPromoCode, profileDetail, referralDetails, setTotalItems, walletDetails, setOrderPlaced,selectedMyCropProduct } = counterSlice.actions
+export const { login, isLogOut, isUserVerify, languageSelection, selectedCropProduct, selectedShippingAddress, selectedPromoCode, clearSelectedPromoCode, profileDetail, referralDetails, setTotalItems, walletDetails, setOrderPlaced, selectedMyCropProduct, setReferralCode, setReferredUserReferralCode } = counterSlice.actions
 export default counterSlice.reducer

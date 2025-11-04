@@ -24,7 +24,7 @@ import { CheckOutStyle } from "./CheckOutStyle"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 const CheckOutScreen = (props: any) => {
-    const { totalCartPrice, walletUsed } = props?.route?.params || {};
+    const { totalCartPrice, walletUsed, referralCode } = props?.route?.params || {};
     const item = props?.route?.params?.cartData
 
     const { t } = useTranslation();
@@ -88,6 +88,7 @@ const CheckOutScreen = (props: any) => {
             payment_method: paymentMethod,
             payment_status: isPaid ? "paid" : "pending",
             payment_response: paymentResponse ? JSON.stringify(paymentResponse) : "",
+            referral_code: referralCode || "",
             product_details: item.map((cartItem: any) => ({
                 product_id: cartItem?.product_id,
                 mrp: cartItem?.mrp || "0",

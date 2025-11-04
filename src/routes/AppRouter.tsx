@@ -10,7 +10,7 @@ import ProductScreen from '../screens/productlist/ProductScreen';
 import ProfileScreen from '../screens/profileScreen/ProfileScreen';
 import ProfileSettingScreen from '../screens/setting/ProfileSettingScreen';
 import ShippingAddressScreen from '../screens/shippingAddress/ShippingAddressScreen';
-import { ADD_NEW_SHIPPING_SCREEN, ADD_PAYMENT_SCREEN, CHAT_CONVERSATION_SCREEN, CHAT_SCREEN, CHECKOUT_SCREEN, CREATE_POST_SCREEN, CROP_MAP_SCREEN, HOME_SCREEN, KRISHI_CHARCHA_SCREEN, LUCKY_DRAW_WINNERS_SCREEN, LUCKY_DRAW_PDF_VIEWER_SCREEN, MENUBAR_SCREEN, MY_PROFILE, MY_REWARD_SCREEN, MYCART_SCREEN, NOTIFICATION_SCREEN, OFFER_SCREEN, ORDER_DETAIL_SCREEN, ORDER_SCREEN, PAYMENT_SUCCESS_SCREEN, POST_DETAILS_SCREEN, PRODUCT_SCREEN, PROFILE_SETTING_SCREEN, PROMO_CODE_SCREEN, SELECTED_CROP_SCREEN, SHIPPING_ADDRESS_SCREEN } from './Routes';
+import { ADD_NEW_SHIPPING_SCREEN, ADD_PAYMENT_SCREEN, CHAT_CONVERSATION_SCREEN, CHAT_SCREEN, CHECKOUT_SCREEN, CREATE_POST_SCREEN, CROP_MAP_SCREEN, HOME_SCREEN, KRISHI_CHARCHA_SCREEN, LUCKY_DRAW_WINNERS_SCREEN, LUCKY_DRAW_PDF_VIEWER_SCREEN, MENUBAR_SCREEN, MY_PROFILE, MY_REWARD_SCREEN, MYCART_SCREEN, NOTIFICATION_SCREEN, OFFER_SCREEN, ORDER_DETAIL_SCREEN, ORDER_SCREEN, PAYMENT_SUCCESS_SCREEN, POST_DETAILS_SCREEN, PRODUCT_SCREEN, PROFILE_SETTING_SCREEN, PROMO_CODE_SCREEN, REFER_EARN_SCREEN, SELECTED_CROP_SCREEN, SHIPPING_ADDRESS_SCREEN } from './Routes';
 import TabScreen from './TabScreen';
 import AddNewShipping from '../screens/shippingAddress/AddNewShipping';
 import MenuBarScreen from '../screens/menuScreen/MenuBarScreen';
@@ -27,6 +27,7 @@ import LuckyDrawWinnersScreen from '../screens/luckyDrawWinners/LuckyDrawWinners
 import LuckyDrawPDFViewerScreen from '../screens/luckyDrawPDFViewer/LuckyDrawPDFViewerScreen';
 import ChatScreen from '../screens/chat/ChatScreen';
 import ChatConversationScreen from '../screens/chat/ChatScreen';
+import ReferEarnScreen from '../screens/ReferEarnScreen';
 import { versionApp } from '../shared/components/CommonUtilities';
 // import ComingSoonScreen from './ComingSoonScreen';
 
@@ -58,6 +59,7 @@ export type RootStackParamList = {
     LuckyDrawPDFViewer: any
     ChatScreen: any
     ChatConversation: any
+    ReferEarnScreen: any
 }
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -93,6 +95,7 @@ function AppRouter(): JSX.Element {
                 <RootStack.Screen name={OFFER_SCREEN} options={{ headerShown: false }} component={OfferScreen} />
                 <RootStack.Screen name={LUCKY_DRAW_WINNERS_SCREEN} options={{ headerShown: false }} component={LuckyDrawWinnersScreen} />
                 <RootStack.Screen name={LUCKY_DRAW_PDF_VIEWER_SCREEN} options={{ headerShown: false }} component={LuckyDrawPDFViewerScreen} />
+                <RootStack.Screen name={REFER_EARN_SCREEN} options={{ headerShown: false }} component={ReferEarnScreen} />
                 <RootStack.Screen name={CHAT_SCREEN} options={{ headerShown: false }} component={ChatScreen} />
                 <RootStack.Screen name={CHAT_CONVERSATION_SCREEN} options={{ headerShown: false }} component={ChatConversationScreen} />
             </RootStack.Navigator >
