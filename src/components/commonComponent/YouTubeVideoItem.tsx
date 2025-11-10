@@ -23,7 +23,7 @@ interface YouTubeVideoItemProps {
 export const YouTubeVideoItem: React.FC<YouTubeVideoItemProps> = ({ data, index }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
-    const openYouTubeVideo = () => {
+    const openYouTubeVideo = async () => {
         let youtubeUrl = '';
         
         if (data.url) {
@@ -34,7 +34,26 @@ export const YouTubeVideoItem: React.FC<YouTubeVideoItemProps> = ({ data, index 
             youtubeUrl = `https://www.youtube.com/watch?v=${data.videoId}`;
         }
         
-        Linking.openURL(youtubeUrl);
+        try {
+            
+            // Try to open YouTube URL directly
+            try {
+                await Linking.openURL(youtubeUrl);
+            } catch (youtubeError) {
+                // Try with different YouTube app schemes
+                const youtubeAppUrl = `youtube://watch?v=${data.videoId}`;
+                try {
+                    await Linking.openURL(youtubeAppUrl);
+                } catch (appError) {
+                    console.log('YouTube app not available, opening in browser:', appError);
+                    // This should fall back to browser
+                    throw youtubeError; // Re-throw original error
+                }
+            }
+        } catch (error) {
+            console.error('Failed to open YouTube video:', youtubeUrl, error);
+            // You might want to show a user-friendly error message here
+        }
     };
 
     const toggleDescription = () => {
@@ -44,6 +63,13 @@ export const YouTubeVideoItem: React.FC<YouTubeVideoItemProps> = ({ data, index 
     return (
         <View style={styles.container}>
             {/* Video Thumbnail */}
+            <View style={{ paddingHorizontal: 16, paddingTop: 16 }}>
+                
+                <Text style={styles.title} numberOfLines={2}>
+                    {data.title}
+                </Text>
+
+            </View>
             <TouchableOpacity style={styles.videoContainer} onPress={openYouTubeVideo}>
                 <Image 
                     source={{ uri: data.thumbnail }} 
@@ -55,16 +81,11 @@ export const YouTubeVideoItem: React.FC<YouTubeVideoItemProps> = ({ data, index 
                         <Text style={styles.playText}>▶</Text>
                     </View>
                 </View>
-                <View style={styles.durationBadge}>
-                    <Text style={styles.durationText}>{data.duration}</Text>
-                </View>
+
             </TouchableOpacity>
 
             {/* Video Info */}
             <View style={styles.infoContainer}>
-                <TextPoppinsSemiBold style={styles.title} numberOfLines={2}>
-                    {data.title}
-                </TextPoppinsSemiBold>
                 
                 <View style={styles.metaContainer}>
                     <Text style={styles.metaText}>{data.views} views</Text>
@@ -73,12 +94,12 @@ export const YouTubeVideoItem: React.FC<YouTubeVideoItemProps> = ({ data, index 
                 </View>
 
                 <Pressable onPress={toggleDescription}>
-                    <TextPoppinsMediumBold 
+                    <Text
                         style={styles.description} 
                         numberOfLines={isExpanded ? undefined : 2}
                     >
                         {data.description}
-                    </TextPoppinsMediumBold>
+                    </Text>
                     {data.description.length > 100 && (
                         <Text style={styles.readMore}>
                             {isExpanded ? 'Show less' : 'Read more'}

@@ -99,6 +99,11 @@ const addComment = (requestBody: any) => {
     const url = `${AUTH_API_URL}farmer-post-get-details.php?action=add_comment`;
     return authAxios.post(url, requestBody);
 }
+
+const postImageInChat = (requestBody:any)=>{
+    const url = `${AUTH_API_URL}chat-messages.php?action=get_data`;
+    return authAxios.post(url, requestBody);
+}
 const getOffer = (requestBody: any) => {
     const url = `${AUTH_API_URL}offer.php`;
     return authAxios.get(url, requestBody);
@@ -309,6 +314,7 @@ export default {
     getWalletDetails,
     useWallet,
     getReferralInfo,
-    getPopupNotification
+    getPopupNotification,
+    postImageInChat
 }
 

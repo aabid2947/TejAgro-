@@ -1,7 +1,8 @@
 import { useTranslation } from "react-i18next"
-import { Alert, BackHandler, Image, Linking, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Alert, BackHandler, Image, Linking, Pressable, StyleSheet, Text, TouchableOpacity, View, Animated } from "react-native"
+import { WebView } from 'react-native-webview'
 import { useSelector } from "react-redux"
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { RootState } from "../../reduxToolkit/store"
 import { MyOrdersStyle } from "../../screens/orders/MyOrdersStyle"
 import RightArrowIcon from "../../svg/RightArrowIcon"
@@ -24,6 +25,14 @@ import { checkVersion } from "react-native-check-version"
 import HighlightedMessageIcon from "../../svg/HighlightedMessageIcon"
 import firestore, { FirebaseFirestoreTypes } from '@react-native-firebase/firestore'
 import { jwtDecode } from 'jwt-decode'
+// import offerGif from '../../assets/OfferGif.gif'
+// Configuration for offer GIF
+const OFFER_GIF_CONFIG = {
+  url: "https://www.tejagrotech.com/tejagro_sale_demo/offer_images/offer_icon.gif", // Replace with your GIF URL
+  width: 64,
+  height: 40,
+  alt: "offers"
+};
 
 interface Message {
   id: string;
@@ -241,6 +250,107 @@ export const headerView = (title: any, subTitle: any, sideBarPress: any, totalIt
     const { t } = useTranslation();
     console.log(currentRoute)
     
+    // Animation for offer icon blinking effect
+    const scaleAnim = useRef(new Animated.Value(1)).current;
+    
+    useEffect(() => {
+        // Only animate if not on offer screen
+        if (currentRoute !== OFFER_SCREEN) {
+            const blinkAnimation = Animated.loop(
+                Animated.sequence([
+                    Animated.timing(scaleAnim, {
+                        toValue: 1.3,
+                        duration: 800,
+                        useNativeDriver: true,
+                    }),
+                    Animated.timing(scaleAnim, {
+                        toValue: 1,
+                        duration: 800,
+                        useNativeDriver: true,
+                    }),
+                ])
+            );
+            blinkAnimation.start();
+            
+            return () => {
+                blinkAnimation.stop();
+            };
+        } else {
+            // Reset scale when on offer screen
+            scaleAnim.setValue(1);
+        }
+    }, [currentRoute, scaleAnim]);
+    
+    // Get user category
+    const userCategory = profileDetail?.client_category || '';
+    console.log('User Category:', userCategory);
+    
+    // Categories mapping for icons
+    const categories = {
+        'gold': '🥇',
+        'diamond': '💎',
+        'platinum':'🏆',
+        'silver':'🥈',
+        'raw':'⚙️'
+    }
+    
+    // Function to get category icon from the categories map
+    const getCategoryIcon = () => {
+        if (!userCategory) return '';
+        
+        const categoryLower = userCategory.toLowerCase().trim();
+        
+        // Handle special cases
+        if (categoryLower.includes('gold') && categoryLower.includes('r')) {
+            return '🔁'; // Return icon for Gold (R)
+        }
+        
+        if (categoryLower.includes('gold')) {
+            return '🥇';
+        }
+        if (categoryLower.includes('diamond')) {
+            return '💎';
+        }
+        if (categoryLower.includes('platinum')) {
+            return '🏆';
+        }
+        if (categoryLower.includes('silver')) {
+            return '🥈';
+        }
+        if (categoryLower.includes('raw')) {
+            return '⚙️';
+        }
+        
+        return '⚙️'; // Default fallback
+    };
+    
+    // Function to get localized category name
+    const getLocalizedCategoryName = () => {
+        if (!userCategory) return '';
+        
+        const categoryLower = userCategory.toLowerCase().trim();
+        
+        // Handle special cases with variations
+        if (categoryLower.includes('gold') && categoryLower.includes('r')) {
+            return t('CATEGORY_GOLD_R');
+        }
+        
+        switch (categoryLower) {
+            case 'diamond':
+                return t('CATEGORY_DIAMOND');
+            case 'platinum':
+                return t('CATEGORY_PLATINUM');
+            case 'gold':
+                return t('CATEGORY_GOLD');
+            case 'silver':
+                return t('CATEGORY_SILVER');
+            case 'raw':
+                return t('CATEGORY_RAW');
+            default:
+                return userCategory; // Fallback to original if not found
+        }
+    };
+    
     return (
         <View style={DashboardStyle.mainViewHeader}>
             <ProfileImageWithFallback 
@@ -253,22 +363,65 @@ export const headerView = (title: any, subTitle: any, sideBarPress: any, totalIt
                     {title}
                 </TextPoppinsMediumBold>
                 <TextPoppinsSemiBold style={DashboardStyle.subtitleStyle}>
-                    {subTitle}
+                    {t('Category')}: {getLocalizedCategoryName()} {getCategoryIcon()}
                 </TextPoppinsSemiBold>
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}> 
+            <View style={{ flexDirection: 'row', alignItems: 'flex-end',padding:0 }}> 
             <TouchableOpacity 
-                style={styles.headerIconContainer} 
+                style={styles.OfferIcon} 
                 onPress={() => navigation.navigate(OFFER_SCREEN)}
             >
-                {currentRoute === OFFER_SCREEN ? (
-                    <HighlightedOfferIcon width={24} height={24} />
-                ) : (
-                    <OfferIcon width={24} height={24} color={BLACK} />
-                )}
-                <Text style={[styles.headerIconText, currentRoute === OFFER_SCREEN && styles.activeIconText]}>
+                {/* <Animated.View style={{ transform: [{ scale: currentRoute === OFFER_SCREEN ? 1 : scaleAnim }] }}> */}
+                  
+                        <View style={styles.gifContainer}>
+                            <WebView
+                                source={{
+                                    html: `
+                                        <html>
+                                            <head>
+                                                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                                                <style>
+                                                    body {
+                                                        margin: 0;
+                                                        padding: 0;
+                                                        display: flex;
+                                                        justify-content: center;
+                                                        align-items: center;
+                                                        height: 100vh;
+                                                        background: transparent;
+                                                        overflow: hidden;
+                                                    }
+                                                    img {
+                                                        width: ${OFFER_GIF_CONFIG.width}px;
+                                                        height: ${OFFER_GIF_CONFIG.height}px;
+                                                        object-fit: contain;
+                                                        border-radius: 4px;
+                                                    }
+                                                </style>
+                                            </head>
+                                            <body>
+                                                <img src="${OFFER_GIF_CONFIG.url}" alt="${OFFER_GIF_CONFIG.alt}">
+                                            </body>
+                                        </html>
+                                    `
+                                }}
+                                style={styles.webViewStyle}
+                                scrollEnabled={false}
+                                showsVerticalScrollIndicator={false}
+                                showsHorizontalScrollIndicator={false}
+                                scalesPageToFit={false}
+                                javaScriptEnabled={true}
+                                domStorageEnabled={true}
+                                startInLoadingState={false}
+                                mixedContentMode="compatibility"
+                                androidLayerType="hardware"
+                            />
+                        </View>
+            
+                {/* </Animated.View> */}
+                {/* <Text style={[styles.headerIconText, currentRoute === OFFER_SCREEN && styles.activeIconText]}>
                     {t('OFFERS_ICON')}
-                </Text>
+                </Text> */}
             </TouchableOpacity>
             <TouchableOpacity 
                 style={[styles.headerIconContainer, { position: "relative" }]} 
@@ -286,9 +439,9 @@ export const headerView = (title: any, subTitle: any, sideBarPress: any, totalIt
                         </Text>
                     </View>
                 )}
-                <Text style={[styles.headerIconText, currentRoute === CHAT_SCREEN && styles.activeIconText]}>
+                {/* <Text style={[styles.headerIconText, currentRoute === CHAT_SCREEN && styles.activeIconText]}>
                     {t('CHAT_ICON')}
-                </Text>
+                </Text> */}
             </TouchableOpacity>
             <TouchableOpacity 
                 style={[styles.headerIconContainer, { position: "relative", marginRight: 10 }]} 
@@ -302,9 +455,9 @@ export const headerView = (title: any, subTitle: any, sideBarPress: any, totalIt
                         </Text>
                     </View>
                 )}
-                <Text style={styles.headerIconText}>
+                {/* <Text style={styles.headerIconText}>
                     {t('CART_ICON')}
-                </Text>
+                </Text> */}
             </TouchableOpacity>
             </View>
         </View>
@@ -471,7 +624,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         // marginRight: 15,
         padding: 4,
-        minWidth: 50,
+        marginHorizontal:8
+        // minWidth: 50,
+    },
+    OfferIcon:{
+        alignItems: 'center',
+        justifyContent: 'center',
+        // marginRight: 15,
+        // padding: 4,
+        // minWidth: 50,
     },
     headerIconText: {
         fontSize: 10,
@@ -500,5 +661,16 @@ const styles = StyleSheet.create({
         color: "white", 
         fontSize: 12, 
         fontWeight: "bold"
+    },
+    gifContainer: {
+        width: OFFER_GIF_CONFIG.width,
+        height: OFFER_GIF_CONFIG.height,
+        borderRadius: 4,
+        overflow: 'hidden',
+    },
+    webViewStyle: {
+        width: OFFER_GIF_CONFIG.width,
+        height: OFFER_GIF_CONFIG.height,
+        backgroundColor: 'transparent',
     },
 })

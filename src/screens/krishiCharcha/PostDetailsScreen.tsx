@@ -12,6 +12,8 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
+  Modal,
+  SafeAreaView,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useRoute, useNavigation } from '@react-navigation/native';
@@ -19,6 +21,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../reduxToolkit/store';
 import AuthApi from '../../api/AuthApi';
 import { jwtDecode } from 'jwt-decode';
+import ImageViewer from 'react-native-image-zoom-viewer';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 // import { StackNavigationProp } from '@react-navigation/stack';
 import { styles } from './PostDetailsStyle';
 import { headerView } from '../../shared/components/CommonUtilities';
@@ -45,7 +49,8 @@ interface Post {
   client_name: string;
   client_mob: string;
   post_desc: string;
-  post_file?: string;
+  post_file?: string; // Keep for backward compatibility
+  post_files?: string[]; // New field for multiple images
   post_category: string;
   created_on: string;
   like_count: string;
@@ -66,6 +71,7 @@ const PostDetailsScreen: React.FC = () => {
   const route = useRoute();
   const dispatch = useDispatch();
   const { post } = route.params as { post: Post };
+  const insets = useSafeAreaInsets();
 
   const profileDetail: any = useSelector((state: RootState) => state.counter.isProfileInfo);
   const totalItems = useSelector((state: RootState) => state.counter.totalItems);
@@ -76,6 +82,8 @@ const PostDetailsScreen: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [commentText, setCommentText] = useState('');
   const [submittingComment, setSubmittingComment] = useState(false);
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Decode token to get current user's client_id
   const decodeToken = (token: string) => {
@@ -91,6 +99,16 @@ const PostDetailsScreen: React.FC = () => {
   const token = isUserData?.jwt;
   const decodedToken: any = decodeToken(token);
   const currentClientId = decodedToken?.data?.client_id;
+
+  // Get images array - support both old single image and new multiple images
+  const getPostImages = (): string[] => {
+    if (currentPost.post_files && currentPost.post_files.length > 0) {
+      return currentPost.post_files;
+    } else if (currentPost.post_file) {
+      return [currentPost.post_file];
+    }
+    return [];
+  };
 
   // Sidebar/menu press handler
   const onPressSide = () => {
@@ -175,11 +193,11 @@ const PostDetailsScreen: React.FC = () => {
     }
   };
 
-  const handleCommentLike = (commentId: string) => {
-    // Note: You may need to implement a separate API for comment likes
-    // For now, this is a placeholder
-    console.log('Comment like not implemented yet for comment:', commentId);
-  };
+  // const handleCommentLike = (commentId: string) => {
+  //   // Note: You may need to implement a separate API for comment likes
+  //   // For now, this is a placeholder
+  //   console.log('Comment like not implemented yet for comment:', commentId);
+  // };
 
   const handleSubmitComment = async () => {
     if (!commentText.trim()) return;
@@ -194,8 +212,7 @@ const PostDetailsScreen: React.FC = () => {
       };
 
       const response = await AuthApi.addComment(payload);
-      console.log(response.data, "addCommentResponseaddCommentResponse");
-      
+
       if (response?.data?.status) {
         // Create new comment object
         const newComment: Comment = {
@@ -257,13 +274,58 @@ const PostDetailsScreen: React.FC = () => {
           {currentPost.post_desc}
         </TextPoppinsRegular>
         
-        {currentPost.post_file && (
-          <View style={styles.imageContainer}>
-            <Image
-              source={{ uri: currentPost.post_file }}
-              style={styles.postImage}
-              resizeMode="cover"
-            />
+        {getPostImages().length > 0 && (
+          <View style={styles.imagesContainer}>
+            {getPostImages().length === 1 ? (
+              // Single image - full width
+              <TouchableOpacity 
+                style={styles.singleImageContainer}
+                onPress={() => {
+                  setCurrentImageIndex(0);
+                  setShowImageModal(true);
+                }}
+                activeOpacity={0.9}
+              >
+                <Image
+                  source={{ uri: getPostImages()[0] }}
+                  style={styles.singleImage}
+                  resizeMode="cover"
+                />
+              </TouchableOpacity>
+            ) : (
+              // Multiple images - grid layout
+              <View style={styles.multipleImagesContainer}>
+                {getPostImages().slice(0, 4).map((imageUri, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={[
+                      styles.multipleImageItem,
+                      { 
+                        width: getPostImages().length === 2 ? '48%' : '48%',
+                        marginRight: (index % 2 === 0) ? '4%' : 0,
+                        marginBottom: index < 2 ? 8 : 0
+                      }
+                    ]}
+                    onPress={() => {
+                      setCurrentImageIndex(index);
+                      setShowImageModal(true);
+                    }}
+                    activeOpacity={0.9}
+                  >
+                    <Image
+                      source={{ uri: imageUri }}
+                      style={styles.multipleImage}
+                      resizeMode="cover"
+                    />
+                    {index === 3 && getPostImages().length > 4 && (
+                      <View style={styles.moreImagesOverlay}>
+                        <Text style={styles.moreImagesText}>+{getPostImages().length - 4}</Text>
+                      </View>
+                    )}
+                  </TouchableOpacity>
+                ))}
+              </View>
+            )}
           </View>
         )}
       </View>
@@ -372,49 +434,86 @@ const PostDetailsScreen: React.FC = () => {
   );
 
   return (
-    <KeyboardAvoidingView 
-      style={styles.container} 
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
-      {headerView(t('POST_DETAILS'), "Krishi Charcha", onPressSide, totalItems, navigation)}
-      
-      <FlatList
-        data={comments}
-        keyExtractor={(item) => item.id}
-        renderItem={renderCommentItem}
-        ListHeaderComponent={renderHeader}
-        ListFooterComponent={renderFooter}
-        ListEmptyComponent={loading ? null : renderEmptyComments}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.listContainer}
-      />
-
-      <View style={styles.commentInputContainer}>
-        <TextInput
-          style={styles.commentInput}
-          placeholder={t('WRITE_COMMENT')}
-          value={commentText}
-          onChangeText={setCommentText}
-          multiline
-          maxLength={500}
+    <SafeAreaView style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+      <KeyboardAvoidingView 
+        style={{ flex: 1 }} 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        {headerView(t('POST_DETAILS'), "Krishi Charcha", onPressSide, totalItems, navigation)}
+        
+        <FlatList
+          data={comments}
+          keyExtractor={(item) => item.id}
+          renderItem={renderCommentItem}
+          ListHeaderComponent={renderHeader}
+          ListFooterComponent={renderFooter}
+          ListEmptyComponent={loading ? null : renderEmptyComments}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.listContainer}
         />
-        <TouchableOpacity
-          style={[
-            styles.sendButton,
-            { opacity: commentText.trim() ? 1 : 0.5 }
-          ]}
-          onPress={handleSubmitComment}
-          disabled={!commentText.trim() || submittingComment}
-          activeOpacity={0.7}
-        >
-          {submittingComment ? (
-            <ActivityIndicator size="small" color={WHITE} />
-          ) : (
-            <SendIcon width={20} height={20} color={WHITE} />
-          )}
-        </TouchableOpacity>
-      </View>
-    </KeyboardAvoidingView>
+
+        <View style={styles.commentInputContainer}>
+          <TextInput
+            style={styles.commentInput}
+            placeholder={t('WRITE_COMMENT')}
+            value={commentText}
+            onChangeText={setCommentText}
+            multiline
+            maxLength={500}
+          />
+          <TouchableOpacity
+            style={[
+              styles.sendButton,
+              { opacity: commentText.trim() ? 1 : 0.5 }
+            ]}
+            onPress={handleSubmitComment}
+            disabled={!commentText.trim() || submittingComment}
+            activeOpacity={0.7}
+          >
+            {submittingComment ? (
+              <ActivityIndicator size="small" color={WHITE} />
+            ) : (
+              <SendIcon width={20} height={20} color={WHITE} />
+            )}
+          </TouchableOpacity>
+        </View>
+
+        {/* Image Zoom Modal */}
+        {getPostImages().length > 0 && (
+          <Modal
+            visible={showImageModal}
+            transparent={true}
+            onRequestClose={() => setShowImageModal(false)}
+          >
+            <ImageViewer
+              imageUrls={getPostImages().map(url => ({ url }))}
+              index={currentImageIndex}
+              enableSwipeDown={true}
+              onSwipeDown={() => setShowImageModal(false)}
+              backgroundColor="rgba(0, 0, 0, 0.95)"
+              renderHeader={() => (
+                <View style={styles.imageModalHeader}>
+                  <Text style={styles.imageModalCounter}>
+                    {currentImageIndex + 1} / {getPostImages().length}
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.imageModalCloseButton}
+                    onPress={() => setShowImageModal(false)}
+                    activeOpacity={0.7}
+                  >
+                    <Text style={styles.imageModalCloseText}>×</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+              renderIndicator={() => <View />}
+              enableImageZoom={true}
+              maxOverflow={300}
+              onChange={(index) => setCurrentImageIndex(index || 0)}
+            />
+          </Modal>
+        )}
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

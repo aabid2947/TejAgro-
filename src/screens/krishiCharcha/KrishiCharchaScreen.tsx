@@ -31,7 +31,8 @@ interface Post {
   client_name: string;
   client_mob: string;
   post_desc: string;
-  post_file?: string;
+  post_file?: string; // Keep for backward compatibility
+  post_files?: string[]; // New field for multiple images
   post_category: string;
   created_on: string;
   like_count: string;
@@ -231,6 +232,14 @@ const KrishiCharchaScreen: React.FC = () => {
   const transformPostForUI = (post: Post) => {
     const isLiked = post.likes.some(like => like.client_id === currentClientId);
     
+    // Get the first image for display - support both old and new formats
+    let imageUrl = undefined;
+    if (post.post_files && post.post_files.length > 0) {
+      imageUrl = post.post_files[0]; // Show first image in list view
+    } else if (post.post_file) {
+      imageUrl = post.post_file;
+    }
+    
     return {
       id: post.post_id,
       author: {
@@ -246,7 +255,8 @@ const KrishiCharchaScreen: React.FC = () => {
         })
       },
       content: post.post_desc,
-      image: post.post_file ? post.post_file : undefined,
+      image: imageUrl,
+      images: post.post_files || (post.post_file ? [post.post_file] : []), // Include all images
       likes: parseInt(post.like_count),
       comments: parseInt(post.comment_count),
       isLiked: isLiked,

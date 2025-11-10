@@ -1,2 +1,2 @@
-    // "ENDPOINT": "https://tejagrotech.com/tejagro_sale_demo/Webservices/" ,
-    https://tejagrosales.tejgroup.in/Webservices/
+    // "ENDPOINT": "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/" ,
+    https://www.tejagrosales.tejgroup.in/Webservices/

@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useTranslation } from "react-i18next";
-import { Image, Pressable, SafeAreaView, Text, TextInput, View, ScrollView } from "react-native";
+import { Image, Pressable, SafeAreaView, Text, TextInput, View, ScrollView, TouchableOpacity } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { heightPercentageToDP, widthPercentageToDP } from "react-native-responsive-screen";
 import { useDispatch, useSelector } from "react-redux";
@@ -36,9 +36,21 @@ const languageEnum: any = {
 }
 
 const LogInScreen = () => {
+    // All hooks must be called in the same order every render
     const { t } = useTranslation();
-    const refStateRBSheet: any = useRef();
     const navigation: any = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+    const dispatch = useDispatch();
+    const insets = useSafeAreaInsets();
+    const languageSelected = useSelector((state: RootState) => state.counter.languageSelected);
+    
+    // Context hook - must be called BEFORE refs and state
+    const modalContext = useModalContext();
+    const openModal = modalContext?.openModal;
+    
+    // Refs
+    const refStateRBSheet: any = useRef();
+    
+    // State hooks
     const [mobileNumber, setMobileNumber]: any = useState('');
     const [referralCodeInput, setReferralCodeInput]: any = useState('');
     const [formValue, setFormValue] = useState({ countryCode: '+91', phoneNumber: '' });
@@ -47,10 +59,8 @@ const LogInScreen = () => {
     const [referralCodeError, setReferralCodeError]: any = useState('');
     const [isLoader, setLoader] = useState(false);
     const [apiResponse, setApiResponse] = useState(''); // New state for API response
-    const languageSelected = useSelector((state: RootState) => state.counter.languageSelected)
-    const dispatch = useDispatch()
-    const insets = useSafeAreaInsets();
-    const { openModal }: any = useModalContext();
+    const [showReferralInput, setShowReferralInput] = useState(false); // Checkbox state
+    
     const renderItem = (placeholder: string, value: any, erroMsg?: any, onchange?: any,) => {
         return (
             <View>
@@ -107,6 +117,13 @@ const LogInScreen = () => {
             setApiResponse("Please enter a valid 10 digit mobile number");
             return;
         }
+        
+        // Validate referral code if checkbox is checked
+        if (showReferralInput && !referralCodeInput.trim()) {
+            setReferralCodeError(t('REFERRAL_CODE_REQUIRED'));
+            return;
+        }
+        
         try {
             setLoader(true);
             console.log("formValue.phoneNumber", Number(formValue.phoneNumber));
@@ -142,7 +159,9 @@ const LogInScreen = () => {
 
     
     const handlePrivacyPolicyClick = (url: string) => {
-        openModal("Privacy policy link not available")
+        if (openModal) {
+            openModal("Privacy policy link not available");
+        }
     }
 
     const getStartedPress = () => {
@@ -195,63 +214,56 @@ const LogInScreen = () => {
                         }} />
                 </View>
                 <View style={LogInScreenStyle.inputView}>
-                    {MobileNumber("Phone Number *", "Enter your mobile number", mobileNumber, '', (text: any) => onChangeFormName(text), LogInScreenStyle.dataView, LogInScreenStyle.mainBody)}
+                    <MobileNumber 
+                        title={t('PHONE_NUMBER')}
+                        placeholder="Enter your mobile number"
+                        value={mobileNumber}
+                        error=""
+                        onChangeText={(text: any) => onChangeFormName(text)}
+                        style={LogInScreenStyle.dataView}
+                        containerStyle={LogInScreenStyle.mainBody}
+                    />
                     {mobileNumberError && <TextPoppinsSemiBold style={LogInScreenStyle.errorFormTextLogin}>{t('VALID_NUMBER')}</TextPoppinsSemiBold>}
                     
-                    {/* Referral Code Input */}
-                    {/* <View style={{ marginTop: 16 }}> */}
-                        {ReferralCodeInput("Referral Code", "Enter referral code", referralCodeInput, referralCodeError, (text: any) => onChangeReferralCode(text), LogInScreenStyle.dataView, LogInScreenStyle.mainBody)}
-                    {/* </View> */}
+                    {/* Referral Code Checkbox */}
+                    {/* <TouchableOpacity 
+                        style={LogInScreenStyle.checkboxContainer}
+                        onPress={() => {
+                            setShowReferralInput(!showReferralInput);
+                            if (showReferralInput) {
+                                setReferralCodeInput('');
+                                setReferralCodeError('');
+                                dispatch(setReferredUserReferralCode(''));
+                            }
+                        }}
+                        activeOpacity={0.7}
+                    >
+                        <View style={[LogInScreenStyle.checkbox, showReferralInput && LogInScreenStyle.checkboxChecked]}>
+                            {showReferralInput && <Text style={LogInScreenStyle.checkmark}>✓</Text>}
+                        </View>
+                        <TextPoppinsSemiBold style={LogInScreenStyle.checkboxLabel}>
+                            {t('HAVE_REFERRAL_CODE')}
+                        </TextPoppinsSemiBold>
+                    </TouchableOpacity> */}
+                    
+                    {/* Referral Code Input - Only show if checkbox is checked */}
+                    {showReferralInput && (
+                        <View style={{ marginTop: 16 }}>
+                            <ReferralCodeInput 
+                                title="Referral Code *"
+                                placeholder="Enter referral code"
+                                value={referralCodeInput}
+                                error={referralCodeError}
+                                onChangeText={(text: any) => onChangeReferralCode(text)}
+                                style={LogInScreenStyle.dataView}
+                                containerStyle={LogInScreenStyle.mainBody}
+                            />
+                        </View>
+                    )}
                     
                     {PressableButton(isLoader ? t('LOADING') : t('CONTINUE_BUTTON'), onClickSignIn, isLoader)}
                     
-                    {/* API Response Display */}
-                    {/* {apiResponse !== '' && (
-                        <View style={{
-                            marginTop: 20,
-                            padding: 15,
-                            backgroundColor: '#f5f5f5',
-                            borderRadius: 8,
-                            borderWidth: 1,
-                            borderColor: '#ddd',
-                            maxHeight: 300
-                        }}>
-                            <Text style={{
-                                fontSize: 14,
-                                fontWeight: 'bold',
-                                marginBottom: 10,
-                                color: '#333'
-                            }}>
-                                📡 API Response:
-                            </Text>
-                            <ScrollView style={{ maxHeight: 250 }}>
-                                <Text style={{
-                                    fontFamily: 'monospace',
-                                    fontSize: 12,
-                                    color: '#666',
-                                    lineHeight: 16
-                                }}>
-                                    {apiResponse}
-                                </Text>
-                            </ScrollView>
-                            
-                          
-                            <Pressable 
-                                onPress={() => setApiResponse('')}
-                                style={{
-                                    marginTop: 10,
-                                    backgroundColor: '#ff6b6b',
-                                    padding: 8,
-                                    borderRadius: 4,
-                                    alignSelf: 'flex-end'
-                                }}
-                            >
-                                <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold' }}>
-                                    Clear
-                                </Text>
-                            </Pressable>
-                        </View>
-                    )} */}
+            
                     
                     {/* {alreadyAccountView(t('NO_ACCOUNT'), t('SIGN_UP'), getStartedPress)} */}
                 </View>

@@ -124,7 +124,13 @@ const Registration = ({ navigation }: any) => {
                 <View style={{ gap: 15, paddingHorizontal: 15 }}>
                     {renderItem("Full Name *", "Enter your full name", formValue?.fullName, errorMessage?.fullName, (text: any) => onChangeFormName('fullName', text))}
                     {renderItem("E-Mail", "Enter your E-Mail", formValue?.email, errorMessage?.email, (text: any) => onChangeFormName('email', text))}
-                    {MobileNumber("Phone Number *", "Enter your mobile number", formValue?.mobileNumber, errorMessage?.mobileNumber, (text: any) => onChangeFormName('mobileNumber', text))}
+                    <MobileNumber 
+                        title="Phone Number *"
+                        placeholder="Enter your mobile number"
+                        value={formValue?.mobileNumber}
+                        error={errorMessage?.mobileNumber}
+                        onChangeText={(text: any) => onChangeFormName('mobileNumber', text)}
+                    />
                     {renderItem("Crop Type", "Enter your Crop Type", formValue?.cropType, errorMessage?.cropType, (text: any) => onChangeFormName('cropType', text))}
                     {renderItem("Land Size", "Enter your Land Size", formValue?.landSize, errorMessage?.landSize, (text: any) => onChangeFormName('landSize', text))}
                 </View>

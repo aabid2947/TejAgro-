@@ -1,3 +1,4 @@
+import React from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native"
 import { BGRED, BLACK, GRAY_SHADE, PoppinsMedium, WHITE } from "../../shared/common-styles/colors"
 import { useTranslation } from "react-i18next";
@@ -5,21 +6,39 @@ import TextPoppinsSemiBold from "../../shared/fontFamily/TextPoppinsSemiBold";
 import TextPoppinsMediumBold from "../../shared/fontFamily/TextPoppinsMediumBold";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 
-export const ReferralCodeInput = (Title: string, placeholder: string, value: any, erroMsg?: any, onchange?: any, styleView?: any, mainView?: any) => {
+interface ReferralCodeInputProps {
+    title?: string;
+    placeholder?: string;
+    value: any;
+    error?: any;
+    onChangeText?: any;
+    style?: any;
+    containerStyle?: any;
+}
+
+export const ReferralCodeInput: React.FC<ReferralCodeInputProps> = ({
+    title,
+    placeholder,
+    value,
+    error,
+    onChangeText,
+    style: styleView,
+    containerStyle: mainView
+}) => {
     const { t } = useTranslation();
     return (
         <View style={mainView ? mainView : {}}>
             <TextPoppinsMediumBold style={style.titleText}>
-                {t('REFERRAL_CODE')} ({t('OPTIONAL')})
+                {title || `${t('REFERRAL_CODE')} (${t('OPTIONAL')})`}
             </TextPoppinsMediumBold>
             <View style={styleView ? styleView : style.dataView1}>
                 <TextInput
                     style={style.inputText}
-                    placeholder={t('ENTER_REFERRAL_CODE')}
+                    placeholder={placeholder || t('ENTER_REFERRAL_CODE')}
                     placeholderTextColor={GRAY_SHADE}
                     value={value}
-                    editable={onchange ? true : false}
-                    onChangeText={onchange}
+                    editable={onChangeText ? true : false}
+                    onChangeText={onChangeText}
                     autoCapitalize="characters"
                     maxLength={10}
                 />
@@ -27,8 +46,8 @@ export const ReferralCodeInput = (Title: string, placeholder: string, value: any
             <TextPoppinsSemiBold style={style.helpText}>
                 {t('REFERRAL_CODE_HELP')}
             </TextPoppinsSemiBold>
-            {erroMsg &&
-                <TextPoppinsSemiBold style={style.errorFormText}>{erroMsg}</TextPoppinsSemiBold>
+            {error &&
+                <TextPoppinsSemiBold style={style.errorFormText}>{error}</TextPoppinsSemiBold>
             }
         </View>
     )

@@ -131,4 +131,35 @@ export const LogInScreenStyle = StyleSheet.create({
         height: 45,
         justifyContent: 'center',
     },
+    checkboxContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginHorizontal: 20,
+        marginTop: 15,
+        marginBottom: 5,
+    },
+    checkbox: {
+        width: 24,
+        height: 24,
+        borderWidth: 2,
+        borderColor: MDBLUE,
+        borderRadius: 6,
+        marginRight: 12,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: WHITE,
+    },
+    checkboxChecked: {
+        backgroundColor: MDBLUE,
+    },
+    checkmark: {
+        color: WHITE,
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    checkboxLabel: {
+        fontSize: 14,
+        color: BLACK,
+        flex: 1,
+    },
 })

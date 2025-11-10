@@ -51,7 +51,7 @@ const CreatePostScreen: React.FC = () => {
 
   const [currentStep, setCurrentStep] = useState(1); // 1: Image, 2: Description, 3: Tags
   const [description, setDescription] = useState('');
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [cropList, setCropList] = useState<any[]>([]);
   const [selectedCrops, setSelectedCrops] = useState<any[]>([]);
@@ -277,6 +277,7 @@ const CreatePostScreen: React.FC = () => {
       includeBase64: false,
       maxHeight: 2000,
       maxWidth: 2000,
+      selectionLimit: 5, // Allow up to 5 images
     };
 
     launchImageLibrary(options, handleImageResponse);
@@ -302,30 +303,49 @@ const CreatePostScreen: React.FC = () => {
       return;
     }
 
-    if (response.assets && response.assets.length > 0 && response.assets[0].uri) {
-      const imageUri = response.assets[0].uri;
-      setSelectedImage(imageUri);
-      console.log('Image selected successfully:', imageUri);
-      console.log('Image details:', {
-        fileName: response.assets[0].fileName,
-        fileSize: response.assets[0].fileSize,
-        type: response.assets[0].type,
-        width: response.assets[0].width,
-        height: response.assets[0].height,
-      });
+    if (response.assets && response.assets.length > 0) {
+      const imageUris = response.assets
+        .filter(asset => asset.uri)
+        .map(asset => asset.uri!);
       
-      // Show success message
-      if (Platform.OS === 'android') {
-        ToastAndroid.show(t('IMAGE_SELECTED_SUCCESS'), ToastAndroid.SHORT);
+      if (imageUris.length > 0) {
+        // For camera, replace the array. For gallery, it can be multiple
+        if (response.assets.length === 1) {
+          // Single image from camera - add to existing array
+          setSelectedImages(prev => [...prev, ...imageUris]);
+        } else {
+          // Multiple images from gallery - replace array
+          setSelectedImages(imageUris);
+        }
+        
+        console.log('Images selected successfully:', imageUris);
+        console.log('Total images selected:', imageUris.length);
+        
+        // Show success message
+        if (Platform.OS === 'android') {
+          ToastAndroid.show(
+            imageUris.length > 1 
+              ? t('IMAGES_SELECTED_SUCCESS') 
+              : t('IMAGE_SELECTED_SUCCESS'), 
+            ToastAndroid.SHORT
+          );
+        }
+      } else {
+        console.log('No valid images selected');
+        Alert.alert(t('ERROR'), t('NO_IMAGE_SELECTED'));
       }
     } else {
-      console.log('No image selected or invalid response:', response);
+      console.log('No images selected or invalid response:', response);
       Alert.alert(t('ERROR'), t('NO_IMAGE_SELECTED'));
     }
   };
 
-  const removeImage = () => {
-    setSelectedImage(null);
+  const removeImage = (indexToRemove: number) => {
+    setSelectedImages(prev => prev.filter((_, index) => index !== indexToRemove));
+  };
+
+  const clearAllImages = () => {
+    setSelectedImages([]);
   };
 
   const handleCropSelection = (crop: any) => {
@@ -347,7 +367,11 @@ const CreatePostScreen: React.FC = () => {
         onPress={() => handleCropSelection(item)}
         activeOpacity={0.7}
       >
-        {isSelected && <View style={styles.selectedIndicator} />}
+        {isSelected && (
+          <View style={styles.tickMarkContainer}>
+            <Text style={styles.tickMark}>✓</Text>
+          </View>
+        )}
         {regexImage.test(item?.crop_image) ? (
           <Image source={{ uri: item.crop_image }} style={styles.cropImage} />
         ) : (
@@ -364,7 +388,7 @@ const CreatePostScreen: React.FC = () => {
   };
 
   const validateStep = () => {
-    if (currentStep === 1 && !selectedImage) {
+    if (currentStep === 1 && selectedImages.length === 0) {
       Alert.alert(t('ERROR'), t('PLEASE_SELECT_IMAGE'));
       return false;
     }
@@ -393,6 +417,17 @@ const CreatePostScreen: React.FC = () => {
     }
   };
 
+  const convertImagesToBase64Array = async (imageUris: string[]): Promise<string[]> => {
+    try {
+      const base64Promises = imageUris.map(uri => convertImageToBase64(uri));
+      const base64Results = await Promise.all(base64Promises);
+      return base64Results.filter(result => result !== null) as string[];
+    } catch (error) {
+      console.log('Error converting images to base64 array:', error);
+      return [];
+    }
+  };
+
   const handleSubmit = async () => {
     if (!description.trim()) {
       Alert.alert(t('ERROR'), t('PLEASE_ENTER_DESCRIPTION'));
@@ -407,23 +442,24 @@ const CreatePostScreen: React.FC = () => {
     try {
       setSubmitting(true);
 
-      let imageBase64 = null;
-      if (selectedImage) {
-        imageBase64 = await convertImageToBase64(selectedImage);
+      let imagesBase64: string[] = [];
+      if (selectedImages.length > 0) {
+        imagesBase64 = await convertImagesToBase64Array(selectedImages);
       }
 
-      // Create JSON payload
+      // Create JSON payload with images array
       const payload = {
         client_id: currentClientId.toString(),
         post_description: description.trim(),
         post_category: "personal",
-        post_file: imageBase64
+        post_file: imagesBase64 // Changed from post_file to post_files as array
       };
 
-    
+      console.log('Payload:', {
+        ...payload,
+        post_files: `[${imagesBase64.length} images]` // Don't log full base64 strings
+      });
 
-      // save this payload in a file
-      
       // Call the createPost API
       const response = await AuthApi.createPost(payload);
 
@@ -454,7 +490,7 @@ const CreatePostScreen: React.FC = () => {
   };
 
   const canProceed = () => {
-    if (currentStep === 1) return selectedImage !== null;
+    if (currentStep === 1) return selectedImages.length > 0;
     if (currentStep === 2) return description.trim().length > 0;
     return true;
   };
@@ -486,21 +522,46 @@ const CreatePostScreen: React.FC = () => {
             <View style={styles.imageSectionHeader}>
               <CameraIcon width={20} height={20} color={MDBLUE} />
               <TextPoppinsRegular style={styles.imageSectionTitle}>
-                {t('UPLOAD_PHOTO')}
+                {selectedImages.length > 0 ? t('ADD_MORE_PHOTOS') : t('UPLOAD_PHOTO')} ({selectedImages.length}/5)
               </TextPoppinsRegular>
             </View>
           </TouchableOpacity>
 
-          {selectedImage && (
-            <View style={styles.selectedImageContainer}>
-              <Image source={{ uri: selectedImage }} style={styles.selectedImage} />
-              <TouchableOpacity
-                style={styles.removeImageButton}
-                onPress={removeImage}
-                activeOpacity={0.7}
+          {selectedImages.length > 0 && (
+            <View style={styles.selectedImagesContainer}>
+              <View style={styles.imagesHeader}>
+                <TextPoppinsSemiBold style={styles.imagesHeaderText}>
+                  {t('SELECTED_IMAGES')} ({selectedImages.length})
+                </TextPoppinsSemiBold>
+                <TouchableOpacity
+                  style={styles.clearAllButton}
+                  onPress={clearAllImages}
+                  activeOpacity={0.7}
+                >
+                  <TextPoppinsRegular style={styles.clearAllText}>
+                    {t('CLEAR_ALL')}
+                  </TextPoppinsRegular>
+                </TouchableOpacity>
+              </View>
+              
+              <ScrollView 
+                horizontal 
+                showsHorizontalScrollIndicator={false}
+                style={styles.imagesScrollView}
               >
-                <Text style={styles.removeImageText}>×</Text>
-              </TouchableOpacity>
+                {selectedImages.map((imageUri, index) => (
+                  <View key={index} style={styles.imageContainer}>
+                    <Image source={{ uri: imageUri }} style={styles.selectedImage} />
+                    <TouchableOpacity
+                      style={styles.removeImageButton}
+                      onPress={() => removeImage(index)}
+                      activeOpacity={0.7}
+                    >
+                      <Text style={styles.removeImageText}>×</Text>
+                    </TouchableOpacity>
+                  </View>
+                ))}
+              </ScrollView>
             </View>
           )}
         </View>

@@ -115,9 +115,39 @@ export const styles = StyleSheet.create({
     marginTop: 16,
     position: 'relative',
   },
+  selectedImagesContainer: {
+    marginTop: 16,
+  },
+  imagesHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  imagesHeaderText: {
+    fontSize: 16,
+    color: BLACK,
+  },
+  clearAllButton: {
+    backgroundColor: '#ff6b6b',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+  },
+  clearAllText: {
+    color: WHITE,
+    fontSize: 12,
+  },
+  imagesScrollView: {
+    flexDirection: 'row',
+  },
+  imageContainer: {
+    marginRight: 12,
+    position: 'relative',
+  },
   selectedImage: {
-    width: '100%',
-    height: 200,
+    width: 120,
+    height: 120,
     borderRadius: 8,
   },
   removeImageButton: {
@@ -199,7 +229,8 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
   },
   stepTitle: {
-    paddingTop: 4,
+    paddingTop: 8,
+
     fontSize: 20,
     color: BLACK,
     textAlign: 'center',
@@ -229,17 +260,30 @@ export const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: MDBLUE,
   },
-  selectedIndicator: {
+  tickMarkContainer: {
     position: 'absolute',
     top: 5,
     right: 5,
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: MDBLUE,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#4CAF50',
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 1,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 3,
+  },
+  tickMark: {
+    color: WHITE,
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   checkIcon: {
     color: WHITE,

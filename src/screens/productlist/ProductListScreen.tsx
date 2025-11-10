@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, Pressable, SafeAreaView, Text, View } from 'react-native';
+import { FlatList, Pressable, SafeAreaView, Text, View, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import AuthApi from '../../api/AuthApi';
 import { ProductItem } from '../../components/commonComponent/ProductItem';
@@ -19,6 +19,8 @@ import TextPoppinsMediumBold from '../../shared/fontFamily/TextPoppinsMediumBold
 import { jwtDecode } from 'jwt-decode';
 import CustomCaraosel from "../../components/customCarousel/CustomCarousel";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { WebView } from 'react-native-webview';
+
 const ProductListScreen = ({ navigation }: any) => {
     const { t } = useTranslation();
     const [searchQuery, setSearchQuery] = useState('');
@@ -39,25 +41,25 @@ const ProductListScreen = ({ navigation }: any) => {
     const dispatch = useDispatch()
 
     const loadBanner = async () => {
-            // setLoader(true);
-            // console.log("Loading banners...");
-            try {
-                const bannerResponse = await AuthApi.getBanners()
-                
-                
-                //  console.log("Banner response:", bannerResponse.data);
-                if (bannerResponse ) {
-                    setBanner(bannerResponse?.data?.dashboard_slider || []);
-                } else {
-                    console.log("Received undefined response from APIs");
-                }
-            } catch (error: any) {
-                console.log("Error loading data:", error.response || error);
-            } finally {
-                // setLoader(false);
+        // setLoader(true);
+        // console.log("Loading banners...");
+        try {
+            const bannerResponse = await AuthApi.getBanners()
+
+
+            console.log("Banner response:", bannerResponse.data);
+            if (bannerResponse) {
+                setBanner(bannerResponse?.data?.dashboard_slider || []);
+            } else {
+                console.log("Received undefined response from APIs");
             }
-        };
-    
+        } catch (error: any) {
+            console.log("Error loading data:", error.response || error);
+        } finally {
+            // setLoader(false);
+        }
+    };
+
 
     const decodedTokens = (token: string) => {
         try {
@@ -80,7 +82,7 @@ const ProductListScreen = ({ navigation }: any) => {
         };
         try {
             setLoader(true);
-            const response = await AuthApi.getCartDetails(payload,token);
+            const response = await AuthApi.getCartDetails(payload, token);
             if (response && response.data && Array.isArray(response.data)) {
                 const numberofItems = response.data.reduce((total: number, item: any) => total + Number(item.quantity), 0)
                 dispatch(setTotalItems(numberofItems))
@@ -116,9 +118,9 @@ const ProductListScreen = ({ navigation }: any) => {
     };
     useEffect(() => {
         // setTimeout(() => {
-            getProductList()
-            getCartDetail()
-            loadBanner()
+        getProductList()
+        getCartDetail()
+        loadBanner()
         // }, 1000)
 
     }, [])
@@ -126,7 +128,7 @@ const ProductListScreen = ({ navigation }: any) => {
         try {
             setLoader(true)
             const response = await AuthApi.getProductList();
- 
+
             setProductData(response?.data);
             setLoader(false);
         } catch (error: any) {
@@ -169,6 +171,8 @@ const ProductListScreen = ({ navigation }: any) => {
                     setSearchQuery={setSearchQuery}
                     searchQuery={searchQuery}
                     onChangeText={handleSearch} />
+
+               
                 {isLoader ?
                     <LoaderScreen /> :
                     <FlatList

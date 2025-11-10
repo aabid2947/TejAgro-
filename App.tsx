@@ -21,6 +21,7 @@ import InternetAuthGuard from './src/components/guards/InternetAuthGuard';
 import { LoaderScreen } from './src/components/loaderview/LoaderScreen';
 import { ModalProvider } from './src/components/modalContext/ModalContext';
 import { LuckyDrawProvider } from './src/contexts/LuckyDrawContext';
+import { PopupProvider } from './src/contexts/PopupContext';
 import { persistor, RootState, store } from './src/reduxToolkit/store';
 import AppRouter from './src/routes/AppRouter';
 import { PRIMARY, WHITE } from './src/shared/common-styles/colors';
@@ -144,11 +145,13 @@ export default () => (
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <SafeAreaProvider>
-        <ModalProvider>
-          {/* <MyContextProvider> */}
-          <App />
-          {/* </MyContextProvider> */}
-        </ModalProvider>
+        <PopupProvider>
+          <ModalProvider>
+            {/* <MyContextProvider> */}
+            <App />
+            {/* </MyContextProvider> */}
+          </ModalProvider>
+        </PopupProvider>
       </SafeAreaProvider>
     </PersistGate>
   </Provider>

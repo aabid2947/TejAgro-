@@ -21,7 +21,8 @@ export const LuckyDrawProvider: React.FC<LuckyDrawProviderProps> = ({ children }
 
   useEffect(() => {
     loadVisitedStatus();
-    setHasVisitedLuckyDraw(false)
+    // Temporarily force to false for testing
+    // setHasVisitedLuckyDraw(false)
   }, []);
 
   const loadVisitedStatus = async () => {

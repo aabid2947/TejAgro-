@@ -149,6 +149,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
   },
   mainHeading: {
+    paddingTop: 4,
     fontSize: 18,
     color: MDBLUE,
     textAlign: 'center',

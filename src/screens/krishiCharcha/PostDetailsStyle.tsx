@@ -102,6 +102,46 @@ export const styles = StyleSheet.create({
     overflow: 'hidden',
     marginTop: 8,
   },
+  imagesContainer: {
+    marginTop: 8,
+  },
+  singleImageContainer: {
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  singleImage: {
+    width: '100%',
+    height: 200,
+  },
+  multipleImagesContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  multipleImageItem: {
+    position: 'relative',
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  multipleImage: {
+    width: '100%',
+    height: 120,
+  },
+  moreImagesOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  moreImagesText: {
+    color: WHITE,
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
   postImage: {
     width: '100%',
     height: 200,
@@ -235,5 +275,38 @@ export const styles = StyleSheet.create({
   commentTime: {
     fontSize: 11,
     color: GRAY,
+  },
+  imageModalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    position: 'absolute',
+    top: 40,
+    left: 20,
+    right: 20,
+    zIndex: 1000,
+  },
+  imageModalCounter: {
+    color: WHITE,
+    fontSize: 16,
+    fontWeight: 'bold',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 15,
+  },
+  imageModalCloseButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imageModalCloseText: {
+    color: WHITE,
+    fontSize: 32,
+    fontWeight: 'bold',
+    lineHeight: 32,
   },
 });

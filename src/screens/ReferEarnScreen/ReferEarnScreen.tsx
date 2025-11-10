@@ -18,6 +18,7 @@ interface ReferralData {
     farmer_name?: string;
     referral_amt?: string;
     referral_code?: string;
+    referral_count?: string;
     referral_from?: string;
     referral_to?: string;
     referral_type?: string;
@@ -32,11 +33,11 @@ interface FAQItem {
 }
 
 const ReferEarnScreen: React.FC = () => {
-    
+
     const { t } = useTranslation();
     const navigation = useNavigation();
     const insets = useSafeAreaInsets();
-    
+
     const referralCode = useSelector((state: RootState) => state.counter.referralCode);
     const [referralData, setReferralData] = useState<ReferralData | null>(null);
     const [loading, setLoading] = useState(true);
@@ -62,10 +63,10 @@ const ReferEarnScreen: React.FC = () => {
             setLoading(true);
             const response = await AuthApi.getReferralInfo();
             console.log('Referral API Response:', response.data);
-            
+
             // Handle the new array response format
             let parsedData: ReferralData = { status: false };
-            
+
             if (Array.isArray(response.data) && response.data.length > 0) {
                 // Take the first item from the array
                 parsedData = response.data[0];
@@ -84,9 +85,9 @@ const ReferEarnScreen: React.FC = () => {
                     console.error('Error parsing JSON string:', parseError);
                 }
             }
-            
+
             console.log('Parsed Referral Data:', parsedData);
-            
+
             if (parsedData?.status) {
                 setReferralData(parsedData);
             } else {
@@ -103,8 +104,14 @@ const ReferEarnScreen: React.FC = () => {
 
     const shareReferralCode = async (codeToShare: string) => {
         try {
-            const shareMessage = `🌱 ${t('SHARE_REFERRAL_TITLE')}: ${codeToShare}\n\n📱 ${t('SHARE_FARMING_EXPERIENCE')}\n\n💰 ${t('GET_REWARDS_MESSAGE')}\n\n🔗 ${t('DOWNLOAD')}: ${App_Link}`;
-            
+            // const shareMessage = `🌱 ${t('SHARE_REFERRAL_TITLE')}: ${codeToShare}\n\n📱 ${t('SHARE_FARMING_EXPERIENCE')}\n\n💰 ${t('GET_REWARDS_MESSAGE')}\n\n🔗 ${t('DOWNLOAD')}: ${App_Link}`;
+            const shareMessage = `आता करा स्मार्ट शेती..!
+Tej Agro अ‍ॅपमध्ये जॉईन करताना कोड वापरा: ${codeToShare}
+
+Tej Agro अ‍ॅपमध्ये मिळेल सर्व पिकांचे शास्त्रशुद्ध नियोजन, कृषी तज्ञांचे मार्गदर्शन आणि विडिओ, दर्जेदार कृषी उत्पादने – सर्व एकाच अ‍ॅपमध्ये !
+अधिक माहितीसाठी संपर्क क्रमांक - 91 305 305 91
+
+🔗App  डाउनलोड: https://play.google.com/store/apps/details?id=com.tejagroapp`
             const result = await Share.share({
                 message: shareMessage,
                 title: t('SHARE_REFERRAL_TITLE'),
@@ -123,7 +130,7 @@ const ReferEarnScreen: React.FC = () => {
         try {
             const shareMessage = `🌱 ${t('JOIN_TEJAGRO_MESSAGE')}: ${codeToShare}\n\n📱 ${t('DOWNLOAD_START_JOURNEY')}\n\n💰 ${t('GET_REWARDS_MESSAGE')}`;
             const whatsappUrl = `whatsapp://send?text=${encodeURIComponent(shareMessage)}`;
-            
+
             const canOpen = await Linking.canOpenURL(whatsappUrl);
             if (canOpen) {
                 await Linking.openURL(whatsappUrl);
@@ -137,7 +144,7 @@ const ReferEarnScreen: React.FC = () => {
     };
 
     const toggleFAQ = (index: number) => {
-        setFaqItems(prev => prev.map((item, i) => 
+        setFaqItems(prev => prev.map((item, i) =>
             i === index ? { ...item, expanded: !item.expanded } : item
         ));
     };
@@ -153,20 +160,36 @@ const ReferEarnScreen: React.FC = () => {
 
     const renderReferralCard = () => {
         const displayReferralCode = referralData?.referral_code || referralCode || 'Not Available';
-        
+
         return (
             <View style={styles.mainContainer}>
                 {/* Total Amount Display */}
                 <View style={styles.totalAmountContainer}>
                     <Text style={styles.totalAmountLabel}>{t('TOTAL_EARNINGS')}</Text>
-                    <Text style={styles.totalAmountText}>₹ {referralData?.referral_amt || '0'}</Text>
-                    <Text style={styles.totalAmountSubtext}>{t('EARNED_SO_FAR')}</Text>
+
+                    {/* Split container for count and amount */}
+                    <View style={styles.splitContainer}>
+                        {/* Left side - Referral Count */}
+
+                        <View style={styles.rightSection}>
+                            <Text style={styles.totalAmountText}>₹ {referralData?.referral_amt || '0'}</Text>
+                            <Text style={styles.totalAmountSubtext}>{t('EARNED_SO_FAR')}</Text>
+                        </View>
+                        {/* Divider */}
+                        <View style={styles.verticalDivider} />
+
+                        <View style={styles.leftSection}>
+                            <Text style={styles.countText}>{referralData?.referral_count || '0'}</Text>
+                            <Text style={styles.countLabel}>{t('REFERRALS')}</Text>
+                        </View>
+                        {/* Right side - Total Amount */}
+                    </View>
                 </View>
 
                 {/* Earn Text */}
-                <Text style={styles.earnText}>
+                {/* <Text style={styles.earnText}>
                     {t('EARN_PER_REFERRAL')}
-                </Text>
+                </Text> */}
 
                 {/* Your Referral Code Section */}
                 <View style={styles.referralSection}>
@@ -208,11 +231,11 @@ const ReferEarnScreen: React.FC = () => {
     const renderFAQSection = () => (
         <View style={styles.faqContainer}>
             <Text style={styles.faqTitle}>{t('QUESTIONS_ANSWERS')}</Text>
-            
+
             {faqItems.map((item, index) => (
-                <TouchableOpacity 
-                    key={index} 
-                    style={styles.faqItem} 
+                <TouchableOpacity
+                    key={index}
+                    style={styles.faqItem}
                     onPress={() => toggleFAQ(index)}
                 >
                     <View style={styles.faqQuestion}>
@@ -229,18 +252,18 @@ const ReferEarnScreen: React.FC = () => {
 
     const renderBottomButtons = () => {
         const displayReferralCode = referralData?.referral_code || referralCode || 'Not Available';
-        
+
         return (
             <View style={styles.bottomButtonsContainer}>
-                <TouchableOpacity 
+                {/* <TouchableOpacity 
                     style={[styles.bottomButton, styles.whatsappButton]} 
                     onPress={() => shareViaWhatsApp(displayReferralCode)}
                 >
                     <Text style={styles.bottomButtonText}>{t('REFER_VIA_WHATSAPP')}</Text>
-                </TouchableOpacity>
-                
-                <TouchableOpacity 
-                    style={[styles.bottomButton, styles.linkButton]} 
+                </TouchableOpacity> */}
+
+                <TouchableOpacity
+                    style={[styles.bottomButton, styles.linkButton]}
                     onPress={() => shareReferralCode(displayReferralCode)}
                 >
                     <Text style={styles.bottomButtonText}>{t('REFER_VIA_LINK')}</Text>
@@ -250,19 +273,19 @@ const ReferEarnScreen: React.FC = () => {
     };
 
     return (
-        <SafeAreaView style={[styles.container, { paddingTop: insets.top,paddingBottom: insets.bottom }]}>
+        <SafeAreaView style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
             <TopHeaderFixed
                 leftIconSize={20}
                 gobackText={t("REFER_AND_EARN")}
                 topHeight={100}
                 onGoBack={() => navigation.goBack()}
             />
-            
+
             <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
                 {renderReferralCard()}
                 {renderFAQSection()}
             </ScrollView>
-            
+
             {renderBottomButtons()}
         </SafeAreaView>
     );
@@ -306,10 +329,43 @@ const styles = StyleSheet.create({
         letterSpacing: 1,
     },
     totalAmountText: {
-        fontSize: 48,
+        fontSize: 32,
         fontWeight: 'bold',
         color: '#4CAF50',
-        marginBottom: 8,
+        marginBottom: 4,
+        textAlign: 'center',
+    },
+    splitContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '100%',
+        paddingTop: 8,
+    },
+    leftSection: {
+        flex: 1,
+        alignItems: 'center',
+    },
+    rightSection: {
+        flex: 1,
+        alignItems: 'center',
+    },
+    verticalDivider: {
+        width: 1,
+        height: 60,
+        backgroundColor: '#4CAF50',
+        marginHorizontal: 15,
+    },
+    countText: {
+        fontSize: 32,
+        fontWeight: 'bold',
+        color: '#FF6B35',
+        marginBottom: 4,
+        textAlign: 'center',
+    },
+    countLabel: {
+        fontSize: 14,
+        color: '#888888',
+        fontWeight: '500',
         textAlign: 'center',
     },
     totalAmountSubtext: {

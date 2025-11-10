@@ -5,7 +5,7 @@ import InstagramIcon from '../../svg/InstagramIcon';
 import LinkedInIcon from '../../svg/LinkedInIcon';
 import YouTubeIcon from '../../svg/YouTubeIcon';
 import WhatsAppIcon from '../../svg/WhatsAppIcon';
-import ShareIcon from '../../svg/ShareIcon';
+import SearchIcon from '../../svg/SearchIcon';
 
 interface SocialMediaFabProps {
   style?: any;
@@ -63,10 +63,11 @@ const SocialMediaFab: React.FC<SocialMediaFabProps> = ({ style }) => {
   };
 
   // Calculate positions for semicircle arrangement (opening to the left)
+  // Icon sequence: WhatsApp, YouTube, Instagram, Facebook, LinkedIn
   const radius = 90;
   const angleStep = Math.PI / 7; // Adjusted for 5 buttons
   
-  const facebookTranslate = {
+  const whatsappTranslate = {
     x: animation.interpolate({
       inputRange: [0, 1],
       outputRange: [0, -radius * Math.cos(angleStep * 3.2) + 15],
@@ -77,7 +78,7 @@ const SocialMediaFab: React.FC<SocialMediaFabProps> = ({ style }) => {
     }),
   };
 
-  const instagramTranslate = {
+  const youtubeTranslate = {
     x: animation.interpolate({
       inputRange: [0, 1],
       outputRange: [0, -radius * Math.cos(angleStep * 2) + 10],
@@ -88,7 +89,7 @@ const SocialMediaFab: React.FC<SocialMediaFabProps> = ({ style }) => {
     }),
   };
 
-  const linkedinTranslate = {
+  const instagramTranslate = {
     x: animation.interpolate({
       inputRange: [0, 1],
       outputRange: [0, -radius * Math.cos(angleStep * 1.5) + 5],
@@ -99,7 +100,7 @@ const SocialMediaFab: React.FC<SocialMediaFabProps> = ({ style }) => {
     }),
   };
 
-  const whatsappTranslate = {
+  const facebookTranslate = {
     x: animation.interpolate({
       inputRange: [0, 1],
       outputRange: [0, -radius * Math.cos(angleStep * 2) + 2],
@@ -110,7 +111,7 @@ const SocialMediaFab: React.FC<SocialMediaFabProps> = ({ style }) => {
     }),
   };
 
-  const youtubeTranslate = {
+  const linkedinTranslate = {
     x: animation.interpolate({
       inputRange: [0, 1],
       outputRange: [0, -radius * Math.cos(angleStep * 3) + 10],
@@ -133,73 +134,7 @@ const SocialMediaFab: React.FC<SocialMediaFabProps> = ({ style }) => {
 
   return (
     <View style={[styles.container, style]}>
-      {/* Facebook Button */}
-      <Animated.View
-        style={[
-          styles.socialButton,
-          {
-            transform: [
-              { translateX: facebookTranslate.x },
-              { translateY: facebookTranslate.y },
-              { scale: iconScale },
-            ],
-          },
-        ]}
-      >
-        <TouchableOpacity
-          style={[styles.button, styles.socialIconButton]}
-          onPress={() => openSocialMedia('facebook')}
-          activeOpacity={0.8}
-        >
-          <FacebookIcon width={24} height={24} color="#1877F2" />
-        </TouchableOpacity>
-      </Animated.View>
-
-      {/* Instagram Button */}
-      <Animated.View
-        style={[
-          styles.socialButton,
-          {
-            transform: [
-              { translateX: instagramTranslate.x },
-              { translateY: instagramTranslate.y },
-              { scale: iconScale },
-            ],
-          },
-        ]}
-      >
-        <TouchableOpacity
-          style={[styles.button, styles.socialIconButton]}
-          onPress={() => openSocialMedia('instagram')}
-          activeOpacity={0.8}
-        >
-          <InstagramIcon width={24} height={24} color="#E4405F" />
-        </TouchableOpacity>
-      </Animated.View>
-
-      {/* LinkedIn Button */}
-      <Animated.View
-        style={[
-          styles.socialButton,
-          {
-            transform: [
-              { translateX: linkedinTranslate.x },
-              { translateY: linkedinTranslate.y },
-              { scale: iconScale },
-            ],
-          },
-        ]}
-      >
-        <TouchableOpacity
-          style={[styles.button, styles.socialIconButton]}
-          onPress={() => openSocialMedia('linkedin')}
-          activeOpacity={0.8}
-        >
-          <LinkedInIcon width={24} height={24} color="#0077B5" />
-        </TouchableOpacity>
-      </Animated.View>
-
-      {/* WhatsApp Button */}
+      {/* WhatsApp Button - First */}
       <Animated.View
         style={[
           styles.socialButton,
@@ -221,7 +156,7 @@ const SocialMediaFab: React.FC<SocialMediaFabProps> = ({ style }) => {
         </TouchableOpacity>
       </Animated.View>
 
-      {/* YouTube Button */}
+      {/* YouTube Button - Second */}
       <Animated.View
         style={[
           styles.socialButton,
@@ -243,7 +178,73 @@ const SocialMediaFab: React.FC<SocialMediaFabProps> = ({ style }) => {
         </TouchableOpacity>
       </Animated.View>
 
-      {/* Main Toggle Button */}
+      {/* Instagram Button - Third */}
+      <Animated.View
+        style={[
+          styles.socialButton,
+          {
+            transform: [
+              { translateX: instagramTranslate.x },
+              { translateY: instagramTranslate.y },
+              { scale: iconScale },
+            ],
+          },
+        ]}
+      >
+        <TouchableOpacity
+          style={[styles.button, styles.socialIconButton]}
+          onPress={() => openSocialMedia('instagram')}
+          activeOpacity={0.8}
+        >
+          <InstagramIcon width={24} height={24} color="#E4405F" />
+        </TouchableOpacity>
+      </Animated.View>
+
+      {/* Facebook Button - Fourth */}
+      <Animated.View
+        style={[
+          styles.socialButton,
+          {
+            transform: [
+              { translateX: facebookTranslate.x },
+              { translateY: facebookTranslate.y },
+              { scale: iconScale },
+            ],
+          },
+        ]}
+      >
+        <TouchableOpacity
+          style={[styles.button, styles.socialIconButton]}
+          onPress={() => openSocialMedia('facebook')}
+          activeOpacity={0.8}
+        >
+          <FacebookIcon width={24} height={24} color="#1877F2" />
+        </TouchableOpacity>
+      </Animated.View>
+
+      {/* LinkedIn Button - Fifth */}
+      <Animated.View
+        style={[
+          styles.socialButton,
+          {
+            transform: [
+              { translateX: linkedinTranslate.x },
+              { translateY: linkedinTranslate.y },
+              { scale: iconScale },
+            ],
+          },
+        ]}
+      >
+        <TouchableOpacity
+          style={[styles.button, styles.socialIconButton]}
+          onPress={() => openSocialMedia('linkedin')}
+          activeOpacity={0.8}
+        >
+          <LinkedInIcon width={24} height={24} color="#0077B5" />
+        </TouchableOpacity>
+      </Animated.View>
+
+      {/* Main Toggle Button - Now with Search Icon */}
       <Animated.View
         style={{
           transform: [{ rotate: mainButtonRotation }],
@@ -254,7 +255,7 @@ const SocialMediaFab: React.FC<SocialMediaFabProps> = ({ style }) => {
           onPress={toggleExpand}
           activeOpacity={0.8}
         >
-          <ShareIcon width={24} height={24} color="#FFFFFF" />
+          <SearchIcon width={24} height={24} color="#FFFFFF" />
         </TouchableOpacity>
       </Animated.View>
     </View>

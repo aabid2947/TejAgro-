@@ -25,8 +25,6 @@ interface VideoData {
     videoId: string;
     description: string;
     thumbnail: string;
-    duration: string;
-    views: string;
     crop_name?: string;
     marathi_name?: string;
     marathi_subject?: string;
@@ -41,9 +39,9 @@ const YouTubeVideosScreen = ({ navigation }: any) => {
     const [filteredVideos, setFilteredVideos] = useState<VideoData[]>([]);
     const [refresh, setRefresh] = useState(false);
     const [isLoader, setLoader] = useState(false);
-    const [banner, setBanner] = useState([]);
+  
     const [videoData, setVideoData] = useState<VideoData[]>([]);
-    const userData: any = useSelector((state: RootState) => state.counter.isUserinfo);
+    // const userData: any = useSelector((state: RootState) => state.counter.isUserinfo);
     const profileDetail: any = useSelector((state: RootState) => state.counter.isProfileInfo);
     const totalItems: any = useSelector((state: RootState) => state.counter.totalItems);
     const isUserData = useSelector((state: any) => state.counter.isUserinfo);
@@ -51,20 +49,7 @@ const YouTubeVideosScreen = ({ navigation }: any) => {
     const insets = useSafeAreaInsets();
     const dispatch = useDispatch();
 
-    const handleSnapToItem = (index: number) => {
-        // Handle carousel snap
-    };
 
-    const loadBanner = async () => {
-        try {
-            const bannerResponse = await AuthApi.getBanners();
-            if (bannerResponse) {
-                setBanner(bannerResponse?.data?.dashboard_slider || []);
-            }
-        } catch (error: any) {
-            console.log("Error loading banners:", error);
-        }
-    };
 
     const decodedTokens = (token: string) => {
         try {
@@ -102,13 +87,12 @@ const YouTubeVideosScreen = ({ navigation }: any) => {
             setRefresh(false);
             getVideoList();
             getCartDetail();
-            loadBanner();
+         
         }, 1000);
     };
 
     const handleSearch = (query: string) => {
         setSearchQuery(query);
-        console.log('YouTube search input:', query, 'videoData length:', videoData.length);
         if (query) {
             const filtered = videoData.filter(video =>
                 video.title.toLowerCase().includes(query.toLowerCase()) ||
@@ -126,7 +110,7 @@ const YouTubeVideosScreen = ({ navigation }: any) => {
 
     // Function to extract video ID from YouTube URL
     const extractVideoId = (url: string) => {
-        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
         const match = url.match(regExp);
         return (match && match[2].length === 11) ? match[2] : null;
     };
@@ -134,7 +118,7 @@ const YouTubeVideosScreen = ({ navigation }: any) => {
     // Function to transform API response to expected format
     const transformVideoData = (apiData: any[]): VideoData[] => {
         return apiData.map((item, index) => {
-            const videoId = extractVideoId(item.url);
+            const videoId = extractVideoId(item.url) || ''; // Fallback to default video ID
             
             // Get appropriate title based on language preference
             let title = 'Farming Video';
@@ -144,24 +128,15 @@ const YouTubeVideosScreen = ({ navigation }: any) => {
                 title = item.marathi_subject;
             }
             
-            // Create description based on crop name or use title
-            let description = 'Educational farming content';
-            if (item.crop_name && item.crop_name.trim()) {
-                description = `Learn about ${item.crop_name} farming techniques and best practices`;
-            } else if (item.marathi_name && item.marathi_name.trim()) {
-                description = `${item.marathi_name} च्या शेतीबद्दल शिका`;
-            } else if (title !== 'Farming Video') {
-                description = title;
-            }
+            // Use description from API, or fallback to title
+            let description = item.description || title || 'Educational farming content';
             
             return {
                 id: item.id || index.toString(),
                 title: title,
-                videoId: videoId || 'dQw4w9WgXcQ',
+                videoId: videoId,
                 description: description,
-                thumbnail: videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : 'https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
-                duration: '0:00', // API doesn't provide duration
-                views: '0', // API doesn't provide views
+                thumbnail: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
                 crop_name: item.crop_name,
                 marathi_name: item.marathi_name,
                 marathi_subject: item.marathi_subject,
@@ -174,7 +149,7 @@ const YouTubeVideosScreen = ({ navigation }: any) => {
         try {
             setLoader(true);
             const response = await AuthApi.getYouTubeVideos();
-            console.log('API Response:', response);
+            console.log('API Response:', response.data);
             
             if (response?.data?.status && response?.data?.youtube_links) {
                 const transformedData = transformVideoData(response.data.youtube_links);
@@ -197,13 +172,12 @@ const YouTubeVideosScreen = ({ navigation }: any) => {
     useEffect(() => {
         getVideoList();
         getCartDetail();
-        loadBanner();
+       
     }, []);
 
     // If videos load after the user has typed a search query,
     // reapply the filter so results appear without retyping.
     useEffect(() => {
-        console.log('videoData changed, length:', videoData.length, 'current searchQuery:', searchQuery);
         if (searchQuery) {
             // re-run the same logic as handleSearch but avoid double console logs
             const q = searchQuery;
@@ -248,12 +222,7 @@ const YouTubeVideosScreen = ({ navigation }: any) => {
                         ListHeaderComponent={() => {
                             return (
                                 <View>
-                                    {/* {banner?.length > 0 && (
-                                        <CustomCaraosel
-                                            data={banner}
-                                            onSnapToItem={handleSnapToItem}
-                                        />
-                                    )} */}
+                             
                                     <TextPoppinsMediumBold style={YouTubeVideosStyle.headerText}>
                                         {t('FARMING_VIDEOS')}
                                     </TextPoppinsMediumBold>

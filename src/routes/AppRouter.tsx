@@ -23,8 +23,8 @@ import KrishiCharchaScreen from '../screens/krishiCharcha/KrishiCharchaScreen';
 import PostDetailsScreen from '../screens/krishiCharcha/PostDetailsScreen';
 import CreatePostScreen from '../screens/krishiCharcha/CreatePostScreen';
 import OfferScreen from '../screens/offerScreen/OfferScreen';
-import LuckyDrawWinnersScreen from '../screens/luckyDrawWinners/LuckyDrawWinnersScreen';
-import LuckyDrawPDFViewerScreen from '../screens/luckyDrawPDFViewer/LuckyDrawPDFViewerScreen';
+// import LuckyDrawWinnersScreen from '../screens/luckyDrawWinners/LuckyDrawWinnersScreen';
+// import LuckyDrawPDFViewerScreen from '../screens/luckyDrawPDFViewer/LuckyDrawPDFViewerScreen';
 import ChatScreen from '../screens/chat/ChatScreen';
 import ChatConversationScreen from '../screens/chat/ChatScreen';
 import ReferEarnScreen from '../screens/ReferEarnScreen';
@@ -93,8 +93,8 @@ function AppRouter(): JSX.Element {
                 <RootStack.Screen name={POST_DETAILS_SCREEN} options={{ headerShown: false }} component={PostDetailsScreen} />
                 <RootStack.Screen name={CREATE_POST_SCREEN} options={{ headerShown: false }} component={CreatePostScreen} />
                 <RootStack.Screen name={OFFER_SCREEN} options={{ headerShown: false }} component={OfferScreen} />
-                <RootStack.Screen name={LUCKY_DRAW_WINNERS_SCREEN} options={{ headerShown: false }} component={LuckyDrawWinnersScreen} />
-                <RootStack.Screen name={LUCKY_DRAW_PDF_VIEWER_SCREEN} options={{ headerShown: false }} component={LuckyDrawPDFViewerScreen} />
+                {/* <RootStack.Screen name={LUCKY_DRAW_WINNERS_SCREEN} options={{ headerShown: false }} component={LuckyDrawWinnersScreen} />
+                <RootStack.Screen name={LUCKY_DRAW_PDF_VIEWER_SCREEN} options={{ headerShown: false }} component={LuckyDrawPDFViewerScreen} /> */}
                 <RootStack.Screen name={REFER_EARN_SCREEN} options={{ headerShown: false }} component={ReferEarnScreen} />
                 <RootStack.Screen name={CHAT_SCREEN} options={{ headerShown: false }} component={ChatScreen} />
                 <RootStack.Screen name={CHAT_CONVERSATION_SCREEN} options={{ headerShown: false }} component={ChatConversationScreen} />

@@ -1,7 +1,7 @@
 
-curl -X POST "https://tejagrosales.tejgroup.in/Webservices/otp.php" -H "Content-Type:application/json"   -d '{"mobile_no":"9548299969"}' 
+curl -X POST "https://tejagrosales.tejgroup.in/Webservices/otp.php" -H "Content-Type:application/json"   -d '{"mobile_no":"8264782290"}' 
 
-curl -X GET "https://tejagrotech.com/tejagro_sale_demo/Webservices/farmer-post-get-details.php?action=get_posts" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)" 
+curl -X GET "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/offer.php" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)" 
 curl -X GET "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/referral-code.php" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)"  
 curl -X GET "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/popup-notification.php" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)"
 

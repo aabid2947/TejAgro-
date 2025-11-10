@@ -1,3 +1,4 @@
+import React from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native"
 import { BGRED, BLACK, GRAY_SHADE, PoppinsMedium, WHITE } from "../../shared/common-styles/colors"
 import { useTranslation } from "react-i18next";
@@ -5,13 +6,30 @@ import TextPoppinsSemiBold from "../../shared/fontFamily/TextPoppinsSemiBold";
 import TextPoppinsMediumBold from "../../shared/fontFamily/TextPoppinsMediumBold";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 
+interface MobileNumberProps {
+    title?: string;
+    placeholder?: string;
+    value: any;
+    error?: any;
+    onChangeText?: any;
+    style?: any;
+    containerStyle?: any;
+}
 
-export const MobileNumber = (Title: string, placeholder: string, value: any, erroMsg?: any, onchange?: any, styleView?: any, mainView?: any) => {
+export const MobileNumber: React.FC<MobileNumberProps> = ({
+    title,
+    placeholder,
+    value,
+    error,
+    onChangeText,
+    style: styleView,
+    containerStyle: mainView
+}) => {
     const { t } = useTranslation();
     return (
         <View style={mainView ? mainView : {}}>
             <TextPoppinsMediumBold style={style.titleText}>
-                {t('PHONE_NUMBER')}
+                {title || t('PHONE_NUMBER')}
             </TextPoppinsMediumBold>
             <View style={styleView ? styleView : style.dataView1}>
                 <TextPoppinsMediumBold style={style.contryCodeStyle}>
@@ -19,17 +37,17 @@ export const MobileNumber = (Title: string, placeholder: string, value: any, err
                 </TextPoppinsMediumBold>
                 <TextInput
                     style={style.inputText}
-                    placeholder={t('ENTER_NUMBER')}
+                    placeholder={placeholder || t('ENTER_NUMBER')}
                     placeholderTextColor={GRAY_SHADE}
                     value={value}
-                    editable={onchange ? true : false}
-                    onChangeText={onchange}
+                    editable={onChangeText ? true : false}
+                    onChangeText={onChangeText}
                     keyboardType={"numeric"}
                     maxLength={10}
                 />
             </View>
-            {erroMsg &&
-                <TextPoppinsSemiBold style={style.errorFormText}>{erroMsg}</TextPoppinsSemiBold>
+            {error &&
+                <TextPoppinsSemiBold style={style.errorFormText}>{error}</TextPoppinsSemiBold>
             }
         </View>
     )

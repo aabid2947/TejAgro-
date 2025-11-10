@@ -48,7 +48,9 @@ const TabScreen = () => {
   const isLoggedIn: any = useSelector((state: RootState) => state.counter.login);
   const [currentTab, setCurrentTab] = useState('Product');
   const { hasVisitedLuckyDraw, isLoading } = useLuckyDraw();
-  const [showLuckyDrawPopup, setShowLuckyDrawPopup] = useState(false);
+  const [showLuckyDrawPopup, setShowLuckyDrawPopup] = useState(true); // Temporarily force to true for testing
+
+  console.log('TabScreen current state - showLuckyDrawPopup:', showLuckyDrawPopup, 'hasVisitedLuckyDraw:', hasVisitedLuckyDraw, 'isLoggedIn:', isLoggedIn);
 
   useEffect(() => {}, [totalItems]);
   console.log('🔔 ProductListScreen render');
@@ -59,13 +61,19 @@ const TabScreen = () => {
 
   // Show lucky draw popup when app loads if user hasn't visited
   useEffect(() => {
+    console.log('LuckyDraw Effect - isLoading:', isLoading, 'hasVisitedLuckyDraw:', hasVisitedLuckyDraw, 'isLoggedIn:', isLoggedIn);
     if (!isLoading && !hasVisitedLuckyDraw && isLoggedIn) {
       // Add a small delay to ensure the app is fully loaded
+      console.log('Setting timer to show LuckyDrawPopup...');
       const timer = setTimeout(() => {
+        console.log('Timer fired - showing LuckyDrawPopup');
         setShowLuckyDrawPopup(true);
       }, 1000);
       
-      return () => clearTimeout(timer);
+      return () => {
+        console.log('Clearing LuckyDrawPopup timer');
+        clearTimeout(timer);
+      };
     }
   }, [isLoading, hasVisitedLuckyDraw, isLoggedIn]);
 
@@ -304,7 +312,10 @@ const TabScreen = () => {
       {/* Lucky Draw Popup */}
       <LuckyDrawPopup 
         visible={showLuckyDrawPopup} 
-        onClose={() => setShowLuckyDrawPopup(false)} 
+        onClose={() => {
+          console.log('LuckyDrawPopup onClose called');
+          setShowLuckyDrawPopup(false);
+        }} 
       />
     </View>
   );

@@ -1,12 +1,14 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
   Image,
   TouchableOpacity,
+  Modal,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import ImageViewer from 'react-native-image-zoom-viewer';
 import { styles } from './PostItemStyle';
 import { MDBLUE, GRAY, WHITE } from '../../shared/common-styles/colors';
 import TextPoppinsRegular from '../../shared/fontFamily/TextPoppinsRegular';
@@ -24,6 +26,7 @@ interface Post {
   };
   content: string;
   image?: string;
+  images?: string[];
   likes: number;
   comments: number;
   isLiked: boolean;
@@ -38,7 +41,18 @@ interface PostItemProps {
 
 const PostItem: React.FC<PostItemProps> = ({ post, onPress, onLike }) => {
   const { t } = useTranslation();
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   console.log('PostItem rendered with post:',post.content, post.image);
+
+  const getPostImages = (): string[] => {
+    if (post.images && post.images.length > 0) {
+      return post.images;
+    }
+    return post.image ? [post.image] : [];
+  };
+
+  const images = getPostImages();
 
   const getInitials = (name: string) => {
     return name
@@ -85,13 +99,54 @@ const PostItem: React.FC<PostItemProps> = ({ post, onPress, onLike }) => {
           {post.content}
         </TextPoppinsRegular>
         
-        {post.image && (
-          <View style={styles.imageContainer}>
-            <Image
-              source={{ uri: post.image }}
-              style={styles.postImage}
-              resizeMode="cover"
-            />
+        {images.length > 0 && (
+          <View style={styles.imagesContainer}>
+            {images.length === 1 ? (
+              <TouchableOpacity 
+                style={styles.singleImageContainer}
+                onPress={() => {
+                  setCurrentImageIndex(0);
+                  setShowImageModal(true);
+                }}
+                activeOpacity={0.9}
+              >
+                <Image
+                  source={{ uri: images[0] }}
+                  style={styles.singleImage}
+                  resizeMode="cover"
+                />
+              </TouchableOpacity>
+            ) : (
+              <View style={styles.multipleImagesGrid}>
+                {images.slice(0, 4).map((imageUri, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={[
+                      styles.gridImageContainer,
+                      images.length === 2 && styles.twoImagesContainer,
+                      images.length === 3 && index === 0 && styles.threeImagesFirstContainer,
+                      images.length === 3 && index > 0 && styles.threeImagesOtherContainer,
+                    ]}
+                    onPress={() => {
+                      setCurrentImageIndex(index);
+                      setShowImageModal(true);
+                    }}
+                    activeOpacity={0.9}
+                  >
+                    <Image
+                      source={{ uri: imageUri }}
+                      style={styles.gridImage}
+                      resizeMode="cover"
+                    />
+                    {index === 3 && images.length > 4 && (
+                      <View style={styles.moreImagesOverlay}>
+                        <Text style={styles.moreImagesText}>+{images.length - 4}</Text>
+                      </View>
+                    )}
+                  </TouchableOpacity>
+                ))}
+              </View>
+            )}
           </View>
         )}
       </View>
@@ -122,6 +177,43 @@ const PostItem: React.FC<PostItemProps> = ({ post, onPress, onLike }) => {
           <Text style={styles.actionText}>{post.comments}</Text>
         </TouchableOpacity>
       </View>
+
+      {/* Image Zoom Modal */}
+      {images.length > 0 && (
+        <Modal
+          visible={showImageModal}
+          transparent={true}
+          onRequestClose={() => setShowImageModal(false)}
+        >
+          <ImageViewer
+            imageUrls={images.map(uri => ({ url: uri }))}
+            index={currentImageIndex}
+            enableSwipeDown={true}
+            onSwipeDown={() => setShowImageModal(false)}
+            backgroundColor="rgba(0, 0, 0, 0.95)"
+            renderHeader={() => (
+              <View style={styles.imageModalHeader}>
+                <TouchableOpacity
+                  style={styles.imageModalCloseButton}
+                  onPress={() => setShowImageModal(false)}
+                  activeOpacity={0.7}
+                >
+                  <Text style={styles.imageModalCloseText}>×</Text>
+                </TouchableOpacity>
+                {images.length > 1 && (
+                  <Text style={styles.imageModalCounter}>
+                    {currentImageIndex + 1} / {images.length}
+                  </Text>
+                )}
+              </View>
+            )}
+            renderIndicator={() => <View />}
+            enableImageZoom={true}
+            maxOverflow={300}
+            onChange={(index) => setCurrentImageIndex(index || 0)}
+          />
+        </Modal>
+      )}
     </TouchableOpacity>
   );
 };

@@ -123,7 +123,18 @@ const MyCartScreen = ({ navigation, route }: any) => {
         try {
             const response = await AuthApi.orderHistory(payload);
             console.log('Order History Response:', response?.data);
-            const orders = response?.data || [];
+            
+            // Handle the case where response.data is not an array
+            let orders = [];
+            if (response?.data && Array.isArray(response.data)) {
+                orders = response.data;
+            } else if (response?.data && response.data.status === false) {
+                // API returned no records found
+                orders = [];
+            } else {
+                orders = [];
+            }
+            
             setOrderHistory(orders);
             
             // Check if user has any delivered orders
@@ -309,8 +320,11 @@ const MyCartScreen = ({ navigation, route }: any) => {
     
     // Watch for changes in referred_user_referral_code from Redux
     useEffect(() => {
+        // Ensure orderHistory is an array before calling .some()
+        const ordersArray = Array.isArray(orderHistory) ? orderHistory : [];
+        
         // Check if user has any delivered orders
-        const hasDeliveredOrders = orderHistory.some((order: any) => 
+        const hasDeliveredOrders = ordersArray.some((order: any) => 
             order.status && order.status.toLowerCase() === 'delivered'
         );
         
