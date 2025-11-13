@@ -226,7 +226,7 @@ const LogInScreen = () => {
                     {mobileNumberError && <TextPoppinsSemiBold style={LogInScreenStyle.errorFormTextLogin}>{t('VALID_NUMBER')}</TextPoppinsSemiBold>}
                     
                     {/* Referral Code Checkbox */}
-                    {/* <TouchableOpacity 
+                    <TouchableOpacity 
                         style={LogInScreenStyle.checkboxContainer}
                         onPress={() => {
                             setShowReferralInput(!showReferralInput);
@@ -244,7 +244,7 @@ const LogInScreen = () => {
                         <TextPoppinsSemiBold style={LogInScreenStyle.checkboxLabel}>
                             {t('HAVE_REFERRAL_CODE')}
                         </TextPoppinsSemiBold>
-                    </TouchableOpacity> */}
+                    </TouchableOpacity> 
                     
                     {/* Referral Code Input - Only show if checkbox is checked */}
                     {showReferralInput && (

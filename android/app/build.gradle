@@ -83,9 +83,14 @@ android {
         applicationId "com.tejagroapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 19
-        versionName "1.0.18"
+        versionCode 23
+        versionName "1.0.22"
     }
+    packagingOptions {
+    jniLibs {
+        useLegacyPackaging = true 
+    }
+}
     signingConfigs {
         debug {
             if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {

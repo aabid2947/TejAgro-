@@ -80,77 +80,19 @@ const CreatePostScreen: React.FC = () => {
     }
 
     try {
-      const androidVersion = Platform.Version;
-      
-      // Android 13+ (API 33+) doesn't need WRITE_EXTERNAL_STORAGE
-      if (androidVersion >= 33) {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.CAMERA,
-          {
-            title: t('CAMERA_PERMISSION_TITLE'),
-            message: t('CAMERA_PERMISSION_MESSAGE'),
-            buttonNeutral: t('ASK_ME_LATER'),
-            buttonNegative: t('CANCEL'),
-            buttonPositive: t('OK'),
-          }
-        );
-        return granted === PermissionsAndroid.RESULTS.GRANTED;
-      } else {
-        // Android 12 and below
-        const grants = await PermissionsAndroid.requestMultiple([
-          PermissionsAndroid.PERMISSIONS.CAMERA,
-          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-        ]);
-
-        return (
-          grants[PermissionsAndroid.PERMISSIONS.CAMERA] === PermissionsAndroid.RESULTS.GRANTED &&
-          grants[PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE] === PermissionsAndroid.RESULTS.GRANTED
-        );
-      }
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: t('CAMERA_PERMISSION_TITLE'),
+          message: t('CAMERA_PERMISSION_MESSAGE'),
+          buttonNeutral: t('ASK_ME_LATER'),
+          buttonNegative: t('CANCEL'),
+          buttonPositive: t('OK'),
+        }
+      );
+      return granted === PermissionsAndroid.RESULTS.GRANTED;
     } catch (err) {
       console.warn('Error requesting camera permission:', err);
-      return false;
-    }
-  };
-
-  // Request Gallery Permission for Android
-  const requestGalleryPermission = async (): Promise<boolean> => {
-    if (Platform.OS !== 'android') {
-      return true;
-    }
-
-    try {
-      const androidVersion = Platform.Version;
-      
-      // Android 13+ (API 33+) uses READ_MEDIA_IMAGES
-      if (androidVersion >= 33) {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
-          {
-            title: t('GALLERY_PERMISSION_TITLE'),
-            message: t('GALLERY_PERMISSION_MESSAGE'),
-            buttonNeutral: t('ASK_ME_LATER'),
-            buttonNegative: t('CANCEL'),
-            buttonPositive: t('OK'),
-          }
-        );
-        return granted === PermissionsAndroid.RESULTS.GRANTED;
-      } else {
-        // Android 12 and below uses READ_EXTERNAL_STORAGE
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-          {
-            title: t('GALLERY_PERMISSION_TITLE'),
-            message: t('GALLERY_PERMISSION_MESSAGE'),
-            buttonNeutral: t('ASK_ME_LATER'),
-            buttonNegative: t('CANCEL'),
-            buttonPositive: t('OK'),
-          }
-        );
-        return granted === PermissionsAndroid.RESULTS.GRANTED;
-      }
-    } catch (err) {
-      console.warn('Error requesting gallery permission:', err);
       return false;
     }
   };
@@ -258,19 +200,9 @@ const CreatePostScreen: React.FC = () => {
     launchCamera(options, handleImageResponse);
   };
 
-  const openGallery = async () => {
-    const hasPermission = await requestGalleryPermission();
-    
-    if (!hasPermission) {
-      Alert.alert(
-        t('PERMISSION_DENIED'),
-        t('GALLERY_PERMISSION_REQUIRED'),
-        [
-          { text: t('OK'), style: 'default' }
-        ]
-      );
-      return;
-    }
+  const openGallery = () => {
+    // No permission check is needed here.
+    // react-native-image-picker will open the Photo Picker automatically.
 
     const options = {
       mediaType: 'photo' as const,
