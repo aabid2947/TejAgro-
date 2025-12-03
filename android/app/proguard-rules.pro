@@ -17,3 +17,9 @@
 
 # Keep smsretriever plugin classes (avoid R8 removing entry points)
 -keep class me.furtado.smsretriever.** { *; }
+
+# Keep Hermes and its JNI classes
+-keep class com.facebook.jni.** { *; }
+
+# Keep SoLoader
+-keep class com.facebook.soloader.** { *; }

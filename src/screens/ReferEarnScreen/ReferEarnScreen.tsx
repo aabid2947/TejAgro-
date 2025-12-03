@@ -62,7 +62,8 @@ const ReferEarnScreen: React.FC = () => {
         try {
             setLoading(true);
             const response = await AuthApi.getReferralInfo();
-            console.log('Referral API Response:', response.data);
+            console.log('Referral API Response:', response);
+            
 
             // Handle the new array response format
             let parsedData: ReferralData = { status: false };
@@ -154,7 +155,7 @@ Tej Agro अ‍ॅपमध्ये मिळेल सर्व पिका�
             Clipboard.setString(codeToCopy);
             ToastAndroid.show(t('REFERRAL_COPIED'), ToastAndroid.SHORT);
         } else {
-            ToastAndroid.show(t('NO_REFERRAL_CODE'), ToastAndroid.SHORT);
+            ToastAndroid.show(t('REFERRAL_NOT_FOUND'), ToastAndroid.SHORT);
         }
     };
 
@@ -165,25 +166,26 @@ Tej Agro अ‍ॅपमध्ये मिळेल सर्व पिका�
             <View style={styles.mainContainer}>
                 {/* Total Amount Display */}
                 <View style={styles.totalAmountContainer}>
-                    <Text style={styles.totalAmountLabel}>{t('TOTAL_EARNINGS')}</Text>
+                    {/* <Text style={styles.totalAmountLabel}>{t('TOTAL_EARNINGS')}</Text> */}
 
-                    {/* Split container for count and amount */}
-                    <View style={styles.splitContainer}>
-                        {/* Left side - Referral Count */}
-
+                   
+                    {/* <View style={styles.splitContainer}> */}
+                    
+{/* 
                         <View style={styles.rightSection}>
                             <Text style={styles.totalAmountText}>₹ {referralData?.referral_amt || '0'}</Text>
                             <Text style={styles.totalAmountSubtext}>{t('EARNED_SO_FAR')}</Text>
                         </View>
-                        {/* Divider */}
-                        <View style={styles.verticalDivider} />
+                    
+                        <View style={styles.verticalDivider} /> */}
 
                         <View style={styles.leftSection}>
                             <Text style={styles.countText}>{referralData?.referral_count || '0'}</Text>
+                        
                             <Text style={styles.countLabel}>{t('REFERRALS')}</Text>
                         </View>
-                        {/* Right side - Total Amount */}
-                    </View>
+                   
+                    {/* </View> */}
                 </View>
 
                 {/* Earn Text */}
@@ -283,7 +285,7 @@ Tej Agro अ‍ॅपमध्ये मिळेल सर्व पिका�
 
             <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
                 {renderReferralCard()}
-                {renderFAQSection()}
+                {/* {renderFAQSection()} */}
             </ScrollView>
 
             {renderBottomButtons()}

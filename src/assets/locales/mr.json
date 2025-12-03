@@ -253,5 +253,10 @@
   "HAVE_REFERRAL_CODE": "माझ्याकडे\u00A0रेफरल\u00A0कोड\u00A0आहे",
   "REFERRAL_CODE_REQUIRED": "कृपया\u00A0रेफरल\u00A0कोड\u00A0प्रविष्ट\u00A0करा",
   "Category": "श्रेणी",
-  "REFERRALS": "एकूण\u00A0रेफरल्स"
+  "REFERRALS": "एकूण\u00A0रेफरल्स",
+  "REFERRAL_NOT_FOUND": "रेफरल सापडला नाही",
+  "WALLET_MIN_ORDER_MESSAGE": "वॉलेट रक्कम वापरण्यासाठी, ऑर्डरची रक्कम ₹{minAmount} पेक्षा जास्त असावी",
+  "NO_OFFERS_AVAILABLE": "कोणतेही\u00A0ऑफर\u00A0उपलब्ध\u00A0नाहीत",
+  "NO_OFFERS_AVAILABLE_FOR_CATEGORY": "ऑफर\u00A0उपलब्ध\u00A0नाहीत",
+  "WALLET_MIN_CART_VALUE_MESSAGE": "वॉलेट\u00A0रक्कम\u00A0फक्त\u00A0₹2000\u00A0पेक्षा\u00A0जास्त\u00A0कार्ट\u00A0व्हॅल्यूवर\u00A0वापरता\u00A0येईल"
 }

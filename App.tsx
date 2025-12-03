@@ -4,7 +4,8 @@
  *
  * @format
  */
- import { useSafeAreaInsets, SafeAreaProvider } from "react-native-safe-area-context";
+import 'react-native-gesture-handler';
+import { useSafeAreaInsets, SafeAreaProvider } from "react-native-safe-area-context";
 import { DefaultTheme, NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import i18n from 'i18next';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -14,6 +15,8 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import * as RNLocalize from 'react-native-localize';
 import { Provider, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import { jwtDecode } from 'jwt-decode';
+import { initializeNotifications, updateFCMTokenForClient, setFCMNavigationRef } from './src/utility/NotificationService';
 import en from './src/assets/locales/en.json';
 import mr from './src/assets/locales/mr.json';
 import AuthGuard from './src/components/guards/AuthGuard';
@@ -45,7 +48,7 @@ const MyTheme = {
   },
 };
 
-function App(): JSX.Element {
+function App(): React.JSX.Element {
   const insets = useSafeAreaInsets();
   const navigationRef = useNavigationContainerRef();
   const [loader, setLoader] = useState(false);
@@ -66,8 +69,42 @@ function App(): JSX.Element {
 
 
   const languageSelected = useSelector((state: RootState) => state.counter.languageSelected)
+  const userData = useSelector((state: RootState) => state.counter.isUserinfo)
 
+  // Initialize FCM when app loads
+  useEffect(() => {
+    const initializeFCM = async () => {
+      try {
+        // Always initialize FCM first
+        await initializeNotifications();
+        
+        // Set navigation reference for FCM
+        if (navigationRef) {
+          setFCMNavigationRef(navigationRef);
+          console.log('✅ FCM Navigation reference set');
+        }
+        
+        // If user is logged in, get client_id and update FCM token
+        if (userData?.jwt) {
+          try {
+            const decodedToken: any = jwtDecode(userData.jwt);
+            const clientId = decodedToken?.data?.client_id;
+            
+            if (clientId) {
+              console.log('Updating FCM token for client:', clientId);
+              await updateFCMTokenForClient(clientId);
+            }
+          } catch (error) {
+            console.error('Error decoding JWT for FCM:', error);
+          }
+        }
+      } catch (error) {
+        console.error('Error initializing FCM:', error);
+      }
+    };
 
+    initializeFCM();
+  }, [userData?.jwt, navigationRef]); // Re-run when user login status changes or navigation is ready
 
   const resources = {
     en: { translation: en },

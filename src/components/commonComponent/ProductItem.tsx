@@ -51,12 +51,17 @@ export const ProductItem = ({ data, index }: any) => {
 const style = StyleSheet.create({
     productContainer: {
         marginBottom: 16,
-        borderWidth: 1,
-        borderColor: '#ddd',
         borderRadius: 8,
         backgroundColor: WHITE,
         width: widthPercentageToDP(41),
         overflow: 'hidden',
+        borderWidth: 2,
+        borderColor: '#F0F0F0',
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+        elevation: 2,
     },
     productContainer1: {
         paddingHorizontal: 10,

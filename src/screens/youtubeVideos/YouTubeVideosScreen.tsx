@@ -152,8 +152,10 @@ const YouTubeVideosScreen = ({ navigation }: any) => {
             console.log('API Response:', response.data);
             
             if (response?.data?.status && response?.data?.youtube_links) {
-                const transformedData = transformVideoData(response.data.youtube_links);
-                setVideoData(transformedData);
+                // Sort by latest first (reverse order to show newest videos at top)
+                const sortedData = [...response.data.youtube_links].reverse();
+                const transformedData = transformVideoData(sortedData);
+                setVideoData([...transformedData].reverse());
                 console.log('YouTube transformedData set, length:', transformedData.length);
                 console.log('Transformed Data:', transformedData);
             } else {

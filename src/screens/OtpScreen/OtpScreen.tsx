@@ -13,6 +13,8 @@ import { RootStackParamList } from "../../components/guards/AuthNavigator";
 import TopHeaderFixed from "../../components/headerview/TopHeaderFixed";
 import { useModalContext } from "../../components/modalContext/ModalContext";
 import { login, profileDetail, setReferralCode } from "../../reduxToolkit/counterSlice";
+import { updateFCMTokenForClient } from "../../utility/NotificationService";
+import { jwtDecode } from 'jwt-decode';
 import { PressableButton } from "../../shared/components/CommonUtilities";
 import { ASYNC_STORAGE } from "../../shared/utilities/String";
 import RefreshSvg from "../../svg/RefreshSvg";
@@ -102,6 +104,18 @@ const OtpScreen = ({ route: { params }, route }: any) => {
                     await AsyncStorage.setItem(ASYNC_STORAGE.ISUSERINFO, JSON.stringify(response?.data));
                     setLoader(false);
                     dispatch(login(response?.data));
+                    
+                    // Update FCM token with client_id
+                    try {
+                        const decodedToken: any = jwtDecode(response.data.jwt);
+                        const clientId = decodedToken?.data?.client_id;
+                        if (clientId) {
+                            console.log('🔥 Updating FCM token for client:', clientId);
+                            await updateFCMTokenForClient(clientId);
+                        }
+                    } catch (error) {
+                        console.error('Error updating FCM token:', error);
+                    }
                 } else if (response.data.referral_verified !== undefined) {
                     if (response.data.referral_verified) {
                         console.log("✅ Referral verified");
@@ -125,6 +139,18 @@ const OtpScreen = ({ route: { params }, route }: any) => {
                                 await AsyncStorage.setItem(ASYNC_STORAGE.ISUSERINFO, JSON.stringify(loginResponse?.data));
                                 setLoader(false);
                                 dispatch(login(loginResponse?.data));
+                                
+                                // Update FCM token with client_id
+                                try {
+                                    const decodedToken: any = jwtDecode(loginResponse.data.jwt);
+                                    const clientId = decodedToken?.data?.client_id;
+                                    if (clientId) {
+                                        console.log('🔥 Updating FCM token for client:', clientId);
+                                        await updateFCMTokenForClient(clientId);
+                                    }
+                                } catch (error) {
+                                    console.error('Error updating FCM token:', error);
+                                }
                             } else {
                                 setLoader(false);
                                 setErrorMsg(loginResponse.data?.message || "Login failed");
@@ -205,7 +231,13 @@ const OtpScreen = ({ route: { params }, route }: any) => {
                     navigation.goBack();
                 }}
                 topHeight={100} />
-            <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" style={otpstyles.parentView}>
+            <KeyboardAwareScrollView 
+                keyboardShouldPersistTaps="handled" 
+                style={otpstyles.parentView}
+                enableOnAndroid={true}
+                extraScrollHeight={20}
+                enableAutomaticScroll={true}
+            >
                 <View style={LogInScreenStyle.logoView}>
                     <Image
                         source={require("../../assets/newlogo.png")}

@@ -52,7 +52,7 @@ const MyCartScreen = ({ navigation, route }: any) => {
     const selectedShippingAddress: any = useSelector((state: RootState) => state.counter.selectAddress)
     const selectedPromoCodeValue: any = useSelector((state: RootState) => state.counter.promoCodeId)
     const profileInfo: any = useSelector((state: RootState) => state.counter.isProfileInfo)
-    console.log("ll",profileInfo)
+    console.log("ll", profileInfo)
     const orderPlaced = useSelector((state: RootState) => state.counter.orderPlaced)
     const referredUserReferralCode = useSelector((state: RootState) => state.counter.referred_user_referral_code)
     const [isLoader, setLoader] = useState(true);
@@ -78,8 +78,8 @@ const MyCartScreen = ({ navigation, route }: any) => {
         return cartData.reduce((total: number, item: any) => total + Number(item.quantity), 0);
     };
     let totalItemsCount = calculateTotalItems()
-       useEffect(() => {
-//    console.log("e",profileInfo?.min_order_value)
+    useEffect(() => {
+        //    console.log("e",profileInfo?.min_order_value)
     }, []);
     useEffect(() => {
         dispatch(setTotalItems(totalItemsCount));
@@ -100,7 +100,7 @@ const MyCartScreen = ({ navigation, route }: any) => {
         }
         setIsChecked(false);
         setWalletUsed(null);
-       
+
     }, [selectedPromoCodeValue]);
     const getProfile = async () => {
         try {
@@ -123,7 +123,7 @@ const MyCartScreen = ({ navigation, route }: any) => {
         try {
             const response = await AuthApi.orderHistory(payload);
             console.log('Order History Response:', response?.data);
-            
+
             // Handle the case where response.data is not an array
             let orders = [];
             if (response?.data && Array.isArray(response.data)) {
@@ -134,23 +134,23 @@ const MyCartScreen = ({ navigation, route }: any) => {
             } else {
                 orders = [];
             }
-            
+
             setOrderHistory(orders);
-            
+
             // Check if user has any delivered orders
-            const hasDeliveredOrders = orders.some((order: any) => 
+            const hasDeliveredOrders = orders.some((order: any) =>
                 order.status && order.status.toLowerCase() === 'delivered'
             );
-            
+
             // Show referral field only if:
             // 1. User has no orders at all, OR
             // 2. User has orders but none with 'delivered' status
             // AND referral code exists in Redux
             const shouldShowReferral = !hasDeliveredOrders && !!referredUserReferralCode;
-            
+
             setHasOrders(orders.length > 0);
             setShowReferralField(shouldShowReferral);
-            
+
             if (shouldShowReferral) {
                 setReferralCodeInput(referredUserReferralCode);
             } else {
@@ -160,11 +160,11 @@ const MyCartScreen = ({ navigation, route }: any) => {
             console.log('Error fetching order history:', error);
             setOrderHistory([]);
             setHasOrders(false);
-            
+
             // If API fails, show referral field only if referral code exists
             const shouldShowReferral = !!referredUserReferralCode;
             setShowReferralField(shouldShowReferral);
-            
+
             if (shouldShowReferral) {
                 setReferralCodeInput(referredUserReferralCode);
             } else {
@@ -216,8 +216,8 @@ const MyCartScreen = ({ navigation, route }: any) => {
         if (item && Number(item.quantity) === 1) {
             try {
                 const payload = { "cart_id": itemId };
-               
-                const response = await AuthApi.removeCartItem(payload,token);
+
+                const response = await AuthApi.removeCartItem(payload, token);
                 if (response && response.data) {
                     setCartData(cartData.filter((item: any) => item.cart_id !== itemId));
                     ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
@@ -317,24 +317,24 @@ const MyCartScreen = ({ navigation, route }: any) => {
         getProfile()
         getOrderHistory()
     }, [])
-    
+
     // Watch for changes in referred_user_referral_code from Redux
     useEffect(() => {
         // Ensure orderHistory is an array before calling .some()
         const ordersArray = Array.isArray(orderHistory) ? orderHistory : [];
-        
+
         // Check if user has any delivered orders
-        const hasDeliveredOrders = ordersArray.some((order: any) => 
+        const hasDeliveredOrders = ordersArray.some((order: any) =>
             order.status && order.status.toLowerCase() === 'delivered'
         );
-        
+
         // Show referral field only if:
         // 1. User has no delivered orders AND
         // 2. Referral code exists in Redux
         const shouldShowReferral = !hasDeliveredOrders && !!referredUserReferralCode;
-        
+
         setShowReferralField(shouldShowReferral);
-        
+
         if (shouldShowReferral) {
             setReferralCodeInput(referredUserReferralCode);
         } else {
@@ -348,11 +348,11 @@ const MyCartScreen = ({ navigation, route }: any) => {
         try {
             setLoader(true);
 
-    
-    // Add a small delay to see logs clearly
-    await new Promise(resolve => setTimeout(resolve, 100));
-    
-    const response = await AuthApi.getCartDetails(payload, token);
+
+            // Add a small delay to see logs clearly
+            await new Promise(resolve => setTimeout(resolve, 100));
+
+            const response = await AuthApi.getCartDetails(payload, token);
             // const walletData = await AuthApi.getWalletDetails({},token)
             if (response && response.data && response.data.length > 0) {
                 setCartData(response.data);
@@ -377,8 +377,8 @@ const MyCartScreen = ({ navigation, route }: any) => {
     }
     const updateCartItemQuantity = async (itemId: any, productId: any, quantity: number) => {
         try {
-           const response= await AuthApi.updateCart({ cart_id: itemId, product_id: productId, quantity: quantity },token);
-        
+            const response = await AuthApi.updateCart({ cart_id: itemId, product_id: productId, quantity: quantity }, token);
+
             getCartDetail();
         } catch (error) {
             console.log('Failed to update quantity on backend', error);
@@ -388,11 +388,11 @@ const MyCartScreen = ({ navigation, route }: any) => {
         if (!selectedShippingAddress || Object.keys(selectedShippingAddress).length === 0) {
             setModalVisible(true);
         } else {
-            navigation.navigate(CHECKOUT_SCREEN, { 
-                cartData, 
-                totalCartPrice, 
-                promo: selectedPromoCodeValue?.promo_code_discount, 
-                totalCartPriceGST: totalCartPrice, 
+            navigation.navigate(CHECKOUT_SCREEN, {
+                cartData,
+                totalCartPrice,
+                promo: selectedPromoCodeValue?.promo_code_discount,
+                totalCartPriceGST: totalCartPrice,
                 walletUsed,
                 referralCode: showReferralField ? referralCodeInput.trim() : '' // Pass referral code from Redux if user has no orders
             });
@@ -459,6 +459,11 @@ const MyCartScreen = ({ navigation, route }: any) => {
                         <Text style={styles.minOrderValue}>
                             {`${t("MIN_ORDER")}₹ ${minOrderValue}`}
                         </Text>
+                        {!isCheckboxEnabled && (
+                            <Text style={styles.walletMinOrderMessage}>
+                                {t("WALLET_MIN_ORDER_MESSAGE", { minAmount: minOrderValue })}
+                            </Text>
+                        )}
                     </>
                 )}
             </View>
@@ -469,7 +474,7 @@ const MyCartScreen = ({ navigation, route }: any) => {
         const totalAmount = selectedPromoCodeValue?.total_amount || totalCartPrice;
         const finalAmount = walletUsed?.use_wallet_amount > 0 ? walletUsed?.grand_amount : (selectedPromoCodeValue?.final_amount || totalCartPrice);
         const promoCodeDiscount = selectedPromoCodeValue?.promo_code_discount || 0;
-        
+
         return (
             <View style={cartStyles.orderSummaryContainer}>
                 <View style={cartStyles.orderSummaryHeader}>
@@ -482,33 +487,33 @@ const MyCartScreen = ({ navigation, route }: any) => {
                         <Text style={cartStyles.summaryLabel}>{t('PRICE')}</Text>
                         <Text style={cartStyles.summaryValue}>₹{totalAmount}</Text>
                     </View>
-                    
+
                     {promoCodeDiscount > 0 && (
                         <View style={cartStyles.orderSummaryRow}>
                             <Text style={cartStyles.summaryLabel}>{t('PROMO_CODE_DISCOUNT')}</Text>
                             <Text style={[cartStyles.summaryValue, cartStyles.discountValue]}>-₹{promoCodeDiscount}</Text>
                         </View>
                     )}
-                    
+
                     {walletUsed?.use_wallet_amount > 0 && (
                         <View style={cartStyles.orderSummaryRow}>
                             <Text style={cartStyles.summaryLabel}>{t('WALLET_DISCOUNT')}</Text>
                             <Text style={[cartStyles.summaryValue, cartStyles.walletValue]}>-₹{walletUsed?.use_wallet_amount}</Text>
                         </View>
                     )}
-                    
+
                     <View style={cartStyles.orderSummaryRow}>
                         <Text style={cartStyles.summaryLabel}>{t('Delivery_Charge')}</Text>
                         <Text style={[cartStyles.summaryValue, cartStyles.freeValue]}>{t('FREE')}</Text>
                     </View>
-                    
+
                     <View style={cartStyles.dividerLine} />
-                    
+
                     <View style={[cartStyles.orderSummaryRow, cartStyles.totalRow]}>
                         <Text style={cartStyles.totalLabel}>{t('TOTAL')}</Text>
                         <TextPoppinsSemiBold style={cartStyles.totalValue}>₹{finalAmount}</TextPoppinsSemiBold>
                     </View>
-                    
+
                     <Text style={cartStyles.taxIncludedText}>
                         देय रक्कमध्ये जीएसटी व अन्य कराचा समावेश
                     </Text>
@@ -577,7 +582,7 @@ const MyCartScreen = ({ navigation, route }: any) => {
                                     onPress={() => {
                                         const newValue = !isChecked;
                                         const isCheckboxEnabled = profileInfo?.min_order_value <= Number(selectedPromoCodeValue?.final_amount || totalCartPrice);
-                                        
+
                                         if (!isCheckboxEnabled) return;
 
                                         setIsChecked(newValue);
@@ -589,7 +594,7 @@ const MyCartScreen = ({ navigation, route }: any) => {
                                                 "client_id": decodedToken?.data?.client_id,
                                                 "grand_total": Number(selectedPromoCodeValue?.final_amount || totalCartPrice),
                                             };
-                                            
+
                                             AuthApi.useWallet(payload).then(response => {
                                                 setIsLoading(false);
                                                 if (response.data?.status) {
@@ -612,6 +617,39 @@ const MyCartScreen = ({ navigation, route }: any) => {
                             )}
                         </View>
                     )}
+
+                    {/* Wallet minimum cart value message */}
+                </View>
+                <View style={{ width: '90%', alignSelf: 'center' }}>
+                    {cartData.length > 0 && Number(profileInfo?.my_wallet) > 0 && (
+                        <View
+                            style={{
+                                backgroundColor: '#F2F7FF',
+                                borderRadius: 10,
+                                paddingVertical: 10,
+                                paddingHorizontal: 12,
+                                marginTop: 10,
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                elevation: 2,
+                                shadowColor: '#000',
+                                shadowOpacity: 0.1,
+                                shadowOffset: { width: 0, height: 1 },
+                                shadowRadius: 3,
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: 14,
+                                    color: BLACK,
+                                    fontWeight: '500',
+                                    flex: 1,
+                                }}
+                            >
+                                * {t("WALLET_MIN_CART_VALUE_MESSAGE")}
+                            </Text>
+                        </View>
+                    )}
                 </View>
 
                 <OrderSummaryComponent />
@@ -632,32 +670,32 @@ const MyCartScreen = ({ navigation, route }: any) => {
         navigation.navigate('Product');
     };
 
-   const ShopMoreComponent = () => (
-    <TouchableOpacity
-        onPress={onShopMore}
-        style={{
-            backgroundColor: MDBLUE,
-            paddingVertical: 10,
-            paddingHorizontal: 20,
-            borderRadius: 25,
-            alignItems: 'center',
-            justifyContent: 'center',
-        }}
-    >
-        <TextPoppinsSemiBold style={{ color: BLACK, fontSize: 14, lineHeight: 24 }}>
-            {t('SHOP_MORE')}
-        </TextPoppinsSemiBold>
-    </TouchableOpacity>
-);
+    const ShopMoreComponent = () => (
+        <TouchableOpacity
+            onPress={onShopMore}
+            style={{
+                backgroundColor: MDBLUE,
+                paddingVertical: 10,
+                paddingHorizontal: 20,
+                borderRadius: 25,
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}
+        >
+            <TextPoppinsSemiBold style={{ color: BLACK, fontSize: 14, lineHeight: 24 }}>
+                {t('SHOP_MORE')}
+            </TextPoppinsSemiBold>
+        </TouchableOpacity>
+    );
 
     return (
-        <SafeAreaView style={{ ...MyCartStyle.container, paddingTop: insets.top ,paddingBottom:insets.bottom}} >
+        <SafeAreaView style={{ ...MyCartStyle.container, paddingTop: insets.top, paddingBottom: insets.bottom }} >
             <TopHeaderFixed
                 leftIconSize={20}
                 headerTxt={t("MY_CART")}
                 topHeight={100}
                 rightComponent={<ShopMoreComponent />}
-           
+
             />
             <KeyboardAvoidingView
                 style={{ flex: 1 }}
@@ -774,7 +812,14 @@ const styles = StyleSheet.create({
         color: '#888',
         marginTop: 0,
         marginLeft: 8
-        
+
+    },
+    walletMinOrderMessage: {
+        fontSize: 11,
+        color: '#f44336',
+        marginTop: 4,
+        marginLeft: 8,
+        fontStyle: 'italic',
     },
     checkboxLabel: {
         marginLeft: 8,
@@ -949,6 +994,22 @@ const styles = StyleSheet.create({
         color: BLACK,
         fontWeight: '600',
     },
+    walletMinMessageContainer: {
+        marginTop: 8,
+        paddingHorizontal: 12,
+        paddingVertical: 8,
+        backgroundColor: '#fff3cd',
+        borderRadius: 6,
+        borderWidth: 1,
+        borderColor: '#ffeaa7',
+    },
+    walletMinMessageText: {
+        fontSize: 12,
+        color: '#856404',
+        textAlign: 'center',
+        lineHeight: 16,
+        fontFamily: 'Poppins-Medium',
+    },
 });
 
 const cartStyles = StyleSheet.create({
@@ -970,7 +1031,7 @@ const cartStyles = StyleSheet.create({
         borderBottomColor: '#f0f0f0',
     },
     orderSummaryTitle: {
-        paddingTop:2,
+        paddingTop: 2,
         fontSize: 16,
         color: BLACK,
         fontWeight: '600',

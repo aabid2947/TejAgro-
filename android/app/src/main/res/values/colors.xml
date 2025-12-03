@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="ic_launcher_background">#FFFFFF</color>
+    <!-- TejAgro Brand Colors for Notifications -->
+    <color name="tejagro_green">#4CAF50</color>
+    <color name="tejagro_primary">#1976D2</color>
+    <color name="tejagro_accent">#FF6B35</color>
 </resources>

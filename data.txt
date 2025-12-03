@@ -1,0 +1,2589 @@
+JOB OBJECT FROM CREATION PAGE:
+{
+    "role": "SDE-5",
+    "type": "job",
+    "working_hours": "full-time",
+    "site": "on-site",
+    "location": "Delhi",
+    "salary": {
+        "min": 2,
+        "max": 200
+    },
+    "requirements": "Strong React, JavaScript, TypeScript, REST APIs, Git.",
+    "responsibilities": "Develop UI components, integrate APIs, optimize performance, write clean reusable code.",
+    "education": {
+        "min": "pursuing-1yr-graduation",
+        "max": "pursuing-4yr-graduation",
+        "courses": "CSE"
+    },
+    "experience": {
+        "min": 2,
+        "max": 5
+    },
+    "internAsExperience": true,
+    "partAsExperience": true
+}
+
+
+Object in Candidate page in org:
+[
+    {
+        "education": {
+            "courses": "CSE",
+            "max": "pursuing-4yr-graduation",
+            "min": "pursuing-1yr-graduation"
+        },
+        "experience": {
+            "max": 5,
+            "min": 2
+        },
+        "internAsExperience": true,
+        "location": "Delhi",
+        "partAsExperience": true,
+        "requirements": "Strong React, JavaScript, TypeScript, REST APIs, Git.",
+        "responsibilities": "Develop UI components, integrate APIs, optimize performance, write clean reusable code.",
+        "role": "SDE-5",
+        "salary": {
+            "max": 200,
+            "min": 2
+        },
+        "site": "on-site",
+        "type": "job",
+        "working_hours": "full-time"
+    }
+]
+
+Unified profile in Candidate Page:
+[
+    {
+        "_creationTime": 1759769605567.3967,
+        "_id": "k576nycjjqgpf0fzphzr0hg6vx7rzx87",
+        "achievements": [
+            "Achieved a 75%+ increase in user engagement in 'MyTask' React Native application.",
+            "Implemented an OTP-based user authentication system in 'TejAgro-' reducing login friction by 40% and improving user onboarding.",
+            "Improved user satisfaction by 25% through localized content (English and Marathi) in 'TejAgro-' e-commerce application.",
+            "Achieved a 30% improvement in product browsing and search efficiency in 'SweetShop' e-commerce platform.",
+            "Increased inventory accuracy by 20% through comprehensive admin functionalities in 'SweetShop' platform."
+        ],
+        "competitive_programming": {
+            "acceptance_rate": 23.96,
+            "no_of_contests": 0,
+            "no_of_questions": 346,
+            "platforms": {
+                "LeetCode": "https://leetcode.com/aabid2947"
+            },
+            "topics": [
+                "Array",
+                "Hash Table",
+                "String",
+                "Two Pointers",
+                "Math",
+                "Sorting",
+                "Binary Search",
+                "Dynamic Programming",
+                "Linked List",
+                "Tree",
+                "Binary Tree",
+                "Stack",
+                "Depth-First Search",
+                "Greedy",
+                "Bit Manipulation",
+                "Breadth-First Search",
+                "Recursion",
+                "Divide and Conquer",
+                "Simulation",
+                "Sliding Window",
+                "Design",
+                "Backtracking",
+                "Matrix",
+                "Database",
+                "Queue",
+                "Quickselect",
+                "Trie",
+                "Enumeration",
+                "Ordered Set",
+                "Graph",
+                "Brainteaser",
+                "Game Theory",
+                "Union Find"
+            ]
+        },
+        "courses_and_certificates": [],
+        "createdAt": "2025-10-06T16:53:25.571Z",
+        "dataScience": {
+            "no_of_competitions": 0,
+            "no_of_datasets": 0,
+            "no_of_medals_winnings": {
+                "bronze": 0,
+                "gold": 0,
+                "silver": 0
+            },
+            "no_of_models": 0,
+            "no_of_notebooks": 0,
+            "platforms": {},
+            "relevant_links": [],
+            "topics": []
+        },
+        "designs_and_publications": {
+            "no_of_designs": 0,
+            "no_of_papers": 0,
+            "platforms": {},
+            "relevant_links": [],
+            "topics": []
+        },
+        "education": [
+            {
+                "cgpa": 7.3,
+                "course": "ECE",
+                "end": "2030",
+                "institution": "Jamia Millia Islamia",
+                "location": "Delhi, India",
+                "start": "2022",
+                "type": "graduation"
+            },
+            {
+                "course": "cdcds",
+                "end": "",
+                "institution": "hdsd",
+                "location": "",
+                "start": "",
+                "type": "graduation"
+            }
+        ],
+        "experience": [
+            {
+                "company": "evalzz",
+                "description": "",
+                "end": "",
+                "location": "delhi",
+                "role": "cto",
+                "site": "remote",
+                "start": "",
+                "type": "job",
+                "working_hours": "part-time"
+            }
+        ],
+        "freelancing": {
+            "average_client_rating": 5,
+            "no_of_projects": 10,
+            "platforms": {
+                "Upwork": "https://www.upwork.com/freelancers/~010946d8e216b2221e"
+            },
+            "technologies": [
+                "React"
+            ]
+        },
+        "individualId": "jh73e65w17gp09xcacrw1dqyph7rz557",
+        "projects": [
+            {
+                "description": "Engineered a feature-rich React Native task management application, enhancing user productivity with intuitive task creation, editing, and prioritization functionalities. Implemented a dynamic, animated collapsible header and smooth task animations, achieving a 75%+ increase in user engagement compared to static interfaces. Leveraged React Context API for global state management and AsyncStorage for robust local data persistence, ensuring a seamless and reliable user experience across sessions. Additionally, integrated local notifications to provide timely task reminders, significantly improving task completion rates.",
+                "link": "https://github.com/aabid2947/MyTask",
+                "name": "MyTask",
+                "stars": 0,
+                "technologies": [
+                    "React Native",
+                    "Expo",
+                    "JavaScript",
+                    "TypeScript",
+                    "Context API",
+                    "AsyncStorage",
+                    "Expo Notifications",
+                    "Expo Router",
+                    "Animated API"
+                ]
+            },
+            {
+                "description": "Developed a full-stack P2P trading platform for FUN tokens, driving secure and transparent transactions through a responsive React frontend with Redux Toolkit and RTK Query. Implemented robust user authentication, including email/password and Google OAuth, complemented by a comprehensive dashboard for real-time portfolio management. Integrated Firebase Firestore for real-time chat, facilitating direct communication between buyers and sellers, and designed a robust listing and trade system to optimize P2P interactions.",
+                "link": "https://github.com/aabid2947/TradeFlow",
+                "name": "TradeFlow",
+                "stars": 0,
+                "technologies": [
+                    "React",
+                    "Redux Toolkit (RTK Query)",
+                    "JavaScript",
+                    "Tailwind CSS",
+                    "Firebase (Auth, Firestore)",
+                    "React Router DOM",
+                    "Zod",
+                    "React Hook Form",
+                    "Shadcn/ui",
+                    "Node.js (implicit)"
+                ]
+            },
+            {
+                "description": "Developed a React Native mobile banking application for managing digital rupee transactions, providing users with a clear and concise overview of their financial activities. Implemented features for secure profile viewing, dynamic display of transaction history (credit, debit, and pending), and detailed transaction breakdowns, ensuring transparency and ease of use. Integrated with a custom API to fetch and format real-time financial data, delivering up-to-date account information. The application focuses on a streamlined user experience, making digital currency management accessible and efficient.",
+                "link": "https://github.com/aabid2947/HDFC",
+                "name": "HDFC",
+                "stars": 0,
+                "technologies": [
+                    "React Native",
+                    "JavaScript",
+                    "React Navigation",
+                    "MaterialCommunityIcons",
+                    "Expo Google Fonts",
+                    "API Integration (PHP)"
+                ]
+            },
+            {
+                "description": "Developed 'Aiva,' a React Native AI virtual assistant application, enhancing user interaction through intelligent chat, voice-to-text input, and comprehensive file summarization. Integrated Firebase for robust user authentication and real-time push notifications, ensuring secure access and timely alerts. Leveraged Google Sign-In for streamlined user onboarding and implemented a custom native module for efficient file picking, delivering a powerful and intuitive AI-driven mobile experience.",
+                "link": "https://github.com/aabid2947/Aiva",
+                "name": "Aiva",
+                "stars": 0,
+                "technologies": [
+                    "React Native",
+                    "JavaScript",
+                    "Firebase (Auth, Messaging, Firestore)",
+                    "Google Sign-In",
+                    "@react-native-voice/voice",
+                    "Axios",
+                    "React Native FS",
+                    "React Native Keychain",
+                    "Native Modules (FilePickerModule for Android)"
+                ]
+            },
+            {
+                "description": "Developed a dynamic web application for yacht inventory management, significantly improving user experience through advanced filtering, sorting, and pagination functionalities. Enabled users to efficiently compare up to three selected boats side-by-side, enhancing decision-making. Integrated seamlessly with a WordPress REST API to fetch and display dynamic yacht data, ensuring up-to-date information. The application features a responsive design and a modern, visually appealing interface, making boat discovery and comparison intuitive and engaging.",
+                "link": "https://github.com/aabid2947/Yacht-Inventory",
+                "name": "Yacht-Inventory",
+                "stars": 0,
+                "technologies": [
+                    "React",
+                    "JavaScript",
+                    "Vite",
+                    "Tailwind CSS",
+                    "Material UI",
+                    "React Router DOM",
+                    "Slick Carousel",
+                    "Framer Motion",
+                    "WordPress REST API"
+                ]
+            },
+            {
+                "description": "Architected a secure and scalable Node.js backend for a P2P FUN token trading platform, providing robust API endpoints for user authentication, profile management, and a comprehensive transaction system. Implemented advanced security measures, including JWT with refresh token rotation, role-based access control, and a suite of security middleware (Helmet, rate limiting, input sanitization) to protect data integrity and user privacy. Integrated Razorpay for payment processing and laid the groundwork for real-time chat, enabling a fully featured and secure P2P trading ecosystem.",
+                "link": "https://github.com/aabid2947/TradeFlowServer",
+                "name": "TradeFlowServer",
+                "stars": 0,
+                "technologies": [
+                    "Node.js",
+                    "Express.js",
+                    "MongoDB",
+                    "Mongoose",
+                    "JWT",
+                    "Bcryptjs",
+                    "Express-validator",
+                    "Helmet",
+                    "CORS",
+                    "Express Rate Limit",
+                    "Compression",
+                    "Express-Mongo-Sanitize",
+                    "HPP",
+                    "Morgan",
+                    "Dotenv",
+                    "Razorpay",
+                    "Firebase (implicit from client interaction)"
+                ]
+            },
+            {
+                "description": "Developed a robust React Native e-commerce application for an agro-product marketplace, significantly enhancing customer access to agricultural goods. Implemented an efficient OTP-based user authentication system, reducing login friction by 40% and improving user onboarding. The application features a comprehensive product catalog, a seamless shopping cart, and intuitive order management functionalities, all powered by a custom PHP backend. Achieved multi-language support (English and Marathi) using `react-i18next`, expanding market reach and improving user satisfaction by 25% through localized content.",
+                "link": "https://github.com/aabid2947/TejAgro-",
+                "name": "TejAgro-",
+                "stars": 0,
+                "technologies": [
+                    "React Native",
+                    "TypeScript",
+                    "Redux Toolkit",
+                    "React Navigation",
+                    "Axios",
+                    "react-i18next",
+                    "jwt-decode",
+                    "react-native-async-storage",
+                    "react-native-elements",
+                    "react-native-image-picker",
+                    "react-native-responsive-screen",
+                    "react-native-easebuzz-sdk"
+                ]
+            },
+            {
+                "description": "Designed and implemented a secure web application for user authentication and profile management, incorporating the foundation for a robust KYC (Know Your Customer) process. Leveraging React, Redux Toolkit, and RTK Query, the platform offers streamlined login and registration flows, integrated with Firebase for email/password and Google OAuth authentication. The application prioritizes data integrity and a consistent user experience by utilizing Zod for comprehensive form validation and Shadcn/ui for modern, accessible components, laying a critical groundwork for regulatory compliance.",
+                "link": "https://github.com/aabid2947/eKYC",
+                "name": "eKYC",
+                "stars": 0,
+                "technologies": [
+                    "React",
+                    "Redux Toolkit (RTK Query)",
+                    "JavaScript",
+                    "Tailwind CSS",
+                    "Firebase (Auth)",
+                    "React Router DOM",
+                    "Zod",
+                    "React Hook Form",
+                    "Shadcn/ui"
+                ]
+            },
+            {
+                "description": "Developed a modern e-commerce platform for a sweet shop, built with React, Redux Toolkit, and RTK Query, achieving a 30% improvement in product browsing and search efficiency. Implemented robust user authentication, including email/password and Google OAuth, significantly enhancing user onboarding and security. The platform features detailed product displays with reviews and integrates comprehensive admin functionalities for efficient product management, leading to a 20% increase in inventory accuracy. This project provides a rich, user-friendly shopping experience with scalable architecture.",
+                "link": "https://github.com/aabid2947/SweetShop",
+                "name": "SweetShop",
+                "stars": 0,
+                "technologies": [
+                    "React",
+                    "Redux Toolkit (RTK Query)",
+                    "JavaScript",
+                    "Tailwind CSS",
+                    "Firebase (Auth)",
+                    "React Router DOM",
+                    "Zod",
+                    "React Hook Form",
+                    "Shadcn/ui",
+                    "Node.js (implicit from server interaction)"
+                ]
+            },
+            {
+                "description": "Architected and implemented a Node.js backend for the Aiva AI virtual assistant, integrating the Google Gemini API to provide intelligent natural language processing, advanced summarization (text, image, and PDF), and smart email reply generation. Developed secure RESTful APIs using Express and JWT, managing user data and reminders with Firebase Admin SDK for robust authentication and real-time notifications. Orchestrated automated voice calls via Twilio and payment processing through the M-Pesa API, delivering a comprehensive, scalable, and secure AI-driven service platform deployed on DigitalOcean.",
+                "link": "https://github.com/aabid2947/AivaBackend",
+                "name": "AivaBackend",
+                "stars": 0,
+                "technologies": [
+                    "Node.js",
+                    "Express.js",
+                    "Google Gemini API",
+                    "Firebase Admin SDK (Auth, Firestore, FCM)",
+                    "Multer",
+                    "js-base64",
+                    "node-cron",
+                    "Twilio API",
+                    "M-Pesa API",
+                    "Dotenv"
+                ]
+            }
+        ],
+        "ratings": {
+            "Code Quality": {
+                "rationale": "Projects consistently demonstrate good practices like TypeScript for type safety, modular component architecture, robust validation with Zod, and secure authentication, though minor improvements in error handling are noted in one instance.",
+                "score": 8
+            },
+            "Collaboration & Communication": {
+                "rationale": "No direct evidence of collaboration or communication within a team context (e.g., PR reviews, issue discussions) is available from the provided profiles.",
+                "score": 5
+            },
+            "Competitive Programming": {
+                "rationale": "Solved a respectable 346 problems across diverse topics on LeetCode, demonstrating strong foundational algorithm knowledge, but has not yet participated in contests.",
+                "score": 6.5
+            },
+            "DevOps & Automation": {
+                "rationale": "Shows a clear stated interest in DevOps and initial experience with cloud deployment, indicating potential, but lacks extensive demonstrated practice in automation, CI/CD, or infrastructure as code.",
+                "score": 6
+            },
+            "Learning Agility": {
+                "rationale": "Demonstrates excellent learning agility by rapidly adopting and applying a wide array of diverse and modern technologies, from multiple frontend frameworks to complex backend APIs and deployment strategies.",
+                "score": 9
+            },
+            "Open-Source Contributions": {
+                "rationale": "There is no information available regarding open-source contributions in the provided data.",
+                "score": 0
+            },
+            "Programming Skills": {
+                "rationale": "Displays strong breadth and depth across modern web (React, Node.js) and mobile (React Native, Expo) development, with proficient use of TypeScript, Redux Toolkit, and various API integrations.",
+                "score": 9
+            },
+            "Project Impact": {
+                "rationale": "Projects demonstrate significant impact through measurable improvements, including a 75%+ increase in user engagement, 40% reduction in login friction, and 30% improvement in product browsing efficiency.",
+                "score": 8.8
+            },
+            "System Design": {
+                "rationale": "Demonstrates strong system design capabilities in backend projects, implementing secure, scalable architectures with robust authentication, extensive middleware, and complex API orchestrations.",
+                "score": 8.5
+            },
+            "Technical Writing": {
+                "rationale": "The GitHub project summaries and code quality descriptions are highly detailed, clear, and effectively communicate technical aspects and project impact.",
+                "score": 8.5
+            },
+            "Technology Awareness": {
+                "rationale": "Exhibits excellent awareness of modern technologies, utilizing contemporary frameworks like React and React Native, advanced state management with Redux Toolkit, and sophisticated integrations with AI and payment APIs.",
+                "score": 9
+            },
+            "Testing & QA": {
+                "rationale": "The profiles indicate good input validation and robust error handling practices, but specific mentions of unit/integration testing, test coverage, or CI/CD for QA are not present.",
+                "score": 6
+            }
+        },
+        "skills": {
+            "APIs & Integrations": [
+                "Google Gemini API",
+                "Twilio API",
+                "M-Pesa API",
+                "Razorpay",
+                "WordPress REST API",
+                "Google OAuth",
+                "Expo Notifications",
+                "react-i18next"
+            ],
+            "Backend Development": [
+                "Node.js",
+                "Express.js",
+                "Firebase Admin SDK",
+                "RESTful API Design",
+                "JWT",
+                "Bcryptjs",
+                "Middleware Development",
+                "API Security",
+                "Cron Jobs",
+                "Natural Language Processing"
+            ],
+            "Cloud Platforms": [
+                "Firebase",
+                "DigitalOcean (Deployment)"
+            ],
+            "Databases": [
+                "MongoDB",
+                "Firebase Firestore",
+                "AsyncStorage"
+            ],
+            "Frontend Development": [
+                "React",
+                "React Native",
+                "Redux Toolkit",
+                "RTK Query",
+                "Tailwind CSS",
+                "Material UI",
+                "Shadcn/ui",
+                "Expo",
+                "Vite",
+                "React Router DOM",
+                "Framer Motion",
+                "Animated API",
+                "UI/UX Design",
+                "HTML",
+                "CSS"
+            ],
+            "Programming Languages": [
+                "JavaScript",
+                "TypeScript",
+                "PHP"
+            ],
+            "Tools & Concepts": [
+                "Git",
+                "ESLint",
+                "State Management (Context API, Redux)",
+                "Form Validation (Zod, React Hook Form)",
+                "Authentication (OTP, Email/Password)",
+                "Mobile Development",
+                "AI Integration",
+                "File Processing",
+                "Data Summarization",
+                "Scalable Architecture",
+                "Security Best Practices",
+                "Native Modules"
+            ]
+        },
+        "social": {
+            "platforms": {
+                "GitHub": "https://github.com/aabid2947",
+                "LeetCode": "https://leetcode.com/aabid2947",
+                "LinkedIn": "https://www.linkedin.com/in/md-aabid-hussain-852a72255"
+            },
+            "relevant_links": [
+                "https://www.linkedin.com/in/md-aabid-hussain-852a72255",
+                "https://github.com/aabid2947",
+                "https://leetcode.com/aabid2947"
+            ],
+            "topics_of_discussion": [
+                "React Native",
+                "Web Development",
+                "Mobile Development",
+                "Node.js",
+                "Express.js",
+                "Firebase",
+                "State Management",
+                "UI/UX Design",
+                "API Integration",
+                "Authentication",
+                "DevOps",
+                "AI Integration",
+                "E-commerce",
+                "Full-Stack Development"
+            ]
+        },
+        "summary": "A highly motivated Full-Stack Developer with a robust background in building reliable web and mobile applications using modern technologies like React, React Native, Node.js, and Firebase. Proven ability to deliver intuitive user experiences, secure backend systems, and scalable solutions. Currently focused on expanding expertise into DevOps practices, with a keen interest in automating deployments, optimizing operations through containerization, and implementing CI/CD pipelines to enhance development workflows.",
+        "updatedAt": "2025-10-23T20:05:29.855Z",
+        "verified": false
+    },
+    {
+        "_creationTime": 1763403702005.4082,
+        "_id": "k578z2ze78ssmyeqerktytxxv17vk6gb",
+        "achievements": [],
+        "competitive_programming": {
+            "acceptance_rate": 41.53,
+            "no_of_contests": 0,
+            "no_of_questions": 152,
+            "platforms": {
+                "Codeforces": "https://codeforces.com/profile/hammadali1805",
+                "LeetCode": "https://leetcode.com/hammadali1805"
+            },
+            "topics": [
+                "Array",
+                "Tree",
+                "Depth-First Search",
+                "Binary Tree",
+                "Math",
+                "String",
+                "Hash Table",
+                "Binary Search",
+                "Two Pointers",
+                "Breadth-First Search",
+                "Dynamic Programming",
+                "Sorting",
+                "Sliding Window",
+                "Greedy",
+                "Bit Manipulation",
+                "Stack",
+                "Recursion",
+                "Divide and Conquer",
+                "Trie",
+                "Linked List",
+                "Matrix",
+                "Simulation",
+                "Enumeration",
+                "Design",
+                "Brainteaser",
+                "Backtracking",
+                "Quickselect"
+            ]
+        },
+        "courses_and_certificates": [],
+        "createdAt": "2025-11-17T18:21:42.009Z",
+        "dataScience": {
+            "no_of_competitions": 0,
+            "no_of_datasets": 0,
+            "no_of_medals_winnings": {
+                "bronze": 0,
+                "gold": 0,
+                "silver": 0
+            },
+            "no_of_models": 0,
+            "no_of_notebooks": 0,
+            "platforms": {},
+            "relevant_links": [],
+            "topics": []
+        },
+        "designs_and_publications": {
+            "no_of_designs": 0,
+            "no_of_papers": 0,
+            "platforms": {},
+            "relevant_links": [],
+            "topics": []
+        },
+        "education": [
+            {
+                "course": "ECE",
+                "end": "",
+                "institution": "Jamia Millia Islamia",
+                "location": "Delhi, India",
+                "start": "",
+                "type": "graduation"
+            }
+        ],
+        "email": "preppeersofficial@gmail.com",
+        "experience": [],
+        "freelancing": {
+            "average_client_rating": 0,
+            "no_of_projects": 0,
+            "platforms": {},
+            "technologies": []
+        },
+        "individualId": "jh7fda6d5tgqx756pfds0fkvkd7scctt",
+        "projects": [],
+        "ratings": {
+            "Code Quality": {
+                "rationale": "No code repositories or project details were provided to evaluate code quality, readability, or architectural considerations.",
+                "score": 0
+            },
+            "Collaboration & Communication": {
+                "rationale": "There is no information available regarding collaboration or communication through PRs, issues, or team contributions.",
+                "score": 0
+            },
+            "Competitive Programming": {
+                "rationale": "The candidate has solved 152 LeetCode problems, including some hard ones, but has not yet participated in any contests, suggesting an early stage in their competitive programming journey.",
+                "score": 0
+            },
+            "DevOps & Automation": {
+                "rationale": "There is no data to assess DevOps practices, infrastructure as code, or CI pipelines.",
+                "score": 0
+            },
+            "Learning Agility": {
+                "rationale": "Solving 152 LeetCode problems across different difficulty levels suggests a basic capacity for learning new algorithms and problem-solving techniques.",
+                "score": 0
+            },
+            "Open-Source Contributions": {
+                "rationale": "No open-source contributions were indicated in the provided data.",
+                "score": 0
+            },
+            "Programming Skills": {
+                "rationale": "The candidate demonstrates foundational programming skills with 152 LeetCode problems solved across diverse topics, including 4 hard problems, indicating a basic grasp of algorithms and data structures.",
+                "score": 0
+            },
+            "Project Impact": {
+                "rationale": "No projects were detailed in the profiles, preventing an assessment of features delivered or user adoption.",
+                "score": 0
+            },
+            "System Design": {
+                "rationale": "No information regarding system design capabilities, architecture diagrams, or scalability considerations was provided.",
+                "score": 0
+            },
+            "Technical Writing": {
+                "rationale": "No evidence of technical writing such as READMEs, blogs, or posts was provided in the available profiles.",
+                "score": 0
+            },
+            "Technology Awareness": {
+                "rationale": "Technology awareness is currently limited to core algorithms and data structures as seen on LeetCode, with no explicit mention of modern tools or frameworks.",
+                "score": 0
+            },
+            "Testing & QA": {
+                "rationale": "The provided profiles do not offer any insights into testing practices, CI/CD integration, or test coverage.",
+                "score": 0
+            }
+        },
+        "skills": {
+            "Algorithms & Data Structures": [
+                "Array",
+                "Tree",
+                "Depth-First Search",
+                "Binary Tree",
+                "Math",
+                "String",
+                "Hash Table",
+                "Binary Search",
+                "Two Pointers",
+                "Breadth-First Search",
+                "Dynamic Programming",
+                "Sorting",
+                "Sliding Window",
+                "Greedy",
+                "Bit Manipulation",
+                "Stack",
+                "Recursion",
+                "Divide and Conquer",
+                "Trie",
+                "Linked List",
+                "Matrix",
+                "Simulation",
+                "Enumeration",
+                "Design",
+                "Brainteaser",
+                "Backtracking",
+                "Quickselect"
+            ]
+        },
+        "social": {
+            "platforms": {
+                "Codeforces": "https://codeforces.com/profile/hammadali1805",
+                "LeetCode": "https://leetcode.com/hammadali1805"
+            },
+            "relevant_links": [],
+            "topics_of_discussion": [
+                "Array",
+                "Tree",
+                "Depth-First Search",
+                "Binary Tree",
+                "Math",
+                "String",
+                "Hash Table",
+                "Binary Search",
+                "Two Pointers",
+                "Breadth-First Search",
+                "Dynamic Programming",
+                "Sorting",
+                "Sliding Window",
+                "Greedy",
+                "Bit Manipulation",
+                "Stack",
+                "Recursion",
+                "Divide and Conquer",
+                "Trie",
+                "Linked List",
+                "Matrix",
+                "Simulation",
+                "Enumeration",
+                "Design",
+                "Brainteaser",
+                "Backtracking",
+                "Quickselect"
+            ]
+        },
+        "summary": "Hammad Ali is a passionate coder demonstrating foundational problem-solving skills with 152 questions solved on LeetCode, covering a wide range of data structures and algorithms, including some hard problems. While participation in competitive programming contests is yet to begin, the candidate shows an early aptitude for technical challenges. The profile primarily reflects a commitment to enhancing algorithmic understanding.",
+        "updatedAt": "2025-11-22T14:37:11.988Z"
+    },
+    {
+        "_creationTime": 1762959590610.6433,
+        "_id": "k57eec7r4wpa8sxb9qxcj3xdd17v8djx",
+        "achievements": [
+            "Winner at Ukumi Hackathon 1.0 (JMI 2024)",
+            "Kaggle Silver Medalist (2024)",
+            "Built NEET Cutoff Analysis platform with 5M+ record processing",
+            "Top Rated Freelancer on Upwork"
+        ],
+        "competitive_programming": {
+            "acceptance_rate": 73.5,
+            "no_of_contests": 28,
+            "no_of_questions": 520,
+            "platforms": {
+                "Codeforces": "https://codeforces.com/profile/hammadali1805",
+                "LeetCode": "https://leetcode.com/hammadali1805"
+            },
+            "topics": [
+                "Dynamic Programming",
+                "Graphs",
+                "Recursion",
+                "Binary Search",
+                "Greedy Algorithms"
+            ]
+        },
+        "courses_and_certificates": [
+            {
+                "date": "2023-07-15",
+                "link": "https://coursera.org/certificate/ml-specialization",
+                "organisation": "Stanford University",
+                "platform": "Coursera",
+                "title": "Machine Learning Specialization"
+            },
+            {
+                "date": "2024-03-20",
+                "link": "https://coursera.org/certificate/fullstack-react",
+                "organisation": "Meta",
+                "platform": "Coursera",
+                "title": "Full Stack Web Development with React"
+            }
+        ],
+        "createdAt": "2025-11-12T14:59:50.610Z",
+        "dataScience": {
+            "no_of_competitions": 5,
+            "no_of_datasets": 4,
+            "no_of_medals_winnings": {
+                "bronze": 2,
+                "gold": 1,
+                "silver": 2
+            },
+            "no_of_models": 12,
+            "no_of_notebooks": 10,
+            "platforms": {
+                "Kaggle": "https://www.kaggle.com/hammadali1805"
+            },
+            "relevant_links": [
+                "https://www.kaggle.com/hammadali1805"
+            ],
+            "topics": [
+                "NLP",
+                "Computer Vision",
+                "Data Cleaning",
+                "Model Optimization"
+            ]
+        },
+        "designs_and_publications": {
+            "no_of_designs": 8,
+            "no_of_papers": 2,
+            "platforms": {
+                "Dribbble": "https://dribbble.com/hammadali1805",
+                "Medium": "https://medium.com/@hammadali1805"
+            },
+            "relevant_links": [
+                "https://medium.com/@hammadali1805/ai-in-hiring",
+                "https://dribbble.com/hammadali1805"
+            ],
+            "topics": [
+                "UI Design",
+                "Legal Tech",
+                "AI in Hiring"
+            ]
+        },
+        "education": [
+            {
+                "cgpa": 8.7,
+                "course": "B.Tech in Computer Engineering",
+                "end": "2025-07-01",
+                "institution": "Jamia Millia Islamia University",
+                "location": "New Delhi, India",
+                "start": "2021-08-01",
+                "type": "graduation"
+            },
+            {
+                "cgpa": 9.1,
+                "course": "Senior Secondary (Science Stream)",
+                "end": "2021-03-31",
+                "institution": "Delhi Public School",
+                "location": "New Delhi, India",
+                "start": "2019-04-01",
+                "type": "inter"
+            }
+        ],
+        "experience": [
+            {
+                "company": "Compass Automation Pvt. Ltd.",
+                "description": "Worked on regression suite automation for Compass web platform using Selenium and Python. Developed reusable testing scripts and implemented CI/CD test integration.",
+                "end": "2024-07-01",
+                "location": "New Delhi, India",
+                "role": "Automation Testing Intern",
+                "site": "remote",
+                "start": "2024-02-01",
+                "type": "intern",
+                "working_hours": "full-time"
+            },
+            {
+                "company": "Freelance",
+                "description": "Delivered end-to-end web applications for clients using React, Flask, and AWS. Specialized in automation tools, trading bots, and AI integrations.",
+                "end": "2025-01-01",
+                "location": "Remote",
+                "role": "Full Stack Developer",
+                "site": "remote",
+                "start": "2023-06-01",
+                "type": "self/freelancing",
+                "working_hours": "part-time"
+            }
+        ],
+        "freelancing": {
+            "average_client_rating": 4.9,
+            "no_of_projects": 17,
+            "platforms": {
+                "Fiverr": "https://www.fiverr.com/hammadali1805",
+                "Upwork": "https://www.upwork.com/freelancers/hammadali"
+            },
+            "technologies": [
+                "React",
+                "Python",
+                "Flask",
+                "Streamlit",
+                "Automation",
+                "APIs"
+            ]
+        },
+        "individualId": "jh70zc445662wdb1vge94ht79s7v81zk",
+        "projects": [
+            {
+                "description": "Developed an AI-powered recruitment platform reducing resume dependency by evaluating candidatesâ€™ unified profiles across coding, freelancing, and data science platforms.",
+                "link": "https://github.com/hammadali1805/evalzz",
+                "name": "Evalzz â€“ AI-Based Tech Hiring Platform",
+                "stars": 28,
+                "technologies": [
+                    "React",
+                    "Flask",
+                    "OpenAI API",
+                    "MongoDB"
+                ]
+            },
+            {
+                "description": "Built a multilingual summarization platform for legal documents using fine-tuned LORA adapters on Facebook/BART and T5-small models.",
+                "link": "https://huggingface.co/spaces/hammadali1805/lufy",
+                "name": "LUFY â€“ Legal Document Summarization",
+                "stars": 41,
+                "technologies": [
+                    "HuggingFace Transformers",
+                    "Flask",
+                    "Google Translator API",
+                    "Streamlit"
+                ]
+            },
+            {
+                "description": "Trained a YOLOv5 model for real-time vehicle detection in videos and deployed it via a Flask-based web interface.",
+                "link": "https://github.com/hammadali1805/vehicle-detection",
+                "name": "Vehicle Detection System using YOLOv5",
+                "stars": 19,
+                "technologies": [
+                    "YOLOv5",
+                    "Flask",
+                    "OpenCV"
+                ]
+            }
+        ],
+        "ratings": {
+            "Code Quality": {
+                "rationale": "Consistent use of modular design and clean architecture across repositories.",
+                "score": 8.5
+            },
+            "Collaboration & Communication": {
+                "rationale": "Good GitHub PR discussions and consistent community updates.",
+                "score": 8
+            },
+            "Competitive Programming": {
+                "rationale": "Strong consistency on LeetCode with 520+ problems solved and 1700+ contest rating.",
+                "score": 8.3
+            },
+            "DevOps & Automation": {
+                "rationale": "Experience with Flask CI/CD, Docker, and automation of testing workflows.",
+                "score": 8.4
+            },
+            "Learning Agility": {
+                "rationale": "Rapid skill acquisition across ML, automation, and full-stack tools.",
+                "score": 9.3
+            },
+            "Open-Source Contributions": {
+                "rationale": "Multiple repositories with growing community engagement and stars.",
+                "score": 7.8
+            },
+            "Programming Skills": {
+                "rationale": "Strong across full-stack and AI technologies with over 500 LeetCode problems solved.",
+                "score": 9
+            },
+            "Project Impact": {
+                "rationale": "Projects deployed with tangible user outcomes and public accessibility.",
+                "score": 8.8
+            },
+            "System Design": {
+                "rationale": "Implements scalable REST APIs and modular architecture for large projects.",
+                "score": 8
+            },
+            "Technical Writing": {
+                "rationale": "Clear README documentation and technical blogs on Medium demonstrate structured communication.",
+                "score": 8.2
+            },
+            "Technology Awareness": {
+                "rationale": "Adopts latest frameworks like Streamlit, Hugging Face, and LangChain efficiently.",
+                "score": 9.1
+            },
+            "Testing & QA": {
+                "rationale": "Uses automated regression and unit testing in Python and CI/CD pipelines.",
+                "score": 7.5
+            }
+        },
+        "skills": {
+            "Domains": [
+                "Machine Learning",
+                "Automation",
+                "Web Development",
+                "AI"
+            ],
+            "Frameworks": [
+                "React",
+                "Flask",
+                "Streamlit",
+                "TensorFlow"
+            ],
+            "Languages": [
+                "Python",
+                "JavaScript",
+                "C++",
+                "SQL"
+            ],
+            "Tools": [
+                "Docker",
+                "Git",
+                "AWS",
+                "VSCode"
+            ]
+        },
+        "social": {
+            "platforms": {
+                "LinkedIn": "https://www.linkedin.com/in/hammadali1805",
+                "Twitter": "https://twitter.com/hammadali1805",
+                "YouTube": "https://www.youtube.com/@hammadali"
+            },
+            "relevant_links": [
+                "https://linkedin.com/in/hammadali1805",
+                "https://youtube.com/@hammadali"
+            ],
+            "topics_of_discussion": [
+                "AI in hiring",
+                "Data Science Projects",
+                "Career Growth",
+                "Trading Automation"
+            ]
+        },
+        "summary": "Passionate Computer Science graduate specializing in full-stack web development and applied AI. Experienced in building scalable applications, data-driven models, and automation solutions. Demonstrated excellence across competitive programming, freelancing, and open-source contributions with a strong focus on clean code and problem-solving. Continuously learning modern technologies to build efficient and impactful solutions for real-world challenges.",
+        "updatedAt": "2025-11-12T14:59:50.610Z"
+    },
+    {
+        "_creationTime": 1763406786803.106,
+        "_id": "k573th5ha04c5dgk45tnkj75mx7vjhrg",
+        "achievements": [],
+        "competitive_programming": {
+            "acceptance_rate": 0,
+            "no_of_contests": 0,
+            "no_of_questions": 0,
+            "platforms": {
+                "placeholder": "https://example.com/no-platform-data"
+            },
+            "topics": []
+        },
+        "courses_and_certificates": [],
+        "createdAt": "2025-11-17T19:13:06.803Z",
+        "dataScience": {
+            "no_of_competitions": 0,
+            "no_of_datasets": 0,
+            "no_of_medals_winnings": {
+                "bronze": 0,
+                "gold": 0,
+                "silver": 0
+            },
+            "no_of_models": 0,
+            "no_of_notebooks": 0,
+            "platforms": {
+                "placeholder": "https://example.com/no-platform-data"
+            },
+            "relevant_links": [],
+            "topics": []
+        },
+        "designs_and_publications": {
+            "no_of_designs": 0,
+            "no_of_papers": 0,
+            "platforms": {
+                "placeholder": "https://example.com/no-platform-data"
+            },
+            "relevant_links": [],
+            "topics": []
+        },
+        "education": [],
+        "email": "hammadtemporary1805@gmail.com",
+        "experience": [],
+        "freelancing": {
+            "average_client_rating": 0,
+            "no_of_projects": 0,
+            "platforms": {
+                "placeholder": "https://example.com/no-platform-data"
+            },
+            "technologies": []
+        },
+        "individualId": "jh79ek9ksc3y4vs1gp21x538wh7vjk1a",
+        "projects": [],
+        "ratings": {
+            "Code Quality": {
+                "rationale": "No code samples or repositories were provided to assess readability, testing coverage, or architectural patterns.",
+                "score": 0
+            },
+            "Collaboration & Communication": {
+                "rationale": "No contributions to PRs, issue discussions, or team projects were found.",
+                "score": 0
+            },
+            "Competitive Programming": {
+                "rationale": "No LeetCode problems solved, contest ratings, or topic diversity were available from the competitive programming profiles.",
+                "score": 0
+            },
+            "DevOps & Automation": {
+                "rationale": "There is no data indicating experience with infrastructure as code, CI pipelines, or deployment frequency.",
+                "score": 0
+            },
+            "Learning Agility": {
+                "rationale": "No evidence of quickly picking up new languages or tools was provided in the available data.",
+                "score": 0
+            },
+            "Open-Source Contributions": {
+                "rationale": "No open-source contributions, their volume, significance, or community feedback were identified.",
+                "score": 0
+            },
+            "Programming Skills": {
+                "rationale": "Information regarding programming languages, frameworks, or algorithmic proficiency is not available.",
+                "score": 0
+            },
+            "Project Impact": {
+                "rationale": "No projects were identified, hence no assessment of features delivered, user adoption, or metrics can be made.",
+                "score": 0
+            },
+            "System Design": {
+                "rationale": "No evidence of system design capabilities, architecture diagrams, or scalability considerations was provided.",
+                "score": 0
+            },
+            "Technical Writing": {
+                "rationale": "No evidence of technical writing, documentation in READMEs, blogs, or posts was found across the provided profiles.",
+                "score": 0
+            },
+            "Technology Awareness": {
+                "rationale": "There is no data to indicate the candidate's engagement with modern tools, trends, or best practices.",
+                "score": 0
+            },
+            "Testing & QA": {
+                "rationale": "No information regarding unit/integration testing, CI/CD integration, or test coverage was available.",
+                "score": 0
+            }
+        },
+        "skills": {},
+        "social": {
+            "platforms": {
+                "placeholder": "https://example.com/no-platform-data"
+            },
+            "relevant_links": [],
+            "topics_of_discussion": []
+        },
+        "summary": "The candidate, HAMMAD ALI, has provided minimal personal information including an email address and a basic 'about' statement. Comprehensive details regarding their educational background, professional experience, project portfolio, or competitive programming achievements are not available across the parsed profiles, limiting a detailed assessment of their technical capabilities and career trajectory.",
+        "updatedAt": "2025-11-17T19:13:06.803Z"
+    }
+]
+
+Job Data in Invitation:
+[
+    {
+        "education": {
+            "courses": "CSE",
+            "max": "pursuing-4yr-graduation",
+            "min": "pursuing-1yr-graduation"
+        },
+        "experience": {
+            "max": 5,
+            "min": 2
+        },
+        "internAsExperience": true,
+        "location": "Delhi",
+        "partAsExperience": true,
+        "requirements": "Strong React, JavaScript, TypeScript, REST APIs, Git.",
+        "responsibilities": "Develop UI components, integrate APIs, optimize performance, write clean reusable code.",
+        "role": "SDE-5",
+        "salary": {
+            "max": 200,
+            "min": 2
+        },
+        "site": "on-site",
+        "type": "job",
+        "working_hours": "full-time"
+    }
+]
+
+Job Data in Invitation in user:
+[
+    {
+        "education": {
+            "courses": "CSE",
+            "max": "pursuing-4yr-graduation",
+            "min": "pursuing-1yr-graduation"
+        },
+        "experience": {
+            "max": 5,
+            "min": 2
+        },
+        "internAsExperience": true,
+        "location": "Delhi",
+        "partAsExperience": true,
+        "requirements": "Strong React, JavaScript, TypeScript, REST APIs, Git.",
+        "responsibilities": "Develop UI components, integrate APIs, optimize performance, write clean reusable code.",
+        "role": "SDE-5",
+        "salary": {
+            "max": 200,
+            "min": 2
+        },
+        "site": "on-site",
+        "type": "job",
+        "working_hours": "full-time"
+    }
+]
+
+Unified Profile in Invitation page in user:
+[
+    {
+        "_creationTime": 1759769605567.3967,
+        "_id": "k576nycjjqgpf0fzphzr0hg6vx7rzx87",
+        "achievements": [
+            "Achieved a 75%+ increase in user engagement in 'MyTask' React Native application.",
+            "Implemented an OTP-based user authentication system in 'TejAgro-' reducing login friction by 40% and improving user onboarding.",
+            "Improved user satisfaction by 25% through localized content (English and Marathi) in 'TejAgro-' e-commerce application.",
+            "Achieved a 30% improvement in product browsing and search efficiency in 'SweetShop' e-commerce platform.",
+            "Increased inventory accuracy by 20% through comprehensive admin functionalities in 'SweetShop' platform."
+        ],
+        "competitive_programming": {
+            "acceptance_rate": 23.96,
+            "no_of_contests": 0,
+            "no_of_questions": 346,
+            "platforms": {
+                "LeetCode": "https://leetcode.com/aabid2947"
+            },
+            "topics": [
+                "Array",
+                "Hash Table",
+                "String",
+                "Two Pointers",
+                "Math",
+                "Sorting",
+                "Binary Search",
+                "Dynamic Programming",
+                "Linked List",
+                "Tree",
+                "Binary Tree",
+                "Stack",
+                "Depth-First Search",
+                "Greedy",
+                "Bit Manipulation",
+                "Breadth-First Search",
+                "Recursion",
+                "Divide and Conquer",
+                "Simulation",
+                "Sliding Window",
+                "Design",
+                "Backtracking",
+                "Matrix",
+                "Database",
+                "Queue",
+                "Quickselect",
+                "Trie",
+                "Enumeration",
+                "Ordered Set",
+                "Graph",
+                "Brainteaser",
+                "Game Theory",
+                "Union Find"
+            ]
+        },
+        "courses_and_certificates": [],
+        "createdAt": "2025-10-06T16:53:25.571Z",
+        "dataScience": {
+            "no_of_competitions": 0,
+            "no_of_datasets": 0,
+            "no_of_medals_winnings": {
+                "bronze": 0,
+                "gold": 0,
+                "silver": 0
+            },
+            "no_of_models": 0,
+            "no_of_notebooks": 0,
+            "platforms": {},
+            "relevant_links": [],
+            "topics": []
+        },
+        "designs_and_publications": {
+            "no_of_designs": 0,
+            "no_of_papers": 0,
+            "platforms": {},
+            "relevant_links": [],
+            "topics": []
+        },
+        "education": [
+            {
+                "cgpa": 7.3,
+                "course": "ECE",
+                "end": "2030",
+                "institution": "Jamia Millia Islamia",
+                "location": "Delhi, India",
+                "start": "2022",
+                "type": "graduation"
+            },
+            {
+                "course": "cdcds",
+                "end": "",
+                "institution": "hdsd",
+                "location": "",
+                "start": "",
+                "type": "graduation"
+            }
+        ],
+        "experience": [
+            {
+                "company": "evalzz",
+                "description": "",
+                "end": "",
+                "location": "delhi",
+                "role": "cto",
+                "site": "remote",
+                "start": "",
+                "type": "job",
+                "working_hours": "part-time"
+            }
+        ],
+        "freelancing": {
+            "average_client_rating": 5,
+            "no_of_projects": 10,
+            "platforms": {
+                "Upwork": "https://www.upwork.com/freelancers/~010946d8e216b2221e"
+            },
+            "technologies": [
+                "React"
+            ]
+        },
+        "individualId": "jh73e65w17gp09xcacrw1dqyph7rz557",
+        "projects": [
+            {
+                "description": "Engineered a feature-rich React Native task management application, enhancing user productivity with intuitive task creation, editing, and prioritization functionalities. Implemented a dynamic, animated collapsible header and smooth task animations, achieving a 75%+ increase in user engagement compared to static interfaces. Leveraged React Context API for global state management and AsyncStorage for robust local data persistence, ensuring a seamless and reliable user experience across sessions. Additionally, integrated local notifications to provide timely task reminders, significantly improving task completion rates.",
+                "link": "https://github.com/aabid2947/MyTask",
+                "name": "MyTask",
+                "stars": 0,
+                "technologies": [
+                    "React Native",
+                    "Expo",
+                    "JavaScript",
+                    "TypeScript",
+                    "Context API",
+                    "AsyncStorage",
+                    "Expo Notifications",
+                    "Expo Router",
+                    "Animated API"
+                ]
+            },
+            {
+                "description": "Developed a full-stack P2P trading platform for FUN tokens, driving secure and transparent transactions through a responsive React frontend with Redux Toolkit and RTK Query. Implemented robust user authentication, including email/password and Google OAuth, complemented by a comprehensive dashboard for real-time portfolio management. Integrated Firebase Firestore for real-time chat, facilitating direct communication between buyers and sellers, and designed a robust listing and trade system to optimize P2P interactions.",
+                "link": "https://github.com/aabid2947/TradeFlow",
+                "name": "TradeFlow",
+                "stars": 0,
+                "technologies": [
+                    "React",
+                    "Redux Toolkit (RTK Query)",
+                    "JavaScript",
+                    "Tailwind CSS",
+                    "Firebase (Auth, Firestore)",
+                    "React Router DOM",
+                    "Zod",
+                    "React Hook Form",
+                    "Shadcn/ui",
+                    "Node.js (implicit)"
+                ]
+            },
+            {
+                "description": "Developed a React Native mobile banking application for managing digital rupee transactions, providing users with a clear and concise overview of their financial activities. Implemented features for secure profile viewing, dynamic display of transaction history (credit, debit, and pending), and detailed transaction breakdowns, ensuring transparency and ease of use. Integrated with a custom API to fetch and format real-time financial data, delivering up-to-date account information. The application focuses on a streamlined user experience, making digital currency management accessible and efficient.",
+                "link": "https://github.com/aabid2947/HDFC",
+                "name": "HDFC",
+                "stars": 0,
+                "technologies": [
+                    "React Native",
+                    "JavaScript",
+                    "React Navigation",
+                    "MaterialCommunityIcons",
+                    "Expo Google Fonts",
+                    "API Integration (PHP)"
+                ]
+            },
+            {
+                "description": "Developed 'Aiva,' a React Native AI virtual assistant application, enhancing user interaction through intelligent chat, voice-to-text input, and comprehensive file summarization. Integrated Firebase for robust user authentication and real-time push notifications, ensuring secure access and timely alerts. Leveraged Google Sign-In for streamlined user onboarding and implemented a custom native module for efficient file picking, delivering a powerful and intuitive AI-driven mobile experience.",
+                "link": "https://github.com/aabid2947/Aiva",
+                "name": "Aiva",
+                "stars": 0,
+                "technologies": [
+                    "React Native",
+                    "JavaScript",
+                    "Firebase (Auth, Messaging, Firestore)",
+                    "Google Sign-In",
+                    "@react-native-voice/voice",
+                    "Axios",
+                    "React Native FS",
+                    "React Native Keychain",
+                    "Native Modules (FilePickerModule for Android)"
+                ]
+            },
+            {
+                "description": "Developed a dynamic web application for yacht inventory management, significantly improving user experience through advanced filtering, sorting, and pagination functionalities. Enabled users to efficiently compare up to three selected boats side-by-side, enhancing decision-making. Integrated seamlessly with a WordPress REST API to fetch and display dynamic yacht data, ensuring up-to-date information. The application features a responsive design and a modern, visually appealing interface, making boat discovery and comparison intuitive and engaging.",
+                "link": "https://github.com/aabid2947/Yacht-Inventory",
+                "name": "Yacht-Inventory",
+                "stars": 0,
+                "technologies": [
+                    "React",
+                    "JavaScript",
+                    "Vite",
+                    "Tailwind CSS",
+                    "Material UI",
+                    "React Router DOM",
+                    "Slick Carousel",
+                    "Framer Motion",
+                    "WordPress REST API"
+                ]
+            },
+            {
+                "description": "Architected a secure and scalable Node.js backend for a P2P FUN token trading platform, providing robust API endpoints for user authentication, profile management, and a comprehensive transaction system. Implemented advanced security measures, including JWT with refresh token rotation, role-based access control, and a suite of security middleware (Helmet, rate limiting, input sanitization) to protect data integrity and user privacy. Integrated Razorpay for payment processing and laid the groundwork for real-time chat, enabling a fully featured and secure P2P trading ecosystem.",
+                "link": "https://github.com/aabid2947/TradeFlowServer",
+                "name": "TradeFlowServer",
+                "stars": 0,
+                "technologies": [
+                    "Node.js",
+                    "Express.js",
+                    "MongoDB",
+                    "Mongoose",
+                    "JWT",
+                    "Bcryptjs",
+                    "Express-validator",
+                    "Helmet",
+                    "CORS",
+                    "Express Rate Limit",
+                    "Compression",
+                    "Express-Mongo-Sanitize",
+                    "HPP",
+                    "Morgan",
+                    "Dotenv",
+                    "Razorpay",
+                    "Firebase (implicit from client interaction)"
+                ]
+            },
+            {
+                "description": "Developed a robust React Native e-commerce application for an agro-product marketplace, significantly enhancing customer access to agricultural goods. Implemented an efficient OTP-based user authentication system, reducing login friction by 40% and improving user onboarding. The application features a comprehensive product catalog, a seamless shopping cart, and intuitive order management functionalities, all powered by a custom PHP backend. Achieved multi-language support (English and Marathi) using `react-i18next`, expanding market reach and improving user satisfaction by 25% through localized content.",
+                "link": "https://github.com/aabid2947/TejAgro-",
+                "name": "TejAgro-",
+                "stars": 0,
+                "technologies": [
+                    "React Native",
+                    "TypeScript",
+                    "Redux Toolkit",
+                    "React Navigation",
+                    "Axios",
+                    "react-i18next",
+                    "jwt-decode",
+                    "react-native-async-storage",
+                    "react-native-elements",
+                    "react-native-image-picker",
+                    "react-native-responsive-screen",
+                    "react-native-easebuzz-sdk"
+                ]
+            },
+            {
+                "description": "Designed and implemented a secure web application for user authentication and profile management, incorporating the foundation for a robust KYC (Know Your Customer) process. Leveraging React, Redux Toolkit, and RTK Query, the platform offers streamlined login and registration flows, integrated with Firebase for email/password and Google OAuth authentication. The application prioritizes data integrity and a consistent user experience by utilizing Zod for comprehensive form validation and Shadcn/ui for modern, accessible components, laying a critical groundwork for regulatory compliance.",
+                "link": "https://github.com/aabid2947/eKYC",
+                "name": "eKYC",
+                "stars": 0,
+                "technologies": [
+                    "React",
+                    "Redux Toolkit (RTK Query)",
+                    "JavaScript",
+                    "Tailwind CSS",
+                    "Firebase (Auth)",
+                    "React Router DOM",
+                    "Zod",
+                    "React Hook Form",
+                    "Shadcn/ui"
+                ]
+            },
+            {
+                "description": "Developed a modern e-commerce platform for a sweet shop, built with React, Redux Toolkit, and RTK Query, achieving a 30% improvement in product browsing and search efficiency. Implemented robust user authentication, including email/password and Google OAuth, significantly enhancing user onboarding and security. The platform features detailed product displays with reviews and integrates comprehensive admin functionalities for efficient product management, leading to a 20% increase in inventory accuracy. This project provides a rich, user-friendly shopping experience with scalable architecture.",
+                "link": "https://github.com/aabid2947/SweetShop",
+                "name": "SweetShop",
+                "stars": 0,
+                "technologies": [
+                    "React",
+                    "Redux Toolkit (RTK Query)",
+                    "JavaScript",
+                    "Tailwind CSS",
+                    "Firebase (Auth)",
+                    "React Router DOM",
+                    "Zod",
+                    "React Hook Form",
+                    "Shadcn/ui",
+                    "Node.js (implicit from server interaction)"
+                ]
+            },
+            {
+                "description": "Architected and implemented a Node.js backend for the Aiva AI virtual assistant, integrating the Google Gemini API to provide intelligent natural language processing, advanced summarization (text, image, and PDF), and smart email reply generation. Developed secure RESTful APIs using Express and JWT, managing user data and reminders with Firebase Admin SDK for robust authentication and real-time notifications. Orchestrated automated voice calls via Twilio and payment processing through the M-Pesa API, delivering a comprehensive, scalable, and secure AI-driven service platform deployed on DigitalOcean.",
+                "link": "https://github.com/aabid2947/AivaBackend",
+                "name": "AivaBackend",
+                "stars": 0,
+                "technologies": [
+                    "Node.js",
+                    "Express.js",
+                    "Google Gemini API",
+                    "Firebase Admin SDK (Auth, Firestore, FCM)",
+                    "Multer",
+                    "js-base64",
+                    "node-cron",
+                    "Twilio API",
+                    "M-Pesa API",
+                    "Dotenv"
+                ]
+            }
+        ],
+        "ratings": {
+            "Code Quality": {
+                "rationale": "Projects consistently demonstrate good practices like TypeScript for type safety, modular component architecture, robust validation with Zod, and secure authentication, though minor improvements in error handling are noted in one instance.",
+                "score": 8
+            },
+            "Collaboration & Communication": {
+                "rationale": "No direct evidence of collaboration or communication within a team context (e.g., PR reviews, issue discussions) is available from the provided profiles.",
+                "score": 5
+            },
+            "Competitive Programming": {
+                "rationale": "Solved a respectable 346 problems across diverse topics on LeetCode, demonstrating strong foundational algorithm knowledge, but has not yet participated in contests.",
+                "score": 6.5
+            },
+            "DevOps & Automation": {
+                "rationale": "Shows a clear stated interest in DevOps and initial experience with cloud deployment, indicating potential, but lacks extensive demonstrated practice in automation, CI/CD, or infrastructure as code.",
+                "score": 6
+            },
+            "Learning Agility": {
+                "rationale": "Demonstrates excellent learning agility by rapidly adopting and applying a wide array of diverse and modern technologies, from multiple frontend frameworks to complex backend APIs and deployment strategies.",
+                "score": 9
+            },
+            "Open-Source Contributions": {
+                "rationale": "There is no information available regarding open-source contributions in the provided data.",
+                "score": 0
+            },
+            "Programming Skills": {
+                "rationale": "Displays strong breadth and depth across modern web (React, Node.js) and mobile (React Native, Expo) development, with proficient use of TypeScript, Redux Toolkit, and various API integrations.",
+                "score": 9
+            },
+            "Project Impact": {
+                "rationale": "Projects demonstrate significant impact through measurable improvements, including a 75%+ increase in user engagement, 40% reduction in login friction, and 30% improvement in product browsing efficiency.",
+                "score": 8.8
+            },
+            "System Design": {
+                "rationale": "Demonstrates strong system design capabilities in backend projects, implementing secure, scalable architectures with robust authentication, extensive middleware, and complex API orchestrations.",
+                "score": 8.5
+            },
+            "Technical Writing": {
+                "rationale": "The GitHub project summaries and code quality descriptions are highly detailed, clear, and effectively communicate technical aspects and project impact.",
+                "score": 8.5
+            },
+            "Technology Awareness": {
+                "rationale": "Exhibits excellent awareness of modern technologies, utilizing contemporary frameworks like React and React Native, advanced state management with Redux Toolkit, and sophisticated integrations with AI and payment APIs.",
+                "score": 9
+            },
+            "Testing & QA": {
+                "rationale": "The profiles indicate good input validation and robust error handling practices, but specific mentions of unit/integration testing, test coverage, or CI/CD for QA are not present.",
+                "score": 6
+            }
+        },
+        "skills": {
+            "APIs & Integrations": [
+                "Google Gemini API",
+                "Twilio API",
+                "M-Pesa API",
+                "Razorpay",
+                "WordPress REST API",
+                "Google OAuth",
+                "Expo Notifications",
+                "react-i18next"
+            ],
+            "Backend Development": [
+                "Node.js",
+                "Express.js",
+                "Firebase Admin SDK",
+                "RESTful API Design",
+                "JWT",
+                "Bcryptjs",
+                "Middleware Development",
+                "API Security",
+                "Cron Jobs",
+                "Natural Language Processing"
+            ],
+            "Cloud Platforms": [
+                "Firebase",
+                "DigitalOcean (Deployment)"
+            ],
+            "Databases": [
+                "MongoDB",
+                "Firebase Firestore",
+                "AsyncStorage"
+            ],
+            "Frontend Development": [
+                "React",
+                "React Native",
+                "Redux Toolkit",
+                "RTK Query",
+                "Tailwind CSS",
+                "Material UI",
+                "Shadcn/ui",
+                "Expo",
+                "Vite",
+                "React Router DOM",
+                "Framer Motion",
+                "Animated API",
+                "UI/UX Design",
+                "HTML",
+                "CSS"
+            ],
+            "Programming Languages": [
+                "JavaScript",
+                "TypeScript",
+                "PHP"
+            ],
+            "Tools & Concepts": [
+                "Git",
+                "ESLint",
+                "State Management (Context API, Redux)",
+                "Form Validation (Zod, React Hook Form)",
+                "Authentication (OTP, Email/Password)",
+                "Mobile Development",
+                "AI Integration",
+                "File Processing",
+                "Data Summarization",
+                "Scalable Architecture",
+                "Security Best Practices",
+                "Native Modules"
+            ]
+        },
+        "social": {
+            "platforms": {
+                "GitHub": "https://github.com/aabid2947",
+                "LeetCode": "https://leetcode.com/aabid2947",
+                "LinkedIn": "https://www.linkedin.com/in/md-aabid-hussain-852a72255"
+            },
+            "relevant_links": [
+                "https://www.linkedin.com/in/md-aabid-hussain-852a72255",
+                "https://github.com/aabid2947",
+                "https://leetcode.com/aabid2947"
+            ],
+            "topics_of_discussion": [
+                "React Native",
+                "Web Development",
+                "Mobile Development",
+                "Node.js",
+                "Express.js",
+                "Firebase",
+                "State Management",
+                "UI/UX Design",
+                "API Integration",
+                "Authentication",
+                "DevOps",
+                "AI Integration",
+                "E-commerce",
+                "Full-Stack Development"
+            ]
+        },
+        "summary": "A highly motivated Full-Stack Developer with a robust background in building reliable web and mobile applications using modern technologies like React, React Native, Node.js, and Firebase. Proven ability to deliver intuitive user experiences, secure backend systems, and scalable solutions. Currently focused on expanding expertise into DevOps practices, with a keen interest in automating deployments, optimizing operations through containerization, and implementing CI/CD pipelines to enhance development workflows.",
+        "updatedAt": "2025-10-23T20:05:29.855Z",
+        "verified": false
+    }
+]
+
+Job data in application in user:
+[
+    {
+        "education": {
+            "courses": "CSE",
+            "max": "pursuing-4yr-graduation",
+            "min": "pursuing-1yr-graduation"
+        },
+        "experience": {
+            "max": 5,
+            "min": 2
+        },
+        "internAsExperience": true,
+        "location": "Delhi",
+        "partAsExperience": true,
+        "requirements": "Strong React, JavaScript, TypeScript, REST APIs, Git.",
+        "responsibilities": "Develop UI components, integrate APIs, optimize performance, write clean reusable code.",
+        "role": "SDE-5",
+        "salary": {
+            "max": 200,
+            "min": 2
+        },
+        "site": "on-site",
+        "type": "job",
+        "working_hours": "full-time"
+    }
+]
+
+Unified Profile in application in user:
+[
+    {
+        "_creationTime": 1759769605567.3967,
+        "_id": "k576nycjjqgpf0fzphzr0hg6vx7rzx87",
+        "achievements": [
+            "Achieved a 75%+ increase in user engagement in 'MyTask' React Native application.",
+            "Implemented an OTP-based user authentication system in 'TejAgro-' reducing login friction by 40% and improving user onboarding.",
+            "Improved user satisfaction by 25% through localized content (English and Marathi) in 'TejAgro-' e-commerce application.",
+            "Achieved a 30% improvement in product browsing and search efficiency in 'SweetShop' e-commerce platform.",
+            "Increased inventory accuracy by 20% through comprehensive admin functionalities in 'SweetShop' platform."
+        ],
+        "competitive_programming": {
+            "acceptance_rate": 23.96,
+            "no_of_contests": 0,
+            "no_of_questions": 346,
+            "platforms": {
+                "LeetCode": "https://leetcode.com/aabid2947"
+            },
+            "topics": [
+                "Array",
+                "Hash Table",
+                "String",
+                "Two Pointers",
+                "Math",
+                "Sorting",
+                "Binary Search",
+                "Dynamic Programming",
+                "Linked List",
+                "Tree",
+                "Binary Tree",
+                "Stack",
+                "Depth-First Search",
+                "Greedy",
+                "Bit Manipulation",
+                "Breadth-First Search",
+                "Recursion",
+                "Divide and Conquer",
+                "Simulation",
+                "Sliding Window",
+                "Design",
+                "Backtracking",
+                "Matrix",
+                "Database",
+                "Queue",
+                "Quickselect",
+                "Trie",
+                "Enumeration",
+                "Ordered Set",
+                "Graph",
+                "Brainteaser",
+                "Game Theory",
+                "Union Find"
+            ]
+        },
+        "courses_and_certificates": [],
+        "createdAt": "2025-10-06T16:53:25.571Z",
+        "dataScience": {
+            "no_of_competitions": 0,
+            "no_of_datasets": 0,
+            "no_of_medals_winnings": {
+                "bronze": 0,
+                "gold": 0,
+                "silver": 0
+            },
+            "no_of_models": 0,
+            "no_of_notebooks": 0,
+            "platforms": {},
+            "relevant_links": [],
+            "topics": []
+        },
+        "designs_and_publications": {
+            "no_of_designs": 0,
+            "no_of_papers": 0,
+            "platforms": {},
+            "relevant_links": [],
+            "topics": []
+        },
+        "education": [
+            {
+                "cgpa": 7.3,
+                "course": "ECE",
+                "end": "2030",
+                "institution": "Jamia Millia Islamia",
+                "location": "Delhi, India",
+                "start": "2022",
+                "type": "graduation"
+            },
+            {
+                "course": "cdcds",
+                "end": "",
+                "institution": "hdsd",
+                "location": "",
+                "start": "",
+                "type": "graduation"
+            }
+        ],
+        "experience": [
+            {
+                "company": "evalzz",
+                "description": "",
+                "end": "",
+                "location": "delhi",
+                "role": "cto",
+                "site": "remote",
+                "start": "",
+                "type": "job",
+                "working_hours": "part-time"
+            }
+        ],
+        "freelancing": {
+            "average_client_rating": 5,
+            "no_of_projects": 10,
+            "platforms": {
+                "Upwork": "https://www.upwork.com/freelancers/~010946d8e216b2221e"
+            },
+            "technologies": [
+                "React"
+            ]
+        },
+        "individualId": "jh73e65w17gp09xcacrw1dqyph7rz557",
+        "projects": [
+            {
+                "description": "Engineered a feature-rich React Native task management application, enhancing user productivity with intuitive task creation, editing, and prioritization functionalities. Implemented a dynamic, animated collapsible header and smooth task animations, achieving a 75%+ increase in user engagement compared to static interfaces. Leveraged React Context API for global state management and AsyncStorage for robust local data persistence, ensuring a seamless and reliable user experience across sessions. Additionally, integrated local notifications to provide timely task reminders, significantly improving task completion rates.",
+                "link": "https://github.com/aabid2947/MyTask",
+                "name": "MyTask",
+                "stars": 0,
+                "technologies": [
+                    "React Native",
+                    "Expo",
+                    "JavaScript",
+                    "TypeScript",
+                    "Context API",
+                    "AsyncStorage",
+                    "Expo Notifications",
+                    "Expo Router",
+                    "Animated API"
+                ]
+            },
+            {
+                "description": "Developed a full-stack P2P trading platform for FUN tokens, driving secure and transparent transactions through a responsive React frontend with Redux Toolkit and RTK Query. Implemented robust user authentication, including email/password and Google OAuth, complemented by a comprehensive dashboard for real-time portfolio management. Integrated Firebase Firestore for real-time chat, facilitating direct communication between buyers and sellers, and designed a robust listing and trade system to optimize P2P interactions.",
+                "link": "https://github.com/aabid2947/TradeFlow",
+                "name": "TradeFlow",
+                "stars": 0,
+                "technologies": [
+                    "React",
+                    "Redux Toolkit (RTK Query)",
+                    "JavaScript",
+                    "Tailwind CSS",
+                    "Firebase (Auth, Firestore)",
+                    "React Router DOM",
+                    "Zod",
+                    "React Hook Form",
+                    "Shadcn/ui",
+                    "Node.js (implicit)"
+                ]
+            },
+            {
+                "description": "Developed a React Native mobile banking application for managing digital rupee transactions, providing users with a clear and concise overview of their financial activities. Implemented features for secure profile viewing, dynamic display of transaction history (credit, debit, and pending), and detailed transaction breakdowns, ensuring transparency and ease of use. Integrated with a custom API to fetch and format real-time financial data, delivering up-to-date account information. The application focuses on a streamlined user experience, making digital currency management accessible and efficient.",
+                "link": "https://github.com/aabid2947/HDFC",
+                "name": "HDFC",
+                "stars": 0,
+                "technologies": [
+                    "React Native",
+                    "JavaScript",
+                    "React Navigation",
+                    "MaterialCommunityIcons",
+                    "Expo Google Fonts",
+                    "API Integration (PHP)"
+                ]
+            },
+            {
+                "description": "Developed 'Aiva,' a React Native AI virtual assistant application, enhancing user interaction through intelligent chat, voice-to-text input, and comprehensive file summarization. Integrated Firebase for robust user authentication and real-time push notifications, ensuring secure access and timely alerts. Leveraged Google Sign-In for streamlined user onboarding and implemented a custom native module for efficient file picking, delivering a powerful and intuitive AI-driven mobile experience.",
+                "link": "https://github.com/aabid2947/Aiva",
+                "name": "Aiva",
+                "stars": 0,
+                "technologies": [
+                    "React Native",
+                    "JavaScript",
+                    "Firebase (Auth, Messaging, Firestore)",
+                    "Google Sign-In",
+                    "@react-native-voice/voice",
+                    "Axios",
+                    "React Native FS",
+                    "React Native Keychain",
+                    "Native Modules (FilePickerModule for Android)"
+                ]
+            },
+            {
+                "description": "Developed a dynamic web application for yacht inventory management, significantly improving user experience through advanced filtering, sorting, and pagination functionalities. Enabled users to efficiently compare up to three selected boats side-by-side, enhancing decision-making. Integrated seamlessly with a WordPress REST API to fetch and display dynamic yacht data, ensuring up-to-date information. The application features a responsive design and a modern, visually appealing interface, making boat discovery and comparison intuitive and engaging.",
+                "link": "https://github.com/aabid2947/Yacht-Inventory",
+                "name": "Yacht-Inventory",
+                "stars": 0,
+                "technologies": [
+                    "React",
+                    "JavaScript",
+                    "Vite",
+                    "Tailwind CSS",
+                    "Material UI",
+                    "React Router DOM",
+                    "Slick Carousel",
+                    "Framer Motion",
+                    "WordPress REST API"
+                ]
+            },
+            {
+                "description": "Architected a secure and scalable Node.js backend for a P2P FUN token trading platform, providing robust API endpoints for user authentication, profile management, and a comprehensive transaction system. Implemented advanced security measures, including JWT with refresh token rotation, role-based access control, and a suite of security middleware (Helmet, rate limiting, input sanitization) to protect data integrity and user privacy. Integrated Razorpay for payment processing and laid the groundwork for real-time chat, enabling a fully featured and secure P2P trading ecosystem.",
+                "link": "https://github.com/aabid2947/TradeFlowServer",
+                "name": "TradeFlowServer",
+                "stars": 0,
+                "technologies": [
+                    "Node.js",
+                    "Express.js",
+                    "MongoDB",
+                    "Mongoose",
+                    "JWT",
+                    "Bcryptjs",
+                    "Express-validator",
+                    "Helmet",
+                    "CORS",
+                    "Express Rate Limit",
+                    "Compression",
+                    "Express-Mongo-Sanitize",
+                    "HPP",
+                    "Morgan",
+                    "Dotenv",
+                    "Razorpay",
+                    "Firebase (implicit from client interaction)"
+                ]
+            },
+            {
+                "description": "Developed a robust React Native e-commerce application for an agro-product marketplace, significantly enhancing customer access to agricultural goods. Implemented an efficient OTP-based user authentication system, reducing login friction by 40% and improving user onboarding. The application features a comprehensive product catalog, a seamless shopping cart, and intuitive order management functionalities, all powered by a custom PHP backend. Achieved multi-language support (English and Marathi) using `react-i18next`, expanding market reach and improving user satisfaction by 25% through localized content.",
+                "link": "https://github.com/aabid2947/TejAgro-",
+                "name": "TejAgro-",
+                "stars": 0,
+                "technologies": [
+                    "React Native",
+                    "TypeScript",
+                    "Redux Toolkit",
+                    "React Navigation",
+                    "Axios",
+                    "react-i18next",
+                    "jwt-decode",
+                    "react-native-async-storage",
+                    "react-native-elements",
+                    "react-native-image-picker",
+                    "react-native-responsive-screen",
+                    "react-native-easebuzz-sdk"
+                ]
+            },
+            {
+                "description": "Designed and implemented a secure web application for user authentication and profile management, incorporating the foundation for a robust KYC (Know Your Customer) process. Leveraging React, Redux Toolkit, and RTK Query, the platform offers streamlined login and registration flows, integrated with Firebase for email/password and Google OAuth authentication. The application prioritizes data integrity and a consistent user experience by utilizing Zod for comprehensive form validation and Shadcn/ui for modern, accessible components, laying a critical groundwork for regulatory compliance.",
+                "link": "https://github.com/aabid2947/eKYC",
+                "name": "eKYC",
+                "stars": 0,
+                "technologies": [
+                    "React",
+                    "Redux Toolkit (RTK Query)",
+                    "JavaScript",
+                    "Tailwind CSS",
+                    "Firebase (Auth)",
+                    "React Router DOM",
+                    "Zod",
+                    "React Hook Form",
+                    "Shadcn/ui"
+                ]
+            },
+            {
+                "description": "Developed a modern e-commerce platform for a sweet shop, built with React, Redux Toolkit, and RTK Query, achieving a 30% improvement in product browsing and search efficiency. Implemented robust user authentication, including email/password and Google OAuth, significantly enhancing user onboarding and security. The platform features detailed product displays with reviews and integrates comprehensive admin functionalities for efficient product management, leading to a 20% increase in inventory accuracy. This project provides a rich, user-friendly shopping experience with scalable architecture.",
+                "link": "https://github.com/aabid2947/SweetShop",
+                "name": "SweetShop",
+                "stars": 0,
+                "technologies": [
+                    "React",
+                    "Redux Toolkit (RTK Query)",
+                    "JavaScript",
+                    "Tailwind CSS",
+                    "Firebase (Auth)",
+                    "React Router DOM",
+                    "Zod",
+                    "React Hook Form",
+                    "Shadcn/ui",
+                    "Node.js (implicit from server interaction)"
+                ]
+            },
+            {
+                "description": "Architected and implemented a Node.js backend for the Aiva AI virtual assistant, integrating the Google Gemini API to provide intelligent natural language processing, advanced summarization (text, image, and PDF), and smart email reply generation. Developed secure RESTful APIs using Express and JWT, managing user data and reminders with Firebase Admin SDK for robust authentication and real-time notifications. Orchestrated automated voice calls via Twilio and payment processing through the M-Pesa API, delivering a comprehensive, scalable, and secure AI-driven service platform deployed on DigitalOcean.",
+                "link": "https://github.com/aabid2947/AivaBackend",
+                "name": "AivaBackend",
+                "stars": 0,
+                "technologies": [
+                    "Node.js",
+                    "Express.js",
+                    "Google Gemini API",
+                    "Firebase Admin SDK (Auth, Firestore, FCM)",
+                    "Multer",
+                    "js-base64",
+                    "node-cron",
+                    "Twilio API",
+                    "M-Pesa API",
+                    "Dotenv"
+                ]
+            }
+        ],
+        "ratings": {
+            "Code Quality": {
+                "rationale": "Projects consistently demonstrate good practices like TypeScript for type safety, modular component architecture, robust validation with Zod, and secure authentication, though minor improvements in error handling are noted in one instance.",
+                "score": 8
+            },
+            "Collaboration & Communication": {
+                "rationale": "No direct evidence of collaboration or communication within a team context (e.g., PR reviews, issue discussions) is available from the provided profiles.",
+                "score": 5
+            },
+            "Competitive Programming": {
+                "rationale": "Solved a respectable 346 problems across diverse topics on LeetCode, demonstrating strong foundational algorithm knowledge, but has not yet participated in contests.",
+                "score": 6.5
+            },
+            "DevOps & Automation": {
+                "rationale": "Shows a clear stated interest in DevOps and initial experience with cloud deployment, indicating potential, but lacks extensive demonstrated practice in automation, CI/CD, or infrastructure as code.",
+                "score": 6
+            },
+            "Learning Agility": {
+                "rationale": "Demonstrates excellent learning agility by rapidly adopting and applying a wide array of diverse and modern technologies, from multiple frontend frameworks to complex backend APIs and deployment strategies.",
+                "score": 9
+            },
+            "Open-Source Contributions": {
+                "rationale": "There is no information available regarding open-source contributions in the provided data.",
+                "score": 0
+            },
+            "Programming Skills": {
+                "rationale": "Displays strong breadth and depth across modern web (React, Node.js) and mobile (React Native, Expo) development, with proficient use of TypeScript, Redux Toolkit, and various API integrations.",
+                "score": 9
+            },
+            "Project Impact": {
+                "rationale": "Projects demonstrate significant impact through measurable improvements, including a 75%+ increase in user engagement, 40% reduction in login friction, and 30% improvement in product browsing efficiency.",
+                "score": 8.8
+            },
+            "System Design": {
+                "rationale": "Demonstrates strong system design capabilities in backend projects, implementing secure, scalable architectures with robust authentication, extensive middleware, and complex API orchestrations.",
+                "score": 8.5
+            },
+            "Technical Writing": {
+                "rationale": "The GitHub project summaries and code quality descriptions are highly detailed, clear, and effectively communicate technical aspects and project impact.",
+                "score": 8.5
+            },
+            "Technology Awareness": {
+                "rationale": "Exhibits excellent awareness of modern technologies, utilizing contemporary frameworks like React and React Native, advanced state management with Redux Toolkit, and sophisticated integrations with AI and payment APIs.",
+                "score": 9
+            },
+            "Testing & QA": {
+                "rationale": "The profiles indicate good input validation and robust error handling practices, but specific mentions of unit/integration testing, test coverage, or CI/CD for QA are not present.",
+                "score": 6
+            }
+        },
+        "skills": {
+            "APIs & Integrations": [
+                "Google Gemini API",
+                "Twilio API",
+                "M-Pesa API",
+                "Razorpay",
+                "WordPress REST API",
+                "Google OAuth",
+                "Expo Notifications",
+                "react-i18next"
+            ],
+            "Backend Development": [
+                "Node.js",
+                "Express.js",
+                "Firebase Admin SDK",
+                "RESTful API Design",
+                "JWT",
+                "Bcryptjs",
+                "Middleware Development",
+                "API Security",
+                "Cron Jobs",
+                "Natural Language Processing"
+            ],
+            "Cloud Platforms": [
+                "Firebase",
+                "DigitalOcean (Deployment)"
+            ],
+            "Databases": [
+                "MongoDB",
+                "Firebase Firestore",
+                "AsyncStorage"
+            ],
+            "Frontend Development": [
+                "React",
+                "React Native",
+                "Redux Toolkit",
+                "RTK Query",
+                "Tailwind CSS",
+                "Material UI",
+                "Shadcn/ui",
+                "Expo",
+                "Vite",
+                "React Router DOM",
+                "Framer Motion",
+                "Animated API",
+                "UI/UX Design",
+                "HTML",
+                "CSS"
+            ],
+            "Programming Languages": [
+                "JavaScript",
+                "TypeScript",
+                "PHP"
+            ],
+            "Tools & Concepts": [
+                "Git",
+                "ESLint",
+                "State Management (Context API, Redux)",
+                "Form Validation (Zod, React Hook Form)",
+                "Authentication (OTP, Email/Password)",
+                "Mobile Development",
+                "AI Integration",
+                "File Processing",
+                "Data Summarization",
+                "Scalable Architecture",
+                "Security Best Practices",
+                "Native Modules"
+            ]
+        },
+        "social": {
+            "platforms": {
+                "GitHub": "https://github.com/aabid2947",
+                "LeetCode": "https://leetcode.com/aabid2947",
+                "LinkedIn": "https://www.linkedin.com/in/md-aabid-hussain-852a72255"
+            },
+            "relevant_links": [
+                "https://www.linkedin.com/in/md-aabid-hussain-852a72255",
+                "https://github.com/aabid2947",
+                "https://leetcode.com/aabid2947"
+            ],
+            "topics_of_discussion": [
+                "React Native",
+                "Web Development",
+                "Mobile Development",
+                "Node.js",
+                "Express.js",
+                "Firebase",
+                "State Management",
+                "UI/UX Design",
+                "API Integration",
+                "Authentication",
+                "DevOps",
+                "AI Integration",
+                "E-commerce",
+                "Full-Stack Development"
+            ]
+        },
+        "summary": "A highly motivated Full-Stack Developer with a robust background in building reliable web and mobile applications using modern technologies like React, React Native, Node.js, and Firebase. Proven ability to deliver intuitive user experiences, secure backend systems, and scalable solutions. Currently focused on expanding expertise into DevOps practices, with a keen interest in automating deployments, optimizing operations through containerization, and implementing CI/CD pipelines to enhance development workflows.",
+        "updatedAt": "2025-10-23T20:05:29.855Z",
+        "verified": false
+    }
+]
+
+Apply Page:
+{
+    "job_data": [
+        {
+            "education": {
+                "courses": "Any",
+                "max": "pursuing-high-school",
+                "min": "X"
+            },
+            "experience": {
+                "max": 0,
+                "min": 0
+            },
+            "internAsExperience": true,
+            "location": "Delhi",
+            "partAsExperience": true,
+            "requirements": "Strong React, JavaScript, TypeScript, REST APIs, Git.",
+            "responsibilities": "Develop UI components, integrate APIs, optimize performance, write clean reusable code.",
+            "role": "SDE-5",
+            "salary": {
+                "max": 0,
+                "min": 0
+            },
+            "site": "on-site",
+            "type": "job",
+            "working_hours": "full-time"
+        }
+    ],
+    "unified_profiles": [
+        {
+            "_creationTime": 1759769605567.3967,
+            "_id": "k576nycjjqgpf0fzphzr0hg6vx7rzx87",
+            "achievements": [
+                "Achieved a 75%+ increase in user engagement in 'MyTask' React Native application.",
+                "Implemented an OTP-based user authentication system in 'TejAgro-' reducing login friction by 40% and improving user onboarding.",
+                "Improved user satisfaction by 25% through localized content (English and Marathi) in 'TejAgro-' e-commerce application.",
+                "Achieved a 30% improvement in product browsing and search efficiency in 'SweetShop' e-commerce platform.",
+                "Increased inventory accuracy by 20% through comprehensive admin functionalities in 'SweetShop' platform."
+            ],
+            "competitive_programming": {
+                "acceptance_rate": 23.96,
+                "no_of_contests": 0,
+                "no_of_questions": 346,
+                "platforms": {
+                    "LeetCode": "https://leetcode.com/aabid2947"
+                },
+                "topics": [
+                    "Array",
+                    "Hash Table",
+                    "String",
+                    "Two Pointers",
+                    "Math",
+                    "Sorting",
+                    "Binary Search",
+                    "Dynamic Programming",
+                    "Linked List",
+                    "Tree",
+                    "Binary Tree",
+                    "Stack",
+                    "Depth-First Search",
+                    "Greedy",
+                    "Bit Manipulation",
+                    "Breadth-First Search",
+                    "Recursion",
+                    "Divide and Conquer",
+                    "Simulation",
+                    "Sliding Window",
+                    "Design",
+                    "Backtracking",
+                    "Matrix",
+                    "Database",
+                    "Queue",
+                    "Quickselect",
+                    "Trie",
+                    "Enumeration",
+                    "Ordered Set",
+                    "Graph",
+                    "Brainteaser",
+                    "Game Theory",
+                    "Union Find"
+                ]
+            },
+            "courses_and_certificates": [],
+            "createdAt": "2025-10-06T16:53:25.571Z",
+            "dataScience": {
+                "no_of_competitions": 0,
+                "no_of_datasets": 0,
+                "no_of_medals_winnings": {
+                    "bronze": 0,
+                    "gold": 0,
+                    "silver": 0
+                },
+                "no_of_models": 0,
+                "no_of_notebooks": 0,
+                "platforms": {},
+                "relevant_links": [],
+                "topics": []
+            },
+            "designs_and_publications": {
+                "no_of_designs": 0,
+                "no_of_papers": 0,
+                "platforms": {},
+                "relevant_links": [],
+                "topics": []
+            },
+            "education": [
+                {
+                    "cgpa": 7.3,
+                    "course": "ECE",
+                    "end": "2030",
+                    "institution": "Jamia Millia Islamia",
+                    "location": "Delhi, India",
+                    "start": "2022",
+                    "type": "graduation"
+                },
+                {
+                    "course": "cdcds",
+                    "end": "",
+                    "institution": "hdsd",
+                    "location": "",
+                    "start": "",
+                    "type": "graduation"
+                }
+            ],
+            "experience": [
+                {
+                    "company": "evalzz",
+                    "description": "",
+                    "end": "",
+                    "location": "delhi",
+                    "role": "cto",
+                    "site": "remote",
+                    "start": "",
+                    "type": "job",
+                    "working_hours": "part-time"
+                }
+            ],
+            "freelancing": {
+                "average_client_rating": 5,
+                "no_of_projects": 10,
+                "platforms": {
+                    "Upwork": "https://www.upwork.com/freelancers/~010946d8e216b2221e"
+                },
+                "technologies": [
+                    "React"
+                ]
+            },
+            "individualId": "jh73e65w17gp09xcacrw1dqyph7rz557",
+            "projects": [
+                {
+                    "description": "Engineered a feature-rich React Native task management application, enhancing user productivity with intuitive task creation, editing, and prioritization functionalities. Implemented a dynamic, animated collapsible header and smooth task animations, achieving a 75%+ increase in user engagement compared to static interfaces. Leveraged React Context API for global state management and AsyncStorage for robust local data persistence, ensuring a seamless and reliable user experience across sessions. Additionally, integrated local notifications to provide timely task reminders, significantly improving task completion rates.",
+                    "link": "https://github.com/aabid2947/MyTask",
+                    "name": "MyTask",
+                    "stars": 0,
+                    "technologies": [
+                        "React Native",
+                        "Expo",
+                        "JavaScript",
+                        "TypeScript",
+                        "Context API",
+                        "AsyncStorage",
+                        "Expo Notifications",
+                        "Expo Router",
+                        "Animated API"
+                    ]
+                },
+                {
+                    "description": "Developed a full-stack P2P trading platform for FUN tokens, driving secure and transparent transactions through a responsive React frontend with Redux Toolkit and RTK Query. Implemented robust user authentication, including email/password and Google OAuth, complemented by a comprehensive dashboard for real-time portfolio management. Integrated Firebase Firestore for real-time chat, facilitating direct communication between buyers and sellers, and designed a robust listing and trade system to optimize P2P interactions.",
+                    "link": "https://github.com/aabid2947/TradeFlow",
+                    "name": "TradeFlow",
+                    "stars": 0,
+                    "technologies": [
+                        "React",
+                        "Redux Toolkit (RTK Query)",
+                        "JavaScript",
+                        "Tailwind CSS",
+                        "Firebase (Auth, Firestore)",
+                        "React Router DOM",
+                        "Zod",
+                        "React Hook Form",
+                        "Shadcn/ui",
+                        "Node.js (implicit)"
+                    ]
+                },
+                {
+                    "description": "Developed a React Native mobile banking application for managing digital rupee transactions, providing users with a clear and concise overview of their financial activities. Implemented features for secure profile viewing, dynamic display of transaction history (credit, debit, and pending), and detailed transaction breakdowns, ensuring transparency and ease of use. Integrated with a custom API to fetch and format real-time financial data, delivering up-to-date account information. The application focuses on a streamlined user experience, making digital currency management accessible and efficient.",
+                    "link": "https://github.com/aabid2947/HDFC",
+                    "name": "HDFC",
+                    "stars": 0,
+                    "technologies": [
+                        "React Native",
+                        "JavaScript",
+                        "React Navigation",
+                        "MaterialCommunityIcons",
+                        "Expo Google Fonts",
+                        "API Integration (PHP)"
+                    ]
+                },
+                {
+                    "description": "Developed 'Aiva,' a React Native AI virtual assistant application, enhancing user interaction through intelligent chat, voice-to-text input, and comprehensive file summarization. Integrated Firebase for robust user authentication and real-time push notifications, ensuring secure access and timely alerts. Leveraged Google Sign-In for streamlined user onboarding and implemented a custom native module for efficient file picking, delivering a powerful and intuitive AI-driven mobile experience.",
+                    "link": "https://github.com/aabid2947/Aiva",
+                    "name": "Aiva",
+                    "stars": 0,
+                    "technologies": [
+                        "React Native",
+                        "JavaScript",
+                        "Firebase (Auth, Messaging, Firestore)",
+                        "Google Sign-In",
+                        "@react-native-voice/voice",
+                        "Axios",
+                        "React Native FS",
+                        "React Native Keychain",
+                        "Native Modules (FilePickerModule for Android)"
+                    ]
+                },
+                {
+                    "description": "Developed a dynamic web application for yacht inventory management, significantly improving user experience through advanced filtering, sorting, and pagination functionalities. Enabled users to efficiently compare up to three selected boats side-by-side, enhancing decision-making. Integrated seamlessly with a WordPress REST API to fetch and display dynamic yacht data, ensuring up-to-date information. The application features a responsive design and a modern, visually appealing interface, making boat discovery and comparison intuitive and engaging.",
+                    "link": "https://github.com/aabid2947/Yacht-Inventory",
+                    "name": "Yacht-Inventory",
+                    "stars": 0,
+                    "technologies": [
+                        "React",
+                        "JavaScript",
+                        "Vite",
+                        "Tailwind CSS",
+                        "Material UI",
+                        "React Router DOM",
+                        "Slick Carousel",
+                        "Framer Motion",
+                        "WordPress REST API"
+                    ]
+                },
+                {
+                    "description": "Architected a secure and scalable Node.js backend for a P2P FUN token trading platform, providing robust API endpoints for user authentication, profile management, and a comprehensive transaction system. Implemented advanced security measures, including JWT with refresh token rotation, role-based access control, and a suite of security middleware (Helmet, rate limiting, input sanitization) to protect data integrity and user privacy. Integrated Razorpay for payment processing and laid the groundwork for real-time chat, enabling a fully featured and secure P2P trading ecosystem.",
+                    "link": "https://github.com/aabid2947/TradeFlowServer",
+                    "name": "TradeFlowServer",
+                    "stars": 0,
+                    "technologies": [
+                        "Node.js",
+                        "Express.js",
+                        "MongoDB",
+                        "Mongoose",
+                        "JWT",
+                        "Bcryptjs",
+                        "Express-validator",
+                        "Helmet",
+                        "CORS",
+                        "Express Rate Limit",
+                        "Compression",
+                        "Express-Mongo-Sanitize",
+                        "HPP",
+                        "Morgan",
+                        "Dotenv",
+                        "Razorpay",
+                        "Firebase (implicit from client interaction)"
+                    ]
+                },
+                {
+                    "description": "Developed a robust React Native e-commerce application for an agro-product marketplace, significantly enhancing customer access to agricultural goods. Implemented an efficient OTP-based user authentication system, reducing login friction by 40% and improving user onboarding. The application features a comprehensive product catalog, a seamless shopping cart, and intuitive order management functionalities, all powered by a custom PHP backend. Achieved multi-language support (English and Marathi) using `react-i18next`, expanding market reach and improving user satisfaction by 25% through localized content.",
+                    "link": "https://github.com/aabid2947/TejAgro-",
+                    "name": "TejAgro-",
+                    "stars": 0,
+                    "technologies": [
+                        "React Native",
+                        "TypeScript",
+                        "Redux Toolkit",
+                        "React Navigation",
+                        "Axios",
+                        "react-i18next",
+                        "jwt-decode",
+                        "react-native-async-storage",
+                        "react-native-elements",
+                        "react-native-image-picker",
+                        "react-native-responsive-screen",
+                        "react-native-easebuzz-sdk"
+                    ]
+                },
+                {
+                    "description": "Designed and implemented a secure web application for user authentication and profile management, incorporating the foundation for a robust KYC (Know Your Customer) process. Leveraging React, Redux Toolkit, and RTK Query, the platform offers streamlined login and registration flows, integrated with Firebase for email/password and Google OAuth authentication. The application prioritizes data integrity and a consistent user experience by utilizing Zod for comprehensive form validation and Shadcn/ui for modern, accessible components, laying a critical groundwork for regulatory compliance.",
+                    "link": "https://github.com/aabid2947/eKYC",
+                    "name": "eKYC",
+                    "stars": 0,
+                    "technologies": [
+                        "React",
+                        "Redux Toolkit (RTK Query)",
+                        "JavaScript",
+                        "Tailwind CSS",
+                        "Firebase (Auth)",
+                        "React Router DOM",
+                        "Zod",
+                        "React Hook Form",
+                        "Shadcn/ui"
+                    ]
+                },
+                {
+                    "description": "Developed a modern e-commerce platform for a sweet shop, built with React, Redux Toolkit, and RTK Query, achieving a 30% improvement in product browsing and search efficiency. Implemented robust user authentication, including email/password and Google OAuth, significantly enhancing user onboarding and security. The platform features detailed product displays with reviews and integrates comprehensive admin functionalities for efficient product management, leading to a 20% increase in inventory accuracy. This project provides a rich, user-friendly shopping experience with scalable architecture.",
+                    "link": "https://github.com/aabid2947/SweetShop",
+                    "name": "SweetShop",
+                    "stars": 0,
+                    "technologies": [
+                        "React",
+                        "Redux Toolkit (RTK Query)",
+                        "JavaScript",
+                        "Tailwind CSS",
+                        "Firebase (Auth)",
+                        "React Router DOM",
+                        "Zod",
+                        "React Hook Form",
+                        "Shadcn/ui",
+                        "Node.js (implicit from server interaction)"
+                    ]
+                },
+                {
+                    "description": "Architected and implemented a Node.js backend for the Aiva AI virtual assistant, integrating the Google Gemini API to provide intelligent natural language processing, advanced summarization (text, image, and PDF), and smart email reply generation. Developed secure RESTful APIs using Express and JWT, managing user data and reminders with Firebase Admin SDK for robust authentication and real-time notifications. Orchestrated automated voice calls via Twilio and payment processing through the M-Pesa API, delivering a comprehensive, scalable, and secure AI-driven service platform deployed on DigitalOcean.",
+                    "link": "https://github.com/aabid2947/AivaBackend",
+                    "name": "AivaBackend",
+                    "stars": 0,
+                    "technologies": [
+                        "Node.js",
+                        "Express.js",
+                        "Google Gemini API",
+                        "Firebase Admin SDK (Auth, Firestore, FCM)",
+                        "Multer",
+                        "js-base64",
+                        "node-cron",
+                        "Twilio API",
+                        "M-Pesa API",
+                        "Dotenv"
+                    ]
+                }
+            ],
+            "ratings": {
+                "Code Quality": {
+                    "rationale": "Projects consistently demonstrate good practices like TypeScript for type safety, modular component architecture, robust validation with Zod, and secure authentication, though minor improvements in error handling are noted in one instance.",
+                    "score": 8
+                },
+                "Collaboration & Communication": {
+                    "rationale": "No direct evidence of collaboration or communication within a team context (e.g., PR reviews, issue discussions) is available from the provided profiles.",
+                    "score": 5
+                },
+                "Competitive Programming": {
+                    "rationale": "Solved a respectable 346 problems across diverse topics on LeetCode, demonstrating strong foundational algorithm knowledge, but has not yet participated in contests.",
+                    "score": 6.5
+                },
+                "DevOps & Automation": {
+                    "rationale": "Shows a clear stated interest in DevOps and initial experience with cloud deployment, indicating potential, but lacks extensive demonstrated practice in automation, CI/CD, or infrastructure as code.",
+                    "score": 6
+                },
+                "Learning Agility": {
+                    "rationale": "Demonstrates excellent learning agility by rapidly adopting and applying a wide array of diverse and modern technologies, from multiple frontend frameworks to complex backend APIs and deployment strategies.",
+                    "score": 9
+                },
+                "Open-Source Contributions": {
+                    "rationale": "There is no information available regarding open-source contributions in the provided data.",
+                    "score": 0
+                },
+                "Programming Skills": {
+                    "rationale": "Displays strong breadth and depth across modern web (React, Node.js) and mobile (React Native, Expo) development, with proficient use of TypeScript, Redux Toolkit, and various API integrations.",
+                    "score": 9
+                },
+                "Project Impact": {
+                    "rationale": "Projects demonstrate significant impact through measurable improvements, including a 75%+ increase in user engagement, 40% reduction in login friction, and 30% improvement in product browsing efficiency.",
+                    "score": 8.8
+                },
+                "System Design": {
+                    "rationale": "Demonstrates strong system design capabilities in backend projects, implementing secure, scalable architectures with robust authentication, extensive middleware, and complex API orchestrations.",
+                    "score": 8.5
+                },
+                "Technical Writing": {
+                    "rationale": "The GitHub project summaries and code quality descriptions are highly detailed, clear, and effectively communicate technical aspects and project impact.",
+                    "score": 8.5
+                },
+                "Technology Awareness": {
+                    "rationale": "Exhibits excellent awareness of modern technologies, utilizing contemporary frameworks like React and React Native, advanced state management with Redux Toolkit, and sophisticated integrations with AI and payment APIs.",
+                    "score": 9
+                },
+                "Testing & QA": {
+                    "rationale": "The profiles indicate good input validation and robust error handling practices, but specific mentions of unit/integration testing, test coverage, or CI/CD for QA are not present.",
+                    "score": 6
+                }
+            },
+            "skills": {
+                "APIs & Integrations": [
+                    "Google Gemini API",
+                    "Twilio API",
+                    "M-Pesa API",
+                    "Razorpay",
+                    "WordPress REST API",
+                    "Google OAuth",
+                    "Expo Notifications",
+                    "react-i18next"
+                ],
+                "Backend Development": [
+                    "Node.js",
+                    "Express.js",
+                    "Firebase Admin SDK",
+                    "RESTful API Design",
+                    "JWT",
+                    "Bcryptjs",
+                    "Middleware Development",
+                    "API Security",
+                    "Cron Jobs",
+                    "Natural Language Processing"
+                ],
+                "Cloud Platforms": [
+                    "Firebase",
+                    "DigitalOcean (Deployment)"
+                ],
+                "Databases": [
+                    "MongoDB",
+                    "Firebase Firestore",
+                    "AsyncStorage"
+                ],
+                "Frontend Development": [
+                    "React",
+                    "React Native",
+                    "Redux Toolkit",
+                    "RTK Query",
+                    "Tailwind CSS",
+                    "Material UI",
+                    "Shadcn/ui",
+                    "Expo",
+                    "Vite",
+                    "React Router DOM",
+                    "Framer Motion",
+                    "Animated API",
+                    "UI/UX Design",
+                    "HTML",
+                    "CSS"
+                ],
+                "Programming Languages": [
+                    "JavaScript",
+                    "TypeScript",
+                    "PHP"
+                ],
+                "Tools & Concepts": [
+                    "Git",
+                    "ESLint",
+                    "State Management (Context API, Redux)",
+                    "Form Validation (Zod, React Hook Form)",
+                    "Authentication (OTP, Email/Password)",
+                    "Mobile Development",
+                    "AI Integration",
+                    "File Processing",
+                    "Data Summarization",
+                    "Scalable Architecture",
+                    "Security Best Practices",
+                    "Native Modules"
+                ]
+            },
+            "social": {
+                "platforms": {
+                    "GitHub": "https://github.com/aabid2947",
+                    "LeetCode": "https://leetcode.com/aabid2947",
+                    "LinkedIn": "https://www.linkedin.com/in/md-aabid-hussain-852a72255"
+                },
+                "relevant_links": [
+                    "https://www.linkedin.com/in/md-aabid-hussain-852a72255",
+                    "https://github.com/aabid2947",
+                    "https://leetcode.com/aabid2947"
+                ],
+                "topics_of_discussion": [
+                    "React Native",
+                    "Web Development",
+                    "Mobile Development",
+                    "Node.js",
+                    "Express.js",
+                    "Firebase",
+                    "State Management",
+                    "UI/UX Design",
+                    "API Integration",
+                    "Authentication",
+                    "DevOps",
+                    "AI Integration",
+                    "E-commerce",
+                    "Full-Stack Development"
+                ]
+            },
+            "summary": "A highly motivated Full-Stack Developer with a robust background in building reliable web and mobile applications using modern technologies like React, React Native, Node.js, and Firebase. Proven ability to deliver intuitive user experiences, secure backend systems, and scalable solutions. Currently focused on expanding expertise into DevOps practices, with a keen interest in automating deployments, optimizing operations through containerization, and implementing CI/CD pipelines to enhance development workflows.",
+            "updatedAt": "2025-10-23T20:05:29.855Z",
+            "verified": false
+        }
+    ]
+}

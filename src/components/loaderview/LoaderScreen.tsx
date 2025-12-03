@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import { ActivityIndicator, Text, View, Image, Animated } from 'react-native';
-import { MDBLUE, ORANGE } from '../../shared/common-styles/colors';
 import { LoaderScreenStyle } from './LoaderScreenStyle';
 
 export const LoaderScreen = ({ title }: any) => {
@@ -29,11 +28,13 @@ export const LoaderScreen = ({ title }: any) => {
     return (
         <View style={loaderView}>
             <View style={logoContainer}>
-                <Animated.Image
-                    source={require('../../assets/tejagro.png')}
-                    style={[logo, { transform: [{ scale: scaleAnim }] }]}
-                    resizeMode="contain"
-                />
+                <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+                    <Image
+                        source={require('../../assets/tejagro.png')}
+                        style={logo}
+                        resizeMode="contain"
+                    />
+                </Animated.View>
             </View>
             <Text style={loaderText}>{title ? title : 'Please Wait...'}</Text>
         </View>

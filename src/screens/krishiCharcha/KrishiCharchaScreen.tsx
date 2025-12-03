@@ -90,8 +90,12 @@ const KrishiCharchaScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    loadPosts();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      loadPosts(1, true);
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   const loadPosts = async (pageNum = 1, refresh = false) => {
     try {
@@ -112,6 +116,7 @@ const KrishiCharchaScreen: React.FC = () => {
       const response = await AuthApi.getPosts({
         client_id: currentClientId
       });
+      console.log(response.data, "getPostsgetPosts");
       
       
       if (response?.data?.status && response?.data?.posts) {

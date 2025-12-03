@@ -12,9 +12,11 @@ curl -X POST "https://tejagrotech.com/tejagro_sale_demo/Webservices/order-histor
 
 <!-- Request OTP -->
 curl -X POST "https://tejagrosales.tejgroup.in/Webservices/otp.php" -H "Content-Type: application/json" -d '{"mobile_no":"8264782290"}'
+curl -X POST "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/otp.php" -H "Content-Type: application/json" -d '{"mobile_no":"8264782290"}'
 
 <!-- Validate OTP -->
 curl -X POST "https://tejagrosales.tejgroup.in/Webservices/login.php" -H "Content-Type: application/json" -d '{"mobile_no":"8264782290","otp":"6375"}'
+curl -X POST "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/login.php" -H "Content-Type: application/json" -d '{"mobile_no":"8264782290","otp":"4602"}'
 
 <!-- Post file in chat -->
 curl -X POST "https://tejagrosales.tejgroup.in/Webservices/chat-messages.php?action=get_data" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)" -d '$(cat t.text)'

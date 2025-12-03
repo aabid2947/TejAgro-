@@ -7,6 +7,7 @@
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
    
 
     <uses-feature android:name="android.hardware.camera" android:required="false" />
@@ -36,5 +37,11 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
       </activity>
+      <meta-data
+  android:name="com.google.firebase.messaging.default_notification_icon"
+  android:resource="@drawable/ic_notification_small" />
+      <meta-data
+  android:name="com.google.firebase.messaging.default_notification_large_icon"
+  android:resource="@drawable/ic_notification_large" />
     </application>
 </manifest>

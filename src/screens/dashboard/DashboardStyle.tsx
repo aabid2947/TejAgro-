@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { BLACK, DARK_GREEN_New, MD_GRAY_Dark, MDBLUE, PINK_GREY, Poppins, PoppinsMedium, WHITE, WHITE_GRAY, RED, LIGHT_GRAY } from "../../shared/common-styles/colors";
+import { BLACK, DARK_GREEN_New, MD_GRAY_Dark, MDBLUE, PINK_GREY, Poppins, PoppinsMedium, WHITE, WHITE_GRAY, RED } from "../../shared/common-styles/colors";
 import { heightPercentageToDP, widthPercentageToDP } from "react-native-responsive-screen";
 
 export const DashboardStyle = StyleSheet.create({
@@ -14,19 +14,19 @@ export const DashboardStyle = StyleSheet.create({
         lineHeight: 27,
         paddingBottom: 10
     },
-    removeCropButton: {
-        position: 'absolute',
-        top: 5,
-        right: 5,
-        backgroundColor: RED,
-        borderRadius: 12,
-        width: 24,
-        height: 24,
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 10,
-        elevation: 5,
-    },
+    // removeCropButton: {
+    //     position: 'absolute',
+    //     top: 5,
+    //     right: 5,
+    //     backgroundColor: RED,
+    //     borderRadius: 12,
+    //     width: 24,
+    //     height: 24,
+    //     alignItems: 'center',
+    //     justifyContent: 'center',
+    //     zIndex: 10,
+    //     elevation: 5,
+    // },
     columnView: {
         justifyContent: 'flex-start',
         gap: 20
@@ -147,7 +147,7 @@ export const DashboardStyle = StyleSheet.create({
         color: BLACK,
         textAlign: 'center',
         fontFamily: PoppinsMedium,
-        numberOfLines: 2,
+        // numberOfLines: 2,
         lineHeight: 14,
         paddingHorizontal: 2,
     },
@@ -201,7 +201,7 @@ export const DashboardStyle = StyleSheet.create({
         gap: 10,
     },
     cancelButton: {
-        backgroundColor: LIGHT_GRAY,
+        // backgroundColor: LIGHT_GRAY,
         paddingHorizontal: 15,
         paddingVertical: 8,
         borderRadius: 20,
@@ -255,7 +255,7 @@ export const DashboardStyle = StyleSheet.create({
         color: BLACK,
         textAlign: 'center',
         fontFamily: Poppins,
-        numberOfLines: 2,
+        // numberOfLines: 2,
         lineHeight: 12,
         paddingHorizontal: 2,
     },

@@ -222,6 +222,8 @@
     "REFERRAL_SHARED_SUCCESS": "Referral code shared successfully!",
     "REFERRAL_COPIED": "Referral code copied to clipboard!",
     "NO_REFERRAL_CODE": "No referral code available to copy",
+    "REFERRAL_NOT_FOUND": "Referral not found",
+    "WALLET_MIN_ORDER_MESSAGE": "To use wallet amount, order amount must be greater than ₹{minAmount}",
     "WHATSAPP_NOT_INSTALLED": "WhatsApp is not installed",
     "FAILED_SHARE_REFERRAL": "Failed to share referral code",
     "FAILED_SHARE_WHATSAPP": "Failed to share via WhatsApp",
@@ -262,5 +264,8 @@
     "PLEASE_SELECT_IMAGE": "Please select an image",
     "HAVE_REFERRAL_CODE": "I have a referral code",
     "REFERRAL_CODE_REQUIRED": "Please enter referral code",
-    "Category": "Category"
+    "Category": "Category",
+    "NO_OFFERS_AVAILABLE": "No offers available",
+    "NO_OFFERS_AVAILABLE_FOR_CATEGORY": "No offers available",
+    "WALLET_MIN_CART_VALUE_MESSAGE": "Wallet amount can only be used above cart value ₹2000"
 }

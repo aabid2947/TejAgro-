@@ -29,8 +29,8 @@ import { jwtDecode } from 'jwt-decode'
 // Configuration for offer GIF
 const OFFER_GIF_CONFIG = {
   url: "https://www.tejagrotech.com/tejagro_sale_demo/offer_images/offer_icon.gif", // Replace with your GIF URL
-  width: 64,
-  height: 40,
+  width: 68,
+  height: 44,
   alt: "offers"
 };
 
@@ -255,11 +255,11 @@ export const headerView = (title: any, subTitle: any, sideBarPress: any, totalIt
     
     useEffect(() => {
         // Only animate if not on offer screen
-        if (currentRoute !== OFFER_SCREEN) {
+        if (false) {
             const blinkAnimation = Animated.loop(
                 Animated.sequence([
                     Animated.timing(scaleAnim, {
-                        toValue: 1.3,
+                        toValue: 1,
                         duration: 800,
                         useNativeDriver: true,
                     }),
@@ -394,7 +394,7 @@ export const headerView = (title: any, subTitle: any, sideBarPress: any, totalIt
                                                     img {
                                                         width: ${OFFER_GIF_CONFIG.width}px;
                                                         height: ${OFFER_GIF_CONFIG.height}px;
-                                                        object-fit: contain;
+                                                        object-fit: conver;
                                                         border-radius: 4px;
                                                     }
                                                 </style>

@@ -323,8 +323,8 @@ const OfferScreen: React.FC = () => {
     <View style={styles.emptyContainer}>
       <Text style={styles.emptyText}>
         {showAllOffers 
-          ? 'No offers available' 
-          : `No offers available for ${userCategory} category`
+          ? t('NO_OFFERS_AVAILABLE')
+          : t('NO_OFFERS_AVAILABLE_FOR_CATEGORY', { category: userCategory })
         }
       </Text>
     </View>

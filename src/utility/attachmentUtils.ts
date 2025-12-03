@@ -1,5 +1,11 @@
 import { launchImageLibrary, launchCamera, ImagePickerResponse, MediaType, PhotoQuality } from 'react-native-image-picker';
-import DocumentPicker, { DocumentPickerResponse } from 'react-native-document-picker';
+import { 
+  pick,
+  DocumentPickerResponse,
+  errorCodes,
+  isErrorWithCode,
+  types,
+} from '@react-native-documents/picker';
 import { Alert, Platform } from 'react-native';
 import RNFS from 'react-native-fs';
 
@@ -147,35 +153,32 @@ const openGallery = async (resolve: (value: AttachmentData[]) => void, reject: (
  */
 export const pickDocument = async (): Promise<AttachmentData[]> => {
   try {
-    const results = await DocumentPicker.pick({
+    const results = await pick({
       type: [
-        DocumentPicker.types.pdf,
-        DocumentPicker.types.doc,
-        DocumentPicker.types.docx,
-        DocumentPicker.types.xls,
-        DocumentPicker.types.xlsx,
-        DocumentPicker.types.ppt,
-        DocumentPicker.types.pptx,
-        DocumentPicker.types.plainText,
+        types.pdf,
+        types.doc,
+        types.docx,
+        types.plainText,
+        types.xlsx,
+        types.ppt,
+        types.pptx,
+        // Add more types as needed
       ],
       allowMultiSelection: true,
-      copyTo: 'documentDirectory',
+      mode: 'import', // Use import mode for better file access
     });
 
     const attachments: AttachmentData[] = [];
 
     for (const result of results) {
       try {
-        // Use the copied file path for better reliability
-        const filePath = result.fileCopyUri || result.uri;
-        
         // Check file size (limit to 10MB)
         if (result.size && result.size > 10 * 1024 * 1024) {
           Alert.alert('Error', `File ${result.name} is too large. Maximum size is 10MB.`);
           continue;
         }
 
-        const base64Data = await convertToBase64(filePath);
+        const base64Data = await convertToBase64(result.uri);
         const mimeType = result.type || 'application/octet-stream';
         const base64WithPrefix = `data:${mimeType};base64,${base64Data}`;
 
@@ -184,7 +187,7 @@ export const pickDocument = async (): Promise<AttachmentData[]> => {
           base64: base64WithPrefix,
           fileName: result.name || `document_${Date.now()}`,
           fileType: mimeType,
-          uri: filePath,
+          uri: result.uri,
         });
       } catch (error) {
         console.error(`Error processing document ${result.name}:`, error);
@@ -194,8 +197,22 @@ export const pickDocument = async (): Promise<AttachmentData[]> => {
 
     return attachments;
   } catch (error) {
-    if (DocumentPicker.isCancel(error)) {
-      return [];
+    if (isErrorWithCode(error)) {
+      switch (error.code) {
+        case errorCodes.OPERATION_CANCELED:
+          console.log('Document picker cancelled');
+          return [];
+        case errorCodes.UNABLE_TO_OPEN_FILE_TYPE:
+          console.warn('Unable to open file type');
+          Alert.alert('Error', 'Unable to open this file type');
+          return [];
+        case errorCodes.IN_PROGRESS:
+          console.warn('Document picker already in progress');
+          return [];
+        default:
+          console.error('Document picker error:', error);
+          throw error;
+      }
     } else {
       console.error('Error picking document:', error);
       throw error;

@@ -55,12 +55,40 @@ const MenuBarScreen = ({ navigation }: any) => {
     console.log("walletInfo : ", walletInfo)
     const onProceed = async () => {
         setModalVisible(false);
+        
+        // Clean up FCM token before logout
+        try {
+            if (isUserData?.jwt) {
+                const decodedToken: any = jwtDecode(isUserData.jwt);
+                const clientId = decodedToken?.data?.client_id;
+                if (clientId) {
+                    await handleNotificationLogout(clientId);
+                }
+            }
+        } catch (error) {
+            console.error('Error cleaning up FCM token:', error);
+        }
+        
         dispatch(isLogOut())
         ToastAndroid.show(deleteData ? "Account Deleted" : "Logout successfully", ToastAndroid.SHORT);
 
     };
     const onProceedLogout = async () => {
         setModalVisible(false);
+        
+        // Clean up FCM token before logout
+        try {
+            if (isUserData?.jwt) {
+                const decodedToken: any = jwtDecode(isUserData.jwt);
+                const clientId = decodedToken?.data?.client_id;
+                if (clientId) {
+                    await handleNotificationLogout(clientId);
+                }
+            }
+        } catch (error) {
+            console.error('Error cleaning up FCM token:', error);
+        }
+        
         dispatch(isLogOut())
         ToastAndroid.show(deleteData ? "Account Deleted" : "Logout successfully", ToastAndroid.SHORT);
     };
@@ -273,7 +301,7 @@ const MenuBarScreen = ({ navigation }: any) => {
                     </View>
                 </View>
                 {dataItems(WalletIcon, ArrowIcon, `${t('WALLET')}`, undefined, `Balance: ${profileInfo?.my_wallet || 0}`, true)}
-                {dataItems(ShareIcon, ArrowIcon, `${t('REFER_AND_EARN')}`,undefined, `Referral Code: ${referralCode || 'Not Available'}`)}
+                {dataItems(ShareIcon, ArrowIcon, `${t('REFER_AND_EARN')}`, () => navigation.navigate(REFER_EARN_SCREEN), `Referral Code: ${referralCode || 'Not Available'}`)}
                 {dataItems(CartIcon, ArrowIcon, `${t('MY_ORDERS')}`, () => navigation.navigate(ORDER_SCREEN), `You have ${orderData.length || "0"} orders`)}
                 {dataItems(LocationIcon, ArrowIcon, `${t('SHIPPING_ADDRESS')}`, () => navigation.navigate(SHIPPING_ADDRESS_SCREEN), `${addressData.length || "0"} Addresses`)}
                 {dataItems(SettingIcon, ArrowIcon, `${t('SETTING_PROFILE')}`, () => navigation.navigate(PROFILE_SETTING_SCREEN), `Profile, Contact`)}

@@ -77,8 +77,8 @@ const CustomCaraosel = (banner: any) => {
         <View style={styles.parentView}>
             <ReCarousel
                 loop
-                width={width / 1.1}
-                height={width / 2.2}
+                width={Math.round(width / 1.2)}
+                height={Math.round(width / 2.3)}
                 autoPlay={true}
                 data={banner?.data}
                 scrollAnimationDuration={5000}
@@ -239,11 +239,11 @@ const CustomCaraosel = (banner: any) => {
                         </Animated.View>
                     );
                 }}
-                mode="parallax"
-                modeConfig={{
-                    parallaxScrollingScale: 0.8,
-                    parallaxScrollingOffset: 90,
-                }}
+                // mode="parallax"
+                // modeConfig={{
+                //     parallaxScrollingScale: 0.8,
+                //     parallaxScrollingOffset: 90,
+                // }}
                 panGestureHandlerProps={{
                     activeOffsetX: [-10, 10],
                 }}
@@ -256,13 +256,15 @@ export default CustomCaraosel;
 
 const styles = StyleSheet.create({
     parentView: {
+        // borderWidth:1,
+        marginBottom:6,
         alignItems: 'center',
         justifyContent: 'center',
-        marginHorizontal: 20,
+        // marginHorizontal: 10,
         height: heightPercentageToDP(20),
     },
     bannerView: {
-        marginHorizontal: 25,
+        marginHorizontal: 15,
         borderWidth: 1,
         borderRadius: 10,
         borderColor: GRAY

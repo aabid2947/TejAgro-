@@ -33,7 +33,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../reduxToolkit/store';
 import AuthApi from '../api/AuthApi';
 import { profileDetail } from '../reduxToolkit/counterSlice';
-import { MYCART_SCREEN, CREATE_POST_SCREEN, OFFER_SCREEN } from './Routes';
+import { MYCART_SCREEN, CREATE_POST_SCREEN, OFFER_SCREEN, KRISHI_CHARCHA_SCREEN, YOUTUBE_SCREEN, VIDEOS_SCREEN } from './Routes';
 import { useLuckyDraw } from '../contexts/LuckyDrawContext';
 import LuckyDrawPopup from '../components/luckyDrawPopup/LuckyDrawPopup';
 
@@ -202,10 +202,10 @@ const TabScreen = () => {
         /> */}
         {/* YouTube Videos tab */}
         <Tab.Screen
-          name="Videos"
+          name={VIDEOS_SCREEN}
           component={YouTubeVideosScreen}
           listeners={{
-            tabPress: () => setCurrentTab('Videos'),
+            tabPress: () => setCurrentTab(VIDEOS_SCREEN),
           }}
           options={{
             tabBarLabel: ({ focused }) => (
@@ -223,10 +223,10 @@ const TabScreen = () => {
         />
         {/* Krishi Charcha tab */}
         <Tab.Screen
-          name="KrishiCharcha"
+          name={KRISHI_CHARCHA_SCREEN}
           component={KrishiCharchaScreen}
           listeners={{
-            tabPress: () => setCurrentTab('KrishiCharcha'),
+            tabPress: () => setCurrentTab(KRISHI_CHARCHA_SCREEN),
           }}
           options={{
             tabBarLabel: ({ focused }) => (
@@ -290,7 +290,7 @@ const TabScreen = () => {
       </Tab.Navigator>
       
       {/* Create Post Floating Button - Only show on Krishi Charcha tab */}
-      {currentTab === 'KrishiCharcha' && (
+      {currentTab === KRISHI_CHARCHA_SCREEN && (
         <TouchableOpacity
           style={[styles.createPostButton, { bottom: 155 + insets.bottom }]}
           onPress={() => navigation.navigate(CREATE_POST_SCREEN as never)}
