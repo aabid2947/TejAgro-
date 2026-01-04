@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Dimensions, Text, ImageBackground, StyleSheet, View, Image } from "react-native";
+import { Dimensions, Text, ImageBackground, StyleSheet, View, Image, TouchableOpacity } from "react-native";
 import Animated, { useSharedValue } from "react-native-reanimated";
 import ReCarousel from 'react-native-reanimated-carousel';
 import { heightPercentageToDP } from "react-native-responsive-screen";
@@ -7,6 +7,10 @@ import { GRAY } from "../../shared/common-styles/colors";
 import { WebView } from 'react-native-webview';
 import Video from 'react-native-video';
 import { usePopup } from '../../contexts/PopupContext';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../reduxToolkit/store';
+import AuthApi from '../../api/AuthApi';
+import { jwtDecode } from 'jwt-decode';
 // Fallback Video component in case react-native-video is not working
 // let Video;
 // try {
@@ -45,6 +49,47 @@ const CustomCaraosel = (banner: any) => {
     const progressValue = useSharedValue(0);
     const [forcePlay, setForcePlay] = useState(false);
     const { isPopupOpen } = usePopup();
+    const [shuffledData, setShuffledData] = useState<any[]>([]);
+    const isUserData: any = useSelector((state: RootState) => state.counter.isUserinfo);
+
+    const handleBannerClick = async (item: any) => {
+        try {
+            console.log(9)
+            if (isUserData?.jwt) {
+                const decodedToken: any = jwtDecode(isUserData.jwt);
+                const clientId = decodedToken?.data?.client_id;
+                
+
+                // Use id or banner_id, whichever is available
+                const bannerId = item?.id || item?.banner_id;
+                console.log('handleBannerClick:', { clientId, item });
+
+                if (clientId && bannerId) {
+                    const payload = {
+                        client_id: clientId,
+                        method_type: 'Banner_Click',
+                        method_id: bannerId
+                    };
+                    console.log('Tracking banner click:', payload);
+                    const response=await AuthApi.trackClick(payload);
+                    console.log('Banner click tracked successfully:', response.data);
+                }
+            }
+        } catch (error) {
+            console.log('Error tracking banner click:', error);
+        }
+    };
+
+    React.useEffect(() => {
+        if (banner?.data && banner.data.length > 0) {
+            const data = [...banner.data];
+            for (let i = data.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [data[i], data[j]] = [data[j], data[i]];
+            }
+            setShuffledData(data);
+        }
+    }, [banner?.data]);
 
     // Effect to handle video playback when popup state changes
     React.useEffect(() => {
@@ -58,7 +103,10 @@ const CustomCaraosel = (banner: any) => {
         }
     }, [isPopupOpen]);
 
-    const onSnapToItem = (itemIndex: any) => {
+    const onSnapToItem = async (itemIndex: any) => {
+         
+                               
+        
         if ((banner?.data || [])?.length == 2) {
             if (itemIndex == 2) {
                 setItemIndex(0);
@@ -77,10 +125,10 @@ const CustomCaraosel = (banner: any) => {
         <View style={styles.parentView}>
             <ReCarousel
                 loop
-                width={Math.round(width / 1.2)}
-                height={Math.round(width / 2.3)}
+                width={Math.round(width / 0.7)}
+                height={Math.round(width / 1.7)}
                 autoPlay={true}
-                data={banner?.data}
+                data={shuffledData}
                 scrollAnimationDuration={5000}
                 onSnapToItem={onSnapToItem}
                 renderItem={({ item, index }: any) => {
@@ -103,10 +151,18 @@ const CustomCaraosel = (banner: any) => {
                     // console.log('CustomCarousel item:', { mediaUrl, mediaType, item });
 
                     return (
-                        <Animated.View key={index} style={styles.bannerView}>
-                            {mediaType === 'video' && mediaUrl && !videoErrors[index] && (
-                                <>
-                                
+                        <Animated.View key={index}
+                           
+                            style={styles.bannerView}>
+                            <TouchableOpacity
+                                activeOpacity={0.9}
+
+                                onPress={() => handleBannerClick(item)}
+                                style={{ width: '100%', height: '100%' }}
+                            >
+                                {mediaType === 'video' && mediaUrl && !videoErrors[index] && (
+                                    <>
+
                                         <Video
                                             source={{ uri: mediaUrl }}
                                             style={[styles.imgStyle, { width: '100%', height: '100%' }]}
@@ -132,7 +188,7 @@ const CustomCaraosel = (banner: any) => {
                                                 }
                                             }}
                                         />
-                                         {/* <WebView
+                                        {/* <WebView
                                             source={{
                                                 html: `
                                                     <html>
@@ -163,22 +219,22 @@ const CustomCaraosel = (banner: any) => {
                                                 setVideoErrors(prev => ({ ...prev, [index]: true }));
                                             }}
                                         /> */}
-                             
-                                </>
-                            )}
-                            {(mediaType === 'video' && videoErrors[index]) && (
-                                <ImageBackground
-                                    borderRadius={12}
-                                    resizeMode="contain"
-                                    source={{ uri: mediaUrl }}
-                                    style={[styles.imgStyle, { width: '100%', height: '100%' }]}
-                                />
-                            )}
-                            {mediaType === 'gif' && mediaUrl && !gifErrors[index] && (
-                                <View style={{ height: heightPercentageToDP(20), width: '100%', borderRadius: 12, overflow: 'hidden' }}>
-                                    <WebView
-                                        source={{
-                                            html: `
+
+                                    </>
+                                )}
+                                {(mediaType === 'video' && videoErrors[index]) && (
+                                    <ImageBackground
+                                        borderRadius={12}
+                                        resizeMode="contain"
+                                        source={{ uri: mediaUrl }}
+                                        style={[styles.imgStyle, { width: '100%', height: '100%' }]}
+                                    />
+                                )}
+                                {mediaType === 'gif' && mediaUrl && !gifErrors[index] && (
+                                    <View style={{ height: heightPercentageToDP(20), width: '100%', borderRadius: 12, overflow: 'hidden' }}>
+                                        <WebView
+                                            source={{
+                                                html: `
                                                            <html>
                                                              <head>
                                                                <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -206,36 +262,37 @@ const CustomCaraosel = (banner: any) => {
                                                              </body>
                                                            </html>
                                                          `
-                                        }}
-                                        style={{ width: '100%', height: '100%' }}
-                                        scrollEnabled={false}
-                                        showsVerticalScrollIndicator={false}
-                                        showsHorizontalScrollIndicator={false}
-                                        scalesPageToFit={false}
-                                        javaScriptEnabled={true}
-                                        domStorageEnabled={true}
-                                        startInLoadingState={false}
-                                        mixedContentMode="compatibility"
-                                        androidLayerType="hardware"
+                                            }}
+                                            style={{ width: '100%', height: '100%' }}
+                                            scrollEnabled={false}
+                                            showsVerticalScrollIndicator={false}
+                                            showsHorizontalScrollIndicator={false}
+                                            scalesPageToFit={false}
+                                            javaScriptEnabled={true}
+                                            domStorageEnabled={true}
+                                            startInLoadingState={false}
+                                            mixedContentMode="compatibility"
+                                            androidLayerType="hardware"
+                                        />
+                                    </View>
+                                )}
+                                {(mediaType === 'gif' && gifErrors[index]) && (
+                                    <ImageBackground
+                                        borderRadius={12}
+                                        resizeMode="contain"
+                                        source={{ uri: mediaUrl }}
+                                        style={[styles.imgStyle, { width: '100%', height: '100%', borderRadius: 12 }]}
                                     />
-                                </View>
-                            )}
-                            {(mediaType === 'gif' && gifErrors[index]) && (
-                                <ImageBackground
-                                    borderRadius={12}
-                                    resizeMode="contain"
-                                    source={{ uri: mediaUrl }}
-                                    style={[styles.imgStyle, { width: '100%', height: '100%' }]}
-                                />
-                            )}
-                            {mediaType === 'image' && mediaUrl && (
-                                <ImageBackground
-                                    borderRadius={12}
-                                    resizeMode="contain"
-                                    source={{ uri: mediaUrl }}
-                                    style={[styles.imgStyle, { width: '100%', height: '100%' }]}
-                                />
-                            )}
+                                )}
+                                {mediaType === 'image' && mediaUrl && (
+                                    <ImageBackground
+                                        borderRadius={12}
+                                        resizeMode="contain"
+                                        source={{ uri: mediaUrl }}
+                                        style={[styles.imgStyle, { width: '100%', height: '100%' }]}
+                                    />
+                                )}
+                            </TouchableOpacity>
                         </Animated.View>
                     );
                 }}
@@ -257,15 +314,16 @@ export default CustomCaraosel;
 const styles = StyleSheet.create({
     parentView: {
         // borderWidth:1,
-        marginBottom:6,
+        width: '100%',
+        // marginBottom: 75,
         alignItems: 'center',
         justifyContent: 'center',
         // marginHorizontal: 10,
         height: heightPercentageToDP(20),
     },
     bannerView: {
-        marginHorizontal: 15,
-        borderWidth: 1,
+        // marginHorizontal: 15,
+        // borderWidth: 1,
         borderRadius: 10,
         borderColor: GRAY
     },

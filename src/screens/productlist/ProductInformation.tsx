@@ -37,7 +37,7 @@ const ProductInformationScreen = ({ productDetail, quantity, setQuantity }: any)
             {item.map((item: any, index: any) => (
                 <View key={index}>
                     {/* <TextPoppinsSemiBold style={ProductStyle.productName}>{item.product_name}</TextPoppinsSemiBold> */}
-                    <TextPoppinsSemiBold style={ProductStyle.productName}>{item.product_marathi_name ? item.product_marathi_name : item.product_name}</TextPoppinsSemiBold>
+                    <Text style={ProductStyle.productName}>{item.product_marathi_name ? item.product_marathi_name : item.product_name}</Text>
                     <View style={ProductStyle.subBodyView}>
                         <View style={{ flexDirection: "column" }}>
                             {item.total_amount !== Number(item.mrp).toFixed(2) && item.mrp && (<TextPoppinsSemiBold style={styles.mrpText}> {t("MRP")}: ₹{item.mrp}</TextPoppinsSemiBold>)}

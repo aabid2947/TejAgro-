@@ -37,8 +37,8 @@ export class FCMUtils {
       this.navigationRef.navigate(screenName, params);
     } else {
       console.warn('⚠️ Navigation not ready, cannot navigate to:', screenName);
-      // Store navigation intent for later
-      setTimeout(() => this.navigateToScreen(screenName, params), 1000);
+      // Store navigation intent for later - retry quickly
+      setTimeout(() => this.navigateToScreen(screenName, params), 100);
     }
   }
 
@@ -217,6 +217,11 @@ export class FCMUtils {
         console.log('📱 iOS device registered for remote messages');
       }
 
+      // Add a small delay for Android to ensure services are ready
+      if (Platform.OS === 'android' && retryCount === 0) {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+
       const token = await messaging().getToken();
       if (token) {
         this.fcmToken = token;
@@ -232,13 +237,18 @@ export class FCMUtils {
         console.warn('⚠️ No FCM token received');
         return null;
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('❌ Error getting FCM token:', error);
 
       // Retry logic for SERVICE_NOT_AVAILABLE errors
-      if (retryCount < 3 && error instanceof Error && error.message.includes('SERVICE_NOT_AVAILABLE')) {
-        console.log(`🔄 Retrying FCM token request in 5 seconds... (attempt ${retryCount + 1}/3)`);
-        await new Promise(resolve => setTimeout(resolve, 5000));
+      const isServiceError = error?.message?.includes('SERVICE_NOT_AVAILABLE') || 
+                             error?.message?.includes('INTERNAL_SERVER_ERROR') ||
+                             error?.code === 'messaging/unknown';
+
+      if (retryCount < 5 && isServiceError) {
+        const delay = Math.min(3000 * Math.pow(2, retryCount), 15000); // Exponential backoff
+        console.log(`🔄 Retrying FCM token request in ${delay/1000} seconds... (attempt ${retryCount + 1}/5)`);
+        await new Promise(resolve => setTimeout(resolve, delay));
         return this.getFCMToken(clientId, retryCount + 1);
       }
 

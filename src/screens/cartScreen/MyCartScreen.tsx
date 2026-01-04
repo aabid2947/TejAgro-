@@ -351,8 +351,10 @@ const MyCartScreen = ({ navigation, route }: any) => {
 
             // Add a small delay to see logs clearly
             await new Promise(resolve => setTimeout(resolve, 100));
+            console.log(payload)
 
             const response = await AuthApi.getCartDetails(payload, token);
+            console.log(response.data)
             // const walletData = await AuthApi.getWalletDetails({},token)
             if (response && response.data && response.data.length > 0) {
                 setCartData(response.data);
@@ -378,8 +380,9 @@ const MyCartScreen = ({ navigation, route }: any) => {
     const updateCartItemQuantity = async (itemId: any, productId: any, quantity: number) => {
         try {
             const response = await AuthApi.updateCart({ cart_id: itemId, product_id: productId, quantity: quantity }, token);
-
+            console.log(response, "cart update response");
             getCartDetail();
+            //  setCartData(response.data);
         } catch (error) {
             console.log('Failed to update quantity on backend', error);
         }

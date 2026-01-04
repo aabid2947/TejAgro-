@@ -14,6 +14,7 @@ import {
   Platform,
   Modal,
   SafeAreaView,
+  ToastAndroid,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useRoute, useNavigation } from '@react-navigation/native';
@@ -35,12 +36,20 @@ import LikeIcon from '../../svg/LikeIcon';
 import CommentIcon from '../../svg/CommentIcon';
 import SendIcon from '../../svg/SendIcon';
 
+interface Reply {
+  id: string;
+  reply_text: string;
+  created_on: string;
+  client_name: string;
+}
+
 interface Comment {
   id: string;
   client_id: string;
   comment_text: string;
   created_on: string;
   client_name: string;
+  replies?: Reply[];
 }
 
 interface Post {
@@ -82,6 +91,7 @@ const PostDetailsScreen: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [commentText, setCommentText] = useState('');
   const [submittingComment, setSubmittingComment] = useState(false);
+  const [isCommentInReview, setIsCommentInReview] = useState(false);
   const [showImageModal, setShowImageModal] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -212,23 +222,12 @@ const PostDetailsScreen: React.FC = () => {
       };
 
       const response = await AuthApi.addComment(payload);
+      console.log(response?.data, "addCommentResponseaddCommentResponse");
 
       if (response?.data?.status) {
-        // Create new comment object
-        const newComment: Comment = {
-          id: Date.now().toString(),
-          client_id: currentClientId,
-          comment_text: commentText.trim(),
-          created_on: new Date().toISOString(),
-          client_name: profileDetail?.client_name || 'You'
-        };
-
-        setComments(prev => [newComment, ...prev]);
-        setCurrentPost(prev => ({ 
-          ...prev, 
-          comment_count: String(parseInt(prev.comment_count) + 1) 
-        }));
         setCommentText('');
+        setIsCommentInReview(true);
+        // ToastAndroid.show("Your comment is in review", ToastAndroid.SHORT);
       }
       setSubmittingComment(false);
 
@@ -361,6 +360,24 @@ const PostDetailsScreen: React.FC = () => {
           {t('COMMENTS')} ({comments.length})
         </TextPoppinsSemiBold>
       </View>
+      {/* {isCommentInReview && (
+        <View style={{ 
+          padding: 12, 
+          backgroundColor: '#e6fffa', 
+          marginHorizontal: 15, 
+          marginTop: 10, 
+          borderRadius: 8, 
+          borderWidth: 1, 
+          borderColor: '#38b2ac',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+            <Text style={{ color: '#2c7a7b', textAlign: 'center', fontWeight: '600' }}>
+                {t('Your comment is in review')}
+            </Text>
+        </View>
+      )} */}
     </View>
   );
 
@@ -398,7 +415,7 @@ const PostDetailsScreen: React.FC = () => {
       }),
       likes: 0, // API doesn't provide comment likes yet
       isLiked: false, // API doesn't provide comment likes yet
-      replies: []
+      replies: comment.replies || []
     };
   };
 
@@ -430,6 +447,57 @@ const PostDetailsScreen: React.FC = () => {
           </TextPoppinsRegular>
         </View>
       </View>
+
+      {/* Render Replies */}
+      {item.replies && item.replies.length > 0 && (
+        <View style={{ marginLeft: 48, marginTop: 4, borderLeftWidth: 2, borderLeftColor: '#E0E0E0', paddingLeft: 12 }}>
+          {item.replies.map((reply) => (
+            <View key={reply.id} style={{ flexDirection: 'row', marginTop: 12 }}>
+               <View style={{ marginRight: 8 }}>
+                  <View style={{ 
+                    width: 28, 
+                    height: 28, 
+                    borderRadius: 14, 
+                    backgroundColor: '#E8F5E9', 
+                    justifyContent: 'center', 
+                    alignItems: 'center',
+                    borderWidth: 1,
+                    borderColor: '#C8E6C9'
+                  }}>
+                    <Text style={{ fontSize: 10, fontWeight: 'bold', color: '#2E7D32' }}>
+                      {getInitials(reply.client_name)}
+                    </Text>
+                  </View>
+               </View>
+               <View style={{ flex: 1 }}>
+                  <View style={{ 
+                    backgroundColor: '#F5F5F5', 
+                    padding: 8, 
+                    borderRadius: 12,
+                    borderTopLeftRadius: 0
+                  }}>
+                    <TextPoppinsSemiBold style={{ fontSize: 12, color: BLACK }}>
+                      {reply.client_name}
+                    </TextPoppinsSemiBold>
+                    <TextPoppinsRegular style={{ fontSize: 12, color: '#424242', marginTop: 2 }}>
+                      {reply.reply_text}
+                    </TextPoppinsRegular>
+                  </View>
+                  <TextPoppinsRegular style={{ fontSize: 10, color: GRAY, marginTop: 4, marginLeft: 4 }}>
+                    {new Date(reply.created_on).toLocaleDateString('en-IN', {
+                      day: '2-digit',
+                      month: 'short',
+                      year: '2-digit',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: true
+                    })}
+                  </TextPoppinsRegular>
+               </View>
+            </View>
+          ))}
+        </View>
+      )}
     </View>
   );
 
@@ -439,7 +507,7 @@ const PostDetailsScreen: React.FC = () => {
         style={{ flex: 1 }} 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        {headerView(t('POST_DETAILS'), "Krishi Charcha", onPressSide, totalItems, navigation)}
+        {headerView(`Hi, ${profileDetail.client_name || ''}`, "Krishi Charcha", onPressSide, totalItems, navigation)}
         
         <FlatList
           data={comments}

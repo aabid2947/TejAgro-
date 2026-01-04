@@ -75,14 +75,14 @@ function App(): React.JSX.Element {
   useEffect(() => {
     const initializeFCM = async () => {
       try {
-        // Always initialize FCM first
-        await initializeNotifications();
-        
-        // Set navigation reference for FCM
+        // Set navigation reference for FCM first
         if (navigationRef) {
           setFCMNavigationRef(navigationRef);
           console.log('✅ FCM Navigation reference set');
         }
+
+        // Always initialize FCM first
+        await initializeNotifications();
         
         // If user is logged in, get client_id and update FCM token
         if (userData?.jwt) {

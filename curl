@@ -1,5 +1,5 @@
 
-curl -X POST "https://tejagrosales.tejgroup.in/Webservices/otp.php" -H "Content-Type:application/json"   -d '{"mobile_no":"8264782290"}' 
+curl -X POST "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/otp.php" -H "Content-Type:application/json"   -d '{"mobile_no":"8264782290"}' 
 
 curl -X GET "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/offer.php" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)" 
 curl -X GET "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/referral-code.php" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)"  
@@ -9,9 +9,11 @@ curl -X POST "https://tejagrotech.com/tejagro_sale_demo/Webservices/order-place.
 curl -X POST "https://tejagrotech.com/tejagro_sale_demo/Webservices/order-history.php" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)" -d '{"client_id": "568520"}'
 
 
+curl -X POST "https://tejagrosales.tejgroup.in/Webservices/otp.php" -H "Content-Type:application/json"   -d '{"mobile_no":"826478229"}' 
+
 
 <!-- Request OTP -->
-curl -X POST "https://tejagrosales.tejgroup.in/Webservices/otp.php" -H "Content-Type: application/json" -d '{"mobile_no":"8264782290"}'
+curl -X POST "https://www.tejagrosales.tejgroup.in/Webservices/otp.php" -H "Content-Type: application/json" -d '{"mobile_no":"8264782290"}'
 curl -X POST "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/otp.php" -H "Content-Type: application/json" -d '{"mobile_no":"8264782290"}'
 
 <!-- Validate OTP -->

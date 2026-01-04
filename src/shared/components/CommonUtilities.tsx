@@ -6,7 +6,7 @@ import React, { useState, useEffect, useRef } from "react"
 import { RootState } from "../../reduxToolkit/store"
 import { MyOrdersStyle } from "../../screens/orders/MyOrdersStyle"
 import RightArrowIcon from "../../svg/RightArrowIcon"
-import { BLACK, GRAY, GREEN, GREY, MD_GRAY_Dark, MDBLUE, PoppinsMedium, WHITE, WHITE_GRAY } from "../common-styles/colors"
+import { BLACK, GRAY, GREEN, GREY, MD_GRAY_Dark, MDBLUE, PoppinsMedium, PRIMARY, WHITE, WHITE_GRAY } from "../common-styles/colors"
 import SideBarSvg from "../../svg/SideBarSvg"
 import { DashboardStyle } from "../../screens/dashboard/DashboardStyle"
 import NotificationIcon from "../../svg/NotificationIcon"
@@ -27,117 +27,105 @@ import firestore, { FirebaseFirestoreTypes } from '@react-native-firebase/firest
 import { jwtDecode } from 'jwt-decode'
 // import offerGif from '../../assets/OfferGif.gif'
 // Configuration for offer GIF
-const OFFER_GIF_CONFIG = {
-  url: "https://www.tejagrotech.com/tejagro_sale_demo/offer_images/offer_icon.gif", // Replace with your GIF URL
-  width: 68,
-  height: 44,
-  alt: "offers"
+// const OFFER_GIF_CONFIG = {
+//     url: "https://www.tejagrotech.com/tejagro_sale_demo/offer_images/offer_icon.gif", // Replace with your GIF URL
+//     width: 90,
+//     height: 60,
+//     alt: "offers"
+// };
+const NEW_OFFER_GIF_CONFIG = {
+    url: "https://www.tejagrotech.com/tejagro_sale_demo/offer_images/offer_icon.gif", // Replace with your GIF URL
+    width: 90,
+    height: 60,
+    alt: "offers"
+};
+
+const CATEGORY_GIFS = {
+    platinum: "https://www.tejagrotech.com/tejagro_sale_demo/images/category_images/Platinum.gif",
+    diamond: "https://www.tejagrotech.com/tejagro_sale_demo/images/category_images/Diamond.gif",
+    gold: "https://www.tejagrotech.com/tejagro_sale_demo/images/category_images/Gold.gif",
+    silver: "https://www.tejagrotech.com/tejagro_sale_demo/images/category_images/Silver.gif"
 };
 
 interface Message {
-  id: string;
-  text: string;
-  sender: 'user' | 'admin';
-  timestamp: FirebaseFirestoreTypes.Timestamp | null;
-  message_seen?: number;
+    id: string;
+    text: string;
+    sender: 'user' | 'admin';
+    timestamp: FirebaseFirestoreTypes.Timestamp | null;
+    message_seen?: number;
 }
 
 // Custom hook to fetch unread messages count
 const useUnreadMessages = () => {
-  const [unreadCount, setUnreadCount] = useState(0);
-  const isUserData: any = useSelector((state: RootState) => state.counter.isUserinfo);
+    const [unreadCount, setUnreadCount] = useState(0);
+    const isUserData: any = useSelector((state: RootState) => state.counter.isUserinfo);
 
-  useEffect(() => {
-    let unsubscribe: (() => void) | null = null;
+    useEffect(() => {
+        let unsubscribe: (() => void) | null = null;
 
-    const setupListener = () => {
-      try {
-        const token = isUserData?.jwt;
-        if (!token) {
-          console.log('No JWT token found for unread messages');
-          return;
-        }
+        const setupListener = () => {
+            try {
+                const token = isUserData?.jwt;
+                if (!token) return;
 
-        const decodedToken: any = jwtDecode(token);
-        const clientId = decodedToken?.data?.client_id;
-        
-        if (!clientId) {
-          console.log('No client_id found in token for unread messages');
-          return;
-        }
+                const decodedToken: any = jwtDecode(token);
+                const clientId = decodedToken?.data?.client_id;
+                
+                if (!clientId) return;
 
-        const messagesPath = `chats/${clientId}/messages`;
-        console.log('Setting up unread messages listener for:', messagesPath);
-
-        unsubscribe = firestore()
-          .collection(messagesPath)
-          .orderBy('timestamp', 'desc')
-          .onSnapshot(
-            (querySnapshot) => {
-              const messages: Message[] = [];
-              querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                messages.push({
-                  id: doc.id,
-                  text: data.text,
-                  sender: data.sender,
-                  timestamp: data.timestamp,
-                  message_seen: data.message_seen || 0,
-                });
-              });
-
-              // Calculate unread count
-              let count = 0;
-              for (const message of messages) {
-                if (message.sender === 'admin' && message.message_seen === 0) {
-                  count++;
-                } else if (message.sender === 'user') {
-                  break; // Stop counting when we hit a user message
-                }
-              }
-
-              console.log('Unread messages count updated:', count);
-              setUnreadCount(count);
-            },
-            (error) => {
-              console.error('Error listening to unread messages:', error);
-              setUnreadCount(0);
+                // Listen only to the parent chat document for the counter
+                // This avoids reading the messages subcollection
+                unsubscribe = firestore()
+                    .collection('chats')
+                    .doc(clientId)
+                    .onSnapshot(
+                        (docSnapshot) => {
+                            if (docSnapshot.exists) {
+                                const data = docSnapshot.data();
+                                // Use the dedicated counter field
+                                setUnreadCount(data?.user_unread_count || 0);
+                            } else {
+                                setUnreadCount(0);
+                            }
+                        },
+                        (error) => {
+                            console.error('Error listening to unread count:', error);
+                            setUnreadCount(0);
+                        }
+                    );
+            } catch (error) {
+                console.error('Error setting up unread listener:', error);
+                setUnreadCount(0);
             }
-          );
-      } catch (error) {
-        console.error('Error setting up unread messages listener:', error);
-        setUnreadCount(0);
-      }
-    };
+        };
 
-    setupListener();
+        setupListener();
 
-    // Cleanup function
-    return () => {
-      if (unsubscribe) {
-        unsubscribe();
-      }
-    };
-  }, [isUserData?.jwt]);
+        return () => {
+            if (unsubscribe) {
+                unsubscribe();
+            }
+        };
+    }, [isUserData?.jwt]);
 
-  return unreadCount;
+    return unreadCount;
 };
 
 
-  export const versionApp = async () => {
+export const versionApp = async () => {
     try {
-      let update = await checkVersion()
-      if (update.needsUpdate) {
-        Alert.alert(
-          'Please Update',
-          'You will have to update your app to the latest version to continue using.',
-          [{ text: 'Update', onPress: () => { BackHandler.exitApp(); Linking.openURL(update.url) } },],
-        );
-      }
+        let update = await checkVersion()
+        if (update.needsUpdate) {
+            Alert.alert(
+                'Please Update',
+                'You will have to update your app to the latest version to continue using.',
+                [{ text: 'Update', onPress: () => { BackHandler.exitApp(); Linking.openURL(update.url) } },],
+            );
+        }
     } catch (error) {
-      console.log('errror', error)
+        console.log('errror', error)
     }
-  }
+}
 
 export const PressableButton = (title: any, onPress: any, isLoader = false) => {
     return (
@@ -147,7 +135,7 @@ export const PressableButton = (title: any, onPress: any, isLoader = false) => {
         </TouchableOpacity>
     )
 }
-export const PressableB = (title: any, onPress: any,isLoader = false) => {
+export const PressableB = (title: any, onPress: any, isLoader = false) => {
     return (
         <TouchableOpacity style={isLoader ? styles.loaderButton : styles.getButton} onPress={onPress} disabled={isLoader}>
             <TextPoppinsMediumBold style={styles.buttonText}>{title}</TextPoppinsMediumBold>
@@ -192,7 +180,7 @@ export const RenderItem = ({ item, onDetailPress }: any) => {
                 <TextPoppinsSemiBold style={{ ...MyOrdersStyle.titleStyle, color: GREY }}>{t('Total_Amount')}: <TextPoppinsSemiBold style={MyOrdersStyle.titleStyle}>₹{item.final_amount}</TextPoppinsSemiBold></TextPoppinsSemiBold>
             </View>
             <View style={MyOrdersStyle.subBody}>
-                <TextPoppinsSemiBold style={{ ...MyOrdersStyle.titleStyle, color: item?.status === 'Pending' ? MDBLUE : item?.status === 'Confirmed' ? GREEN : 'defaultColor', }}>{item?.status}</TextPoppinsSemiBold>
+                <TextPoppinsSemiBold style={{ ...MyOrdersStyle.titleStyle, color: item?.status === 'Pending' ? MDBLUE : item?.status === 'Confirmed' ? PRIMARY : 'defaultColor', }}>{item?.status}</TextPoppinsSemiBold>
                 {onDetailPress && <TouchableOpacity style={MyOrdersStyle.detailButton} onPress={() => onDetailPress(item)}>
                     <TextPoppinsSemiBold style={{ ...MyOrdersStyle.titleStyle, color: WHITE }}>Detail</TextPoppinsSemiBold>
                 </TouchableOpacity>}
@@ -213,14 +201,14 @@ export const CustomButton = (title: any, onPress: any) => {
 const ProfileImageWithFallback = ({ profileDetail, style, onPress }: any) => {
     const [imageError, setImageError] = useState(false);
     const regexImage = /^https?:\/\/.*\.(jpg|jpeg|png|gif|bmp|webp)$/i;
-    
+
     // Check if user has a valid profile image
-    const hasValidImage = !imageError && 
-                         profileDetail?.client_image && 
-                         typeof profileDetail.client_image === 'string' && 
-                         profileDetail.client_image.trim() !== '' && 
-                         regexImage.test(profileDetail.client_image);
-    
+    const hasValidImage = !imageError &&
+        profileDetail?.client_image &&
+        typeof profileDetail.client_image === 'string' &&
+        profileDetail.client_image.trim() !== '' &&
+        regexImage.test(profileDetail.client_image);
+
     return (
         <Pressable onPress={onPress} style={style}>
             {hasValidImage ? (
@@ -234,7 +222,7 @@ const ProfileImageWithFallback = ({ profileDetail, style, onPress }: any) => {
                     }}
                 />
             ) : (
-                <Image 
+                <Image
                     source={require("../../assets/defaultProfile.png")}
                     style={styles.profileImage}
                     resizeMode="cover"
@@ -249,10 +237,10 @@ export const headerView = (title: any, subTitle: any, sideBarPress: any, totalIt
     const unreadMessages = useUnreadMessages(); // Fetch unread messages directly
     const { t } = useTranslation();
     console.log(currentRoute)
-    
+
     // Animation for offer icon blinking effect
     const scaleAnim = useRef(new Animated.Value(1)).current;
-    
+
     useEffect(() => {
         // Only animate if not on offer screen
         if (false) {
@@ -271,7 +259,7 @@ export const headerView = (title: any, subTitle: any, sideBarPress: any, totalIt
                 ])
             );
             blinkAnimation.start();
-            
+
             return () => {
                 blinkAnimation.stop();
             };
@@ -280,31 +268,31 @@ export const headerView = (title: any, subTitle: any, sideBarPress: any, totalIt
             scaleAnim.setValue(1);
         }
     }, [currentRoute, scaleAnim]);
-    
+
     // Get user category
     const userCategory = profileDetail?.client_category || '';
     console.log('User Category:', userCategory);
-    
+
     // Categories mapping for icons
     const categories = {
         'gold': '🥇',
         'diamond': '💎',
-        'platinum':'🏆',
-        'silver':'🥈',
-        'raw':'⚙️'
+        'platinum': '🏆',
+        'silver': '🥈',
+        'raw': '⚙️'
     }
-    
+
     // Function to get category icon from the categories map
     const getCategoryIcon = () => {
         if (!userCategory) return '';
-        
+
         const categoryLower = userCategory.toLowerCase().trim();
-        
+
         // Handle special cases
         if (categoryLower.includes('gold') && categoryLower.includes('r')) {
-            return '🔁'; // Return icon for Gold (R)
+            return ''; // Return icon for Gold (R)
         }
-        
+
         if (categoryLower.includes('gold')) {
             return '🥇';
         }
@@ -318,23 +306,23 @@ export const headerView = (title: any, subTitle: any, sideBarPress: any, totalIt
             return '🥈';
         }
         if (categoryLower.includes('raw')) {
-            return '⚙️';
+            return '';
         }
-        
-        return '⚙️'; // Default fallback
+
+        return ''; // Default fallback
     };
-    
+
     // Function to get localized category name
     const getLocalizedCategoryName = () => {
         if (!userCategory) return '';
-        
+
         const categoryLower = userCategory.toLowerCase().trim();
-        
+
         // Handle special cases with variations
         if (categoryLower.includes('gold') && categoryLower.includes('r')) {
             return t('CATEGORY_GOLD_R');
         }
-        
+
         switch (categoryLower) {
             case 'diamond':
                 return t('CATEGORY_DIAMOND');
@@ -345,38 +333,133 @@ export const headerView = (title: any, subTitle: any, sideBarPress: any, totalIt
             case 'silver':
                 return t('CATEGORY_SILVER');
             case 'raw':
-                return t('CATEGORY_RAW');
+                return ''; // No localization for 'Raw'
             default:
                 return userCategory; // Fallback to original if not found
         }
     };
+
+    const getCategoryGifUrl = () => {
+        if (!userCategory) return '';
+        const categoryLower = userCategory.toLowerCase().trim();
+        // return ''
+        if (categoryLower.includes('platinum')) return CATEGORY_GIFS.platinum;
+        if (categoryLower.includes('diamond')) return CATEGORY_GIFS.diamond;
+        if (categoryLower.includes('gold')) return CATEGORY_GIFS.gold;
+        if (categoryLower.includes('silver')) return CATEGORY_GIFS.silver;
+        
+        return '';
+    };
     
+    const categoryGifUrl = getCategoryGifUrl();
+    const hardRefreshUrl = `${NEW_OFFER_GIF_CONFIG.url}?t=${Date.now()}`
+
+
     return (
         <View style={DashboardStyle.mainViewHeader}>
-            <ProfileImageWithFallback 
+            <ProfileImageWithFallback
                 profileDetail={profileDetail}
                 style={styles.profileImageContainer}
                 onPress={sideBarPress}
             />
-            <View style={{ flex: 1, marginLeft: 10 }}>
+            <View style={{ flex: 1, marginLeft: 10, }}>
                 <TextPoppinsMediumBold style={DashboardStyle.titleSytle}>
                     {title}
                 </TextPoppinsMediumBold>
-                <TextPoppinsSemiBold style={DashboardStyle.subtitleStyle}>
-                    {t('Category')}: {getLocalizedCategoryName()} {getCategoryIcon()}
-                </TextPoppinsSemiBold>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 6 }}>
+
+                    <View
+                        style={{
+                            // backgroundColor: '#FFF',
+                            // paddingHorizontal: 10,
+                            paddingVertical: 4,
+                            borderRadius: 12,
+                            // marginLeft: 5,
+                            // borderWidth: 1,
+                            // borderColor: PRIMARY,
+                            minHeight: 36,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                        }}
+                    >
+                        <Text
+                            numberOfLines={1}
+                            style={{
+                                ...DashboardStyle.subtitleStyle,
+                                fontSize: 16,
+                                lineHeight: 20,
+                                color: GREEN,
+                                textAlign: 'center',
+                                textAlignVertical: 'center',
+                                includeFontPadding: true,
+                            }}
+                        >
+                            {getLocalizedCategoryName()}
+                        </Text>
+                        {categoryGifUrl ? (
+                            <View style={{ width: 24, height: 24, marginLeft: 4 }}>
+                                <WebView
+                                    source={{
+                                        html: `
+                                            <html>
+                                                <head>
+                                                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                                                    <style>
+                                                        body {
+                                                            margin: 0;
+                                                            padding: 0;
+                                                            display: flex;
+                                                            justify-content: center;
+                                                            align-items: center;
+                                                            height: 100vh;
+                                                            background: transparent;
+                                                            overflow: hidden;
+                                                        }
+                                                        img {
+                                                            width: 24px;
+                                                            height: 24px;
+                                                            object-fit: contain;
+                                                        }
+                                                    </style>
+                                                </head>
+                                                <body>
+                                                    <img src="${categoryGifUrl}" alt="category">
+                                                </body>
+                                            </html>
+                                        `
+                                    }}
+                                    style={{ width: 24, height: 24, backgroundColor: 'transparent' }}
+                                    scrollEnabled={false}
+                                    showsVerticalScrollIndicator={false}
+                                    showsHorizontalScrollIndicator={false}
+                                    scalesPageToFit={false}
+                                    javaScriptEnabled={true}
+                                    domStorageEnabled={true}
+                                    startInLoadingState={false}
+                                    mixedContentMode="compatibility"
+                                    androidLayerType="hardware"
+                                />
+                            </View>
+                        ) : (
+                            <Text style={{ fontSize: 16, lineHeight: 20 }}>{getCategoryIcon()}</Text>
+                        )}
+                    </View>
+
+
+                </View>
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'flex-end',padding:0 }}> 
-            <TouchableOpacity 
-                style={styles.OfferIcon} 
-                onPress={() => navigation.navigate(OFFER_SCREEN)}
-            >
-                {/* <Animated.View style={{ transform: [{ scale: currentRoute === OFFER_SCREEN ? 1 : scaleAnim }] }}> */}
-                  
-                        <View style={styles.gifContainer}>
-                            <WebView
-                                source={{
-                                    html: `
+            <View style={{ flexDirection: 'row', alignItems: 'flex-end', padding: 0 }}>
+                <TouchableOpacity
+                    style={styles.OfferIcon}
+                    onPress={() => navigation.navigate(OFFER_SCREEN)}
+                >
+                    {/* <Animated.View style={{ transform: [{ scale: currentRoute === OFFER_SCREEN ? 1 : scaleAnim }] }}> */}
+
+                    <View style={styles.gifContainer}>
+                        <WebView
+                            source={{
+                                html: `
                                         <html>
                                             <head>
                                                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -392,73 +475,73 @@ export const headerView = (title: any, subTitle: any, sideBarPress: any, totalIt
                                                         overflow: hidden;
                                                     }
                                                     img {
-                                                        width: ${OFFER_GIF_CONFIG.width}px;
-                                                        height: ${OFFER_GIF_CONFIG.height}px;
+                                                        width: ${NEW_OFFER_GIF_CONFIG.width}px;
+                                                        height: ${NEW_OFFER_GIF_CONFIG.height}px;
                                                         object-fit: conver;
                                                         border-radius: 4px;
                                                     }
                                                 </style>
                                             </head>
                                             <body>
-                                                <img src="${OFFER_GIF_CONFIG.url}" alt="${OFFER_GIF_CONFIG.alt}">
+                                                <img src="${hardRefreshUrl}" alt="${NEW_OFFER_GIF_CONFIG.alt}">
                                             </body>
                                         </html>
                                     `
-                                }}
-                                style={styles.webViewStyle}
-                                scrollEnabled={false}
-                                showsVerticalScrollIndicator={false}
-                                showsHorizontalScrollIndicator={false}
-                                scalesPageToFit={false}
-                                javaScriptEnabled={true}
-                                domStorageEnabled={true}
-                                startInLoadingState={false}
-                                mixedContentMode="compatibility"
-                                androidLayerType="hardware"
-                            />
-                        </View>
-            
-                {/* </Animated.View> */}
-                {/* <Text style={[styles.headerIconText, currentRoute === OFFER_SCREEN && styles.activeIconText]}>
+                            }}
+                            style={styles.webViewStyle}
+                            scrollEnabled={false}
+                            showsVerticalScrollIndicator={false}
+                            showsHorizontalScrollIndicator={false}
+                            scalesPageToFit={false}
+                            javaScriptEnabled={true}
+                            domStorageEnabled={true}
+                            startInLoadingState={false}
+                            mixedContentMode="compatibility"
+                            androidLayerType="hardware"
+                        />
+                    </View>
+
+                    {/* </Animated.View> */}
+                    {/* <Text style={[styles.headerIconText, currentRoute === OFFER_SCREEN && styles.activeIconText]}>
                     {t('OFFERS_ICON')}
                 </Text> */}
-            </TouchableOpacity>
-            <TouchableOpacity 
-                style={[styles.headerIconContainer, { position: "relative" }]} 
-                onPress={() => navigation.navigate(CHAT_SCREEN)}
-            >
-                {currentRoute === CHAT_SCREEN ? (
-                    <HighlightedMessageIcon width={24} height={24} />
-                ) : (
-                    <MessageIcon width={24} height={24} color={BLACK} />
-                )}
-                {typeof unreadMessages === 'number' && unreadMessages > 0 && currentRoute !== CHAT_SCREEN && (
-                    <View style={styles.badgeContainer}>
-                        <Text style={styles.badgeText}>
-                            {unreadMessages > 99 ? '99+' : String(unreadMessages)}
-                        </Text>
-                    </View>
-                )}
-                {/* <Text style={[styles.headerIconText, currentRoute === CHAT_SCREEN && styles.activeIconText]}>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={[styles.headerIconContainer, { position: "relative" }]}
+                    onPress={() => navigation.navigate(CHAT_SCREEN)}
+                >
+                    {currentRoute === CHAT_SCREEN ? (
+                        <HighlightedMessageIcon width={24} height={24} />
+                    ) : (
+                        <MessageIcon width={24} height={24} color={BLACK} />
+                    )}
+                    {typeof unreadMessages === 'number' && unreadMessages > 0 && currentRoute !== CHAT_SCREEN && (
+                        <View style={styles.badgeContainer}>
+                            <Text style={styles.badgeText}>
+                                {unreadMessages > 99 ? '99+' : String(unreadMessages)}
+                            </Text>
+                        </View>
+                    )}
+                    {/* <Text style={[styles.headerIconText, currentRoute === CHAT_SCREEN && styles.activeIconText]}>
                     {t('CHAT_ICON')}
                 </Text> */}
-            </TouchableOpacity>
-            <TouchableOpacity 
-                style={[styles.headerIconContainer, { position: "relative", marginRight: 10 }]} 
-                onPress={() => navigation.navigate(MYCART_SCREEN, { showPromoCodePopup: false })}
-            >
-                <CartSvg width={24} height={24} />
-                {totalItems > 0 && (
-                    <View style={styles.badgeContainer}>
-                        <Text style={styles.badgeText}>
-                            {totalItems}
-                        </Text>
-                    </View>
-                )}
-                {/* <Text style={styles.headerIconText}>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={[styles.headerIconContainer, { position: "relative", marginRight: 10 }]}
+                    onPress={() => navigation.navigate(MYCART_SCREEN, { showPromoCodePopup: false })}
+                >
+                    <CartSvg width={24} height={24} />
+                    {totalItems > 0 && (
+                        <View style={styles.badgeContainer}>
+                            <Text style={styles.badgeText}>
+                                {totalItems}
+                            </Text>
+                        </View>
+                    )}
+                    {/* <Text style={styles.headerIconText}>
                     {t('CART_ICON')}
                 </Text> */}
-            </TouchableOpacity>
+                </TouchableOpacity>
             </View>
         </View>
     )
@@ -466,10 +549,10 @@ export const headerView = (title: any, subTitle: any, sideBarPress: any, totalIt
 
 export const headerViewReferral = (title: any, subTitle: any, sideBarPress: any) => {
     const profileDetail: any = useSelector((state: RootState) => state.counter.isProfileInfo);
-    
+
     return (
         <View style={DashboardStyle.mainViewHeader}>
-            <ProfileImageWithFallback 
+            <ProfileImageWithFallback
                 profileDetail={profileDetail}
                 style={styles.profileImageContainer}
                 onPress={sideBarPress}
@@ -563,7 +646,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         lineHeight: 21,
         marginHorizontal: 10,
-   
+
     },
     loginContainer: {
         flexDirection: 'row',
@@ -596,7 +679,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         lineHeight: 34
     },
-    loaderButton:{
+    loaderButton: {
         backgroundColor: WHITE_GRAY,
         borderRadius: 50,
         paddingHorizontal: 10,
@@ -624,10 +707,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         // marginRight: 15,
         padding: 4,
-        marginHorizontal:8
+        marginHorizontal: 8
         // minWidth: 50,
     },
-    OfferIcon:{
+    OfferIcon: {
         alignItems: 'center',
         justifyContent: 'center',
         // marginRight: 15,
@@ -646,31 +729,31 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
     badgeContainer: {
-        position: "absolute", 
-        top: -3, 
-        right: -3, 
-        backgroundColor: "red", 
-        borderRadius: 10, 
-        width: 20, 
-        height: 20, 
-        justifyContent: "center", 
+        position: "absolute",
+        top: -3,
+        right: -3,
+        backgroundColor: "red",
+        borderRadius: 10,
+        width: 20,
+        height: 20,
+        justifyContent: "center",
         alignItems: "center",
         zIndex: 1,
     },
     badgeText: {
-        color: "white", 
-        fontSize: 12, 
+        color: "white",
+        fontSize: 12,
         fontWeight: "bold"
     },
     gifContainer: {
-        width: OFFER_GIF_CONFIG.width,
-        height: OFFER_GIF_CONFIG.height,
+        width: NEW_OFFER_GIF_CONFIG.width,
+        height: NEW_OFFER_GIF_CONFIG.height,
         borderRadius: 4,
         overflow: 'hidden',
     },
     webViewStyle: {
-        width: OFFER_GIF_CONFIG.width,
-        height: OFFER_GIF_CONFIG.height,
+        width: NEW_OFFER_GIF_CONFIG.width,
+        height: NEW_OFFER_GIF_CONFIG.height,
         backgroundColor: 'transparent',
     },
 })

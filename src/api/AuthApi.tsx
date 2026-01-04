@@ -45,6 +45,7 @@ const getProductDetailById = (requestBody: any, accessToken: string) => {
 
 const addToCart = (requestBody: any, accessToken: string) => {
     const url = `${AUTH_API_URL}cart-add.php`;
+    console.log("Add to cart requestBody:", requestBody);
     return axios.post(url, requestBody, {
         headers: {
             "Content-Type": "application/json",
@@ -67,6 +68,7 @@ const getCartDetails = (requestBody: any, accessToken: any) => {
 }
 const updateCart = (payload: any,accessToken:any) => {
     const url = `${AUTH_API_URL}cart-update.php`;
+    console.log("cart update payload",payload)
     return axios.put(url, payload,  {
             headers: {
                 "Content-Type": "application/json",
@@ -77,6 +79,15 @@ const updateCart = (payload: any,accessToken:any) => {
 const removeCartItem = (requestBody: any,accessToken:any) => {
     const url = `${AUTH_API_URL}cart-remove.php`;
      return authAxios.delete(url, {data:requestBody});
+}
+
+// banner and offer click apis
+// request body : {client_id : '', method_type: 'Banner_click/Offer_click', method_id : 'banner_id/offer_id'} 
+const trackClick = (requestBody: any) => {  
+    console.log("trackClick requestBody:", requestBody);
+    const url = `${AUTH_API_URL}click.php`;
+    
+    return authAxios.post(url, requestBody);
 }
 
 const createPost = (requestBody: any) => {
@@ -315,6 +326,7 @@ export default {
     useWallet,
     getReferralInfo,
     getPopupNotification,
-    postImageInChat
+    postImageInChat,
+    trackClick
 }
 

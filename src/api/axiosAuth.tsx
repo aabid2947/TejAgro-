@@ -25,6 +25,7 @@ initializeAuthAxios();
 authAxios.interceptors.request.use(
     async (config) => {
         const token = await AsyncStorage.getItem('jwtToken');
+        console.log(AUTH_API_URL)
         if (token) {
             config.headers.Authorization = `${JSON.parse(token)}`;
         }

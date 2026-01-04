@@ -29,6 +29,7 @@ import { MDBLUE, WHITE, GRAY } from '../../shared/common-styles/colors';
 import TextPoppinsRegular from '../../shared/fontFamily/TextPoppinsRegular';
 import TextPoppinsSemiBold from '../../shared/fontFamily/TextPoppinsSemiBold';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { jwtDecode } from 'jwt-decode';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -53,6 +54,7 @@ const OfferScreen: React.FC = () => {
   
   const profileInfo: any = useSelector((state: RootState) => state.counter.isProfileInfo);
   const totalItems = useSelector((state: RootState) => state.counter.totalItems);
+  const isUserData: any = useSelector((state: RootState) => state.counter.isUserinfo);
   
   const [offers, setOffers] = useState<Offer[]>([]);
   const [allOffers, setAllOffers] = useState<Offer[]>([]); // Store all offers
@@ -104,30 +106,16 @@ const OfferScreen: React.FC = () => {
       }
 
       const response = await AuthApi.getOffer({});
-      console.log('Offers API Response:', response);
       
       if (response?.data?.status && response?.data?.offers) {
         // Log each offer's image URL for debugging
-        console.log('=== OFFERS LOADED ===');
-        response.data.offers.forEach((offer: Offer, index: number) => {
-          const isValidUrl = offer.offer_image && 
-                           offer.offer_image.trim() !== '' && 
-                           offer.offer_image !== 'https://www.tejagrotech.com/tejagro_sale_demo/offer_images/' &&
-                           !offer.offer_image.endsWith('/offer_images/');
-          console.log(`${index + 1}. ${offer.offer_name}`);
-          console.log(`   Category: ${offer.client_category}`);
-          console.log(`   Image URL: "${offer.offer_image}"`);
-          console.log(`   Image Valid: ${isValidUrl ? '✅ YES' : '❌ NO (will use static)'}`);
-          console.log('   ---');
-        });
+        
 
         // Filter offers to show only user's category offers or "All" category
         const userOffers = response.data.offers.filter((offer: Offer) => 
           offer.client_category.toLowerCase() === userCategory.toLowerCase() ||
           offer.client_category.toLowerCase() === 'all'
         );
-        
-        console.log(`Filtered ${userOffers.length} offers for category: ${userCategory}`);
         
         // Store both filtered and all offers
         setAllOffers(response.data.offers);
@@ -167,7 +155,6 @@ const OfferScreen: React.FC = () => {
     if (newShowAllOffers) {
       // Show all offers
       setOffers(allOffers);
-      console.log(`Showing all ${allOffers.length} offers`);
     } else {
       // Show only user category offers
       const userOffers = allOffers.filter((offer: Offer) => 
@@ -175,12 +162,33 @@ const OfferScreen: React.FC = () => {
         offer.client_category.toLowerCase() === 'all'
       );
       setOffers(userOffers);
-      console.log(`Showing ${userOffers.length} offers for category: ${userCategory}`);
+     
     }
   };
 
   // Function to open offer detail modal
   const handleViewOffer = (offer: Offer) => {
+    // Track offer click
+    try {
+        if (isUserData?.jwt) {
+            const decodedToken: any = jwtDecode(isUserData.jwt);
+            const clientId = decodedToken?.data?.client_id;
+            
+            if (clientId && offer?.offer_id) {
+                 const payload = {
+                    client_id: clientId,
+                    method_type: 'Offer_Click',
+                    method_id: offer.offer_id
+                };
+                console.log('Tracking offer click:', payload);
+                // Fire and forget
+                AuthApi.trackClick(payload).catch(err => console.log('Track api error', err));
+            }
+        }
+    } catch (error) {
+        console.log('Error tracking offer click:', error);
+    }
+
     setSelectedOffer(offer);
     setShowOfferModal(true);
   };
@@ -205,12 +213,6 @@ const OfferScreen: React.FC = () => {
     const hasValidImageUrl = validImageUrl !== null && !imageErrors[item.offer_id];
     const isImageLoading = imageLoading[item.offer_id] || false;
 
-    // Debug logging for each offer item
-    console.log(`Rendering offer: ${item.offer_name}`);
-    console.log(`Original URL: "${item.offer_image}"`);
-    console.log(`Valid URL: "${validImageUrl}"`);
-    console.log(`Will use: ${hasValidImageUrl ? 'DYNAMIC' : 'STATIC'} image`);
-    console.log(`Image error state: ${imageErrors[item.offer_id] || false}`);
 
     return (
       <TouchableOpacity style={styles.offerCard} activeOpacity={0.8}>
@@ -227,9 +229,9 @@ const OfferScreen: React.FC = () => {
           <View style={styles.offerRightContainer}>
             <View style={styles.offerTextContainer}>
               {/* Main Title */}
-              <TextPoppinsSemiBold style={styles.offerTitle}>
+              <Text style={styles.offerTitle}>
                 {item.offer_name}
-              </TextPoppinsSemiBold>
+              </Text>
               
               {/* Subtitle */}
               <TextPoppinsSemiBold style={styles.offerSubtitle}>
@@ -296,17 +298,14 @@ const OfferScreen: React.FC = () => {
               style={styles.offerImage}
               resizeMode="cover"
               onLoad={() => {
-                console.log('✅ Dynamic image loaded successfully for:', item.offer_name);
                 setImageLoading(prev => ({ ...prev, [item.offer_id]: false }));
               }}
               onError={(error) => {
-                console.log('❌ Failed to load dynamic image for:', item.offer_name, 'falling back to static');
                 setImageErrors(prev => ({ ...prev, [item.offer_id]: true }));
                 setImageLoading(prev => ({ ...prev, [item.offer_id]: false }));
               }}
               onLoadStart={() => {
                 if (hasValidImageUrl) {
-                  console.log('🔄 Starting to load dynamic image for:', item.offer_name, 'URL:', validImageUrl);
                   setImageLoading(prev => ({ ...prev, [item.offer_id]: true }));
                 }
               }}

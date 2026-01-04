@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Alert, Image, Linking, Pressable, SafeAreaView, ScrollView, Text, ToastAndroid, TouchableOpacity, View } from "react-native";
+import { Alert, Image, Linking, Pressable, SafeAreaView, ScrollView, Text, ToastAndroid, TouchableOpacity, View, TextInput } from "react-native";
 import TopHeaderFixed from "../../components/headerview/TopHeaderFixed";
 import { ADD_PAYMENT_SCREEN, MY_PROFILE, MY_REWARD_SCREEN, ORDER_SCREEN, PROFILE_SETTING_SCREEN, REFER_EARN_SCREEN, SHIPPING_ADDRESS_SCREEN } from "../../routes/Routes";
 import { DARK_GREEN_ICON, GREY } from "../../shared/common-styles/colors";
@@ -24,6 +24,7 @@ import LocationIcon from "../../svg/LocationIcon";
 import PaymentIcon from "../../svg/PaymentIcon";
 import ReviewIcon from "../../svg/ReviewIcon";
 import SettingIcon from "../../svg/SettingIcon";
+import EditIcon from "../../svg/EditIcon";
 import { RootState } from "../../reduxToolkit/store";
 import AuthApi from "../../api/AuthApi";
 import { jwtDecode } from "jwt-decode";
@@ -48,10 +49,37 @@ const MenuBarScreen = ({ navigation }: any) => {
     const [deleteData, setDelete] = useState(false);
     const [orderData, setOrderData]: any = useState([]);
     const [addressData, setAddressData]: any = useState([]);
+    const [isEditingName, setIsEditingName] = useState(false);
+    const [tempName, setTempName] = useState("");
     const isUserData = useSelector((state: RootState) => state.counter.isUserinfo)
     const profileInfo: any = useSelector((state: RootState) => state.counter.isProfileInfo)
     const referralCode = useSelector((state: RootState) => state.counter.referralCode)
     const walletInfo = useSelector((state: RootState) => state.counter.wallet);
+
+    useEffect(() => {
+        if (profileInfo?.client_name) {
+            setTempName(profileInfo.client_name);
+        }
+    }, [profileInfo]);
+
+    const handleUpdateName = async () => {
+        if (!tempName.trim()) {
+            ToastAndroid.show("Name cannot be empty", ToastAndroid.SHORT);
+            return;
+        }
+        try {
+            const response = await AuthApi.updateProfile({ farmer_name: tempName });
+            if (response?.data) {
+                await getProfile();
+                setIsEditingName(false);
+                ToastAndroid.show("Name updated successfully", ToastAndroid.SHORT);
+            }
+        } catch (error) {
+            console.log("Error updating name:", error);
+            ToastAndroid.show("Failed to update name", ToastAndroid.SHORT);
+        }
+    };
+
     console.log("walletInfo : ", walletInfo)
     const onProceed = async () => {
         setModalVisible(false);
@@ -267,26 +295,12 @@ const MenuBarScreen = ({ navigation }: any) => {
                 topHeight={100}
                 onGoBack={() => navigation.goBack()} />
             <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={settingStyle.profileDetailsContainer}>
-                    <View style={settingStyle.textContainerView}>
-                        <TextPoppinsMediumBold style={{ ...settingStyle.commonTxt, ...settingStyle.emailTxt }}>
-                            {profileInfo?.client_name || "Hi,"}
-                        </TextPoppinsMediumBold>
-                        {profileInfo?.referral && <TextPoppinsSemiBold style={{ ...settingStyle.commonTxt, ...settingStyle.emailTxt }}>
-                            {profileInfo?.referral || ""}
-                            <TextPoppinsSemiBold style={{ ...settingStyle.commonTxt, ...settingStyle.emailTxt, color: GREY }}>
-                                Rewards Earned
-                            </TextPoppinsSemiBold>
-                        </TextPoppinsSemiBold>}
-                    </View>
-                    <View style={{ width: "45%", position: "relative" }}>
+                <View style={[settingStyle.profileDetailsContainer, { flexDirection: 'column', alignItems: 'center', paddingVertical: 20 }]}>
+                    <View style={{ position: "relative", marginBottom: 10 }}>
                         <Pressable onPress={chooseFile}>
                             {regexImage.test(profileInfo.client_image) ? (
                                 <Image
-                                    source={
-
-                                        { uri: profileInfo.client_image }
-                                    }
+                                    source={{ uri: profileInfo.client_image }}
                                     style={settingStyle.profileImage}
                                     resizeMode={'contain'}
                                 />
@@ -296,8 +310,55 @@ const MenuBarScreen = ({ navigation }: any) => {
                                     resizeMode="contain"
                                 />
                             )}
-
                         </Pressable>
+                    </View>
+                    
+                    <View style={{ alignItems: 'center', width: '100%' }}>
+                        {isEditingName ? (
+                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                                <TextInput
+                                    value={tempName}
+                                    onChangeText={setTempName}
+                                    style={{
+                                        borderBottomWidth: 1,
+                                        borderColor: GREY,
+                                        fontSize: 16,
+                                        color: 'black',
+                                        minWidth: 150,
+                                        textAlign: 'center',
+                                        paddingVertical: 0
+                                    }}
+                                    autoFocus
+                                />
+                                <TouchableOpacity onPress={handleUpdateName}>
+                                    <Text style={{ color: DARK_GREEN_ICON, fontWeight: 'bold' }}>Save</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => {
+                                    setIsEditingName(false);
+                                    setTempName(profileInfo?.client_name || "");
+                                }}>
+                                    <Text style={{ color: 'red', fontWeight: 'bold' }}>X</Text>
+                                </TouchableOpacity>
+                            </View>
+                        ) : (
+                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                                <TextPoppinsMediumBold style={{ ...settingStyle.commonTxt, fontSize: 18 }}>
+                                    {profileInfo?.client_name || "Hi,"}
+                                </TextPoppinsMediumBold>
+                                <TouchableOpacity onPress={() => setIsEditingName(true)}>
+                                    <EditIcon width={16} height={16} />
+                                </TouchableOpacity>
+                            </View>
+                        )}
+
+                        {profileInfo?.referral && (
+                            <TextPoppinsSemiBold style={{ ...settingStyle.commonTxt, ...settingStyle.emailTxt, textAlign: 'center' }}>
+                                {profileInfo?.referral || ""}
+                                <TextPoppinsSemiBold style={{ ...settingStyle.commonTxt, ...settingStyle.emailTxt, color: GREY }}>
+                                    {" Rewards Earned"}
+                                </TextPoppinsSemiBold>
+                            </TextPoppinsSemiBold>
+                        )}
                     </View>
                 </View>
                 {dataItems(WalletIcon, ArrowIcon, `${t('WALLET')}`, undefined, `Balance: ${profileInfo?.my_wallet || 0}`, true)}

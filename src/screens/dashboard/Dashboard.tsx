@@ -185,6 +185,16 @@ const DashBoard = ({ navigation }: any) => {
             if (isSelected) {
                 setSelectedProduct([]);
             } else {
+                // Track click
+                if (profileDetail?.client_id) {
+                    AuthApi.trackClick({
+                        client_id: profileDetail.client_id,
+                        method_type: 'Crop_Click',
+                        method_id: item.crop_id
+                    }).catch(err => console.log("Track click error:", err));
+                    console.log("clicked Product Item:", item);
+                }
+
                 setSelectedProduct([item]);
                 setTimeout(() => {
                     dispatch(selectedCropProduct([item]));
@@ -438,7 +448,10 @@ const DashBoard = ({ navigation }: any) => {
                                             ...DashboardStyle.productImage,
                                             backgroundColor: selectedId === item?.crop_category_id ? DARK_GREEN_New : WHITE,
                                         }}
-                                            onPress={() => handleCardPress(item?.crop_category_id)}
+                                            onPress={async () => {
+                                                handleCardPress(item?.crop_category_id)
+
+                                            }}
                                             label={i18n.language === 'en' ? item?.crop_category_name : item?.marathi_crop_category_name}
                                             textstyle={selectedId === item?.crop_category_id ? DashboardStyle.categoryTextSelected : DashboardStyle.categoryText}>
                                         </PressableClick>

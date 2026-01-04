@@ -35,6 +35,7 @@ export const ProductListStyle = StyleSheet.create({
     },
     container: {
         flex: 1,
+        // borderWidth: 2,
         paddingHorizontal: 20,
         backgroundColor: '#fff',
     },

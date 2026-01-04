@@ -220,16 +220,18 @@ const KrishiCharchaScreen: React.FC = () => {
   const renderFooter = () => {
     if (!loading) return null;
     return (
-      <View style={styles.footerLoader}>
-        <ActivityIndicator size="small" color={MDBLUE} />
-        <Text style={styles.loadingText}>{t('LOADING_POSTS')}</Text>
-      </View>
+      // <View style={styles.footerLoader}>
+      //   <ActivityIndicator size="small" color={MDBLUE} />
+      //   <Text style={styles.loadingText}>{t('LOADING_POSTS')}</Text>
+      // </View>
+      <></>
     );
   };
 
   const renderEmptyComponent = () => (
     <View style={styles.emptyContainer}>
-      <Text style={styles.emptyText}>{t('NO_POSTS')}</Text>
+       <ActivityIndicator size="small" color={MDBLUE} />
+      <Text style={styles.loadingText}>{t('LOADING_POSTS')}</Text>
     </View>
   );
 
@@ -271,7 +273,7 @@ const KrishiCharchaScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-      {headerView(t('KRISHI_CHARCHA'), t('FARMING_COMMUNITY'), onPressSide, totalItems, navigation, undefined)}
+      {headerView(`Hi,${profileDetail.client_name || ''}`, onPressSide, totalItems, navigation, undefined)}
       
       <View style={styles.content}>
         <FlatList

@@ -14,8 +14,8 @@ export const styles = StyleSheet.create({
   popup: {
     backgroundColor: WHITE,
     borderRadius: 16,
-    width: width - 40,
-    maxWidth: 350,
+    width: width, // Full width minus padding
+    maxWidth: width , // Ensure it takes full available width
     elevation: 10,
     shadowColor: '#000',
     shadowOffset: {
@@ -27,10 +27,10 @@ export const styles = StyleSheet.create({
   },
   closeButton: {
     position: 'absolute',
-    top: 16,
-    right: 16,
-    width: 32,
-    height: 32,
+    top: 8,
+    right: 12,
+    width: 28,
+    height: 28,
     borderRadius: 16,
     backgroundColor: '#F5F5F5',
     justifyContent: 'center',
@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
     zIndex: 1,
   },
   content: {
-    padding: 24,
+    // padding: 24,
     paddingTop: 32,
     alignItems: 'center',
   },

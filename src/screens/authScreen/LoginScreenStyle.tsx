@@ -80,7 +80,7 @@ export const LogInScreenStyle = StyleSheet.create({
         color: BGRED,
         fontSize: 12,
         lineHeight: 30,
-        marginTop: -30,
+        marginTop: -20,
         marginBottom: 10,
         marginHorizontal: 20
     },

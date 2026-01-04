@@ -8,6 +8,7 @@ import { MDBLUE, BLACK } from '../../shared/common-styles/colors';
 
 const ProductDescription = (productId: any) => {
     const item = productId?.productDetail?.description;
+    console.log(item)
     const { t, i18n } = useTranslation();
     const [expandedItems, setExpandedItems] = useState<{ [key: number]: boolean }>({});
 
@@ -34,7 +35,7 @@ const ProductDescription = (productId: any) => {
                         <View style={{ marginVertical: 15 }}>
                             <TextPoppinsMediumBold style={ProductStyle.productName}> {t('Measurement')}</TextPoppinsMediumBold>
                             <TextPoppinsSemiBold style={ProductStyle.productDescription}>{item.use} {item?.quantity}</TextPoppinsSemiBold>
-                            <TextPoppinsSemiBold style={ProductStyle.productDescription}>{item.marathi_use}- {item?.marathi_quantity}</TextPoppinsSemiBold>
+                            <Text style={ProductStyle.productDescription}>{item.marathi_use}- {item?.marathi_quantity}</Text>
                         </View>
                         
                         <View style={{ marginVertical: 15 }}>

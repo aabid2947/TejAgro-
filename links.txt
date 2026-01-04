@@ -1,2 +1,6 @@
     // "ENDPOINT": "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/" ,
-    https://www.tejagrosales.tejgroup.in/Webservices/
+    https://tejagrosales.tejgroup.in/Webservices/
+
+
+
+    curl -X POST  "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/click.php" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)"  -d '{"client_id"" "568529", "method_type": "Banner_Click", "banner_id": "28"}'

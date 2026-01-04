@@ -25,6 +25,8 @@ import TejAgroIcon from "../../svg/TejAgroLogo";
 import TextPoppinsSemiBold from "../../shared/fontFamily/TextPoppinsSemiBold";
 import TextPoppinsMediumBold from "../../shared/fontFamily/TextPoppinsMediumBold";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { AUTH_API_URL } from '../../api/environment';
+import NetInfo from "@react-native-community/netinfo";
 export const LANGUAGES = [
     { name: 'English', value: 'en' },
     { name: 'मराठी', value: 'mr' }
@@ -55,12 +57,12 @@ const LogInScreen = () => {
     const [referralCodeInput, setReferralCodeInput]: any = useState('');
     const [formValue, setFormValue] = useState({ countryCode: '+91', phoneNumber: '' });
     const [errorMsg, setErrorMsg] = useState("");
-    const [mobileNumberError, setMobileNumberError]: any = useState('');
+    const [mobileNumberError, setMobileNumberError]: any = useState<string>('');
     const [referralCodeError, setReferralCodeError]: any = useState('');
     const [isLoader, setLoader] = useState(false);
     const [apiResponse, setApiResponse] = useState(''); // New state for API response
     const [showReferralInput, setShowReferralInput] = useState(false); // Checkbox state
-    
+    console.log("AUTH_API_URL",AUTH_API_URL)
     const renderItem = (placeholder: string, value: any, erroMsg?: any, onchange?: any,) => {
         return (
             <View>
@@ -123,18 +125,25 @@ const LogInScreen = () => {
             setReferralCodeError(t('REFERRAL_CODE_REQUIRED'));
             return;
         }
+
+        // Check internet connection
+        const netInfo = await NetInfo.fetch();
+        if (!netInfo.isConnected) {
+            setMobileNumberError(t('NO_INTERNET_CONNECTION') || "Internet connection is not available");
+            return;
+        }
         
         try {
             setLoader(true);
-            console.log("formValue.phoneNumber", Number(formValue.phoneNumber));
+            // console.log("formValue.phoneNumber", Number(formValue.phoneNumber));
             let response = await AuthApi.mobileSignIn({ mobile_no: Number(formValue.phoneNumber) });
-            console.log(response.data, "mobileSignIn_response");
+            console.log(response, "mobileSignIn_response");
 
             // Convert response to string and store it
             const responseString = convertResponseToString(response);
             setApiResponse(responseString);
 
-            if (response && response.data) {
+            if (response && response.status === 200 ) {
                 // Save referral code to Redux store if it exists
                 console.log(response.data.referral_code, "referral_code");
                 if (response.data.referral_code) {
@@ -146,12 +155,22 @@ const LogInScreen = () => {
                     enteredReferralCode: referralCodeInput // Pass the entered referral code
                 })
             }
+            else if(response && response.status !== 200){
+                setMobileNumberError(response.data.message || "Something went wrong. Please try again.");
+            }
         } catch (error: any) {
             console.log(error, "anyffff");
             // Convert error to string and store it
             const errorString = convertResponseToString(error);
             setApiResponse(`ERROR: ${errorString}`);
-            setMobileNumberError("Please enter a valid 10 digit mobile number");
+            
+            if (error.message === 'Network Error') {
+                 setMobileNumberError(t('NETWORK_ERROR') || "Network Error. Please check your connection.");
+            } else if (error.response && error.response.data && error.response.data.message) {
+                 setMobileNumberError(error.response.data.message);
+            } else {
+                 setMobileNumberError( "Something went wrong. Please try again.");
+            }
         } finally {
             setLoader(false);
         }
@@ -223,7 +242,7 @@ const LogInScreen = () => {
                         style={LogInScreenStyle.dataView}
                         containerStyle={LogInScreenStyle.mainBody}
                     />
-                    {mobileNumberError && <TextPoppinsSemiBold style={LogInScreenStyle.errorFormTextLogin}>{t('VALID_NUMBER')}</TextPoppinsSemiBold>}
+                    {mobileNumberError && <TextPoppinsSemiBold style={LogInScreenStyle.errorFormTextLogin}>{mobileNumberError}</TextPoppinsSemiBold> }
                     
                     {/* Referral Code Checkbox */}
                     <TouchableOpacity 
