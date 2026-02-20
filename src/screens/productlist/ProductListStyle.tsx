@@ -44,6 +44,18 @@ export const ProductListStyle = StyleSheet.create({
         paddingLeft: 10,
         backgroundColor: '#fff',
     },
+    loaderOverlay: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 999,
+        elevation: 999, // Android
+        backgroundColor: 'rgba(255,255,255,0.6)', // optional
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     logo: {
         width: 164,
         height: 121,

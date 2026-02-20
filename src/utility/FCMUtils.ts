@@ -3,6 +3,7 @@ import { Platform, PermissionsAndroid, Alert } from 'react-native';
 import firestore, { getFirestore } from '@react-native-firebase/firestore';
 import { NotificationUtils } from './NotificationUtils.ts';
 import * as ROUTES from '../routes/Routes';
+import AuthApi from '../api/AuthApi';
 
 // Define navigation reference type
 type NavigationRef = {
@@ -284,6 +285,19 @@ export class FCMUtils {
         .set(fcmTokenData, { merge: true });
 
       console.log('✅ FCM token saved to Firestore successfully for client:', clientId);
+      
+      try {
+        const payload = {
+          client_id: clientId,
+          fcm_token: token
+        };
+        console.log('🌐 Saving FCM token to backend API:', payload);
+        const response = await AuthApi.saveFCMToken(payload);
+        console.log('✅ FCM token saved to backend API successfully:', response.data);
+      } catch (apiError) {
+        console.error('❌ Error saving FCM token to backend API:', apiError);
+      }
+
     } catch (error: any) {
       console.error('❌ Error saving FCM token to Firestore:', error);
 

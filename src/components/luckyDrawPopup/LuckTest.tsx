@@ -124,10 +124,13 @@ const LuckyDrawPopup: React.FC<LuckyDrawPopupProps> = ({ visible, onClose }) => 
   const [showCloseButton, setShowCloseButton] = useState(false);
   const [countdown, setCountdown] = useState(8);
   const animatedProgress = useRef(new Animated.Value(0)).current;
+  const [play, setPlay] = useState(false);
+  const [isYoutubeReady, setIsYoutubeReady] = useState(false);
 
   useEffect(() => {
     console.log('LuckyDrawPopup visible changed:', visible);
     if (visible) {
+      setIsYoutubeReady(false); // Reset when popup opens
       console.log('Popup is visible, calling fetchPopupNotification...');
       fetchPopupNotification();
       setShowCloseButton(false);
@@ -186,46 +189,46 @@ const LuckyDrawPopup: React.FC<LuckyDrawPopupProps> = ({ visible, onClose }) => 
       console.log('Calling AuthApi.getPopupNotification()...');
       const response = await AuthApi.getPopupNotification();
       console.log(response, "popup response");
-    
+
 
       // console.log('Popup Notification API Response:', response.data.toString());
 
       // Check if response has valid data
       if (response.data.status && response.data.data && response.data.data.length > 0) {
         console.log('Valid popup data found:', response.data.data[0]);
-        
+
         const rawData: RawPopupNotificationData = response.data.data[0];
-        
+
         // Helper to pick random item from array or return string
         const pickRandom = (item: string | string[] | undefined): string => {
-            if (!item) return "";
-            if (Array.isArray(item)) {
-                if (item.length === 0) return "";
-                const randomIndex = Math.floor(Math.random() * item.length);
-                const selected = item[randomIndex];
-                return selected || "";
-            }
-            return item;
+          if (!item) return "";
+          if (Array.isArray(item)) {
+            if (item.length === 0) return "";
+            const randomIndex = Math.floor(Math.random() * item.length);
+            const selected = item[randomIndex];
+            return selected || "";
+          }
+          return item;
         };
 
         // Normalize data to ensure single strings for rendering
         const processedData: PopupNotificationData = {
-            pop_up: {
-                video: pickRandom(rawData.pop_up?.video),
-                image: pickRandom(rawData.pop_up?.image),
-                gif: pickRandom(rawData.pop_up?.gif),
-                link: pickRandom(rawData.pop_up?.link),
-                description: rawData.pop_up?.description,
-                button_name: rawData.pop_up?.button_name,
-            },
-            detailed_page: {
-                video: pickRandom(rawData.detailed_page?.video),
-                image: pickRandom(rawData.detailed_page?.image),
-                gif: pickRandom(rawData.detailed_page?.gif),
-                pdf: pickRandom(rawData.detailed_page?.pdf),
-                link: pickRandom(rawData.detailed_page?.link),
-                description: rawData.detailed_page?.description,
-            }
+          pop_up: {
+            video: pickRandom(rawData.pop_up?.video),
+            image: pickRandom(rawData.pop_up?.image),
+            gif: pickRandom(rawData.pop_up?.gif),
+            link: pickRandom(rawData.pop_up?.link),
+            description: rawData.pop_up?.description,
+            button_name: rawData.pop_up?.button_name,
+          },
+          detailed_page: {
+            video: pickRandom(rawData.detailed_page?.video),
+            image: pickRandom(rawData.detailed_page?.image),
+            gif: pickRandom(rawData.detailed_page?.gif),
+            pdf: pickRandom(rawData.detailed_page?.pdf),
+            link: pickRandom(rawData.detailed_page?.link),
+            description: rawData.detailed_page?.description,
+          }
         };
 
         console.log('Processed data:', JSON.stringify(processedData));
@@ -314,11 +317,11 @@ const LuckyDrawPopup: React.FC<LuckyDrawPopupProps> = ({ visible, onClose }) => 
           visible={visible && !showPdf && shouldShowPopup}
           transparent={true}
           animationType="fade"
-          onRequestClose={() => {}} // Disable hardware back button closing if needed, or keep handleClose
+          onRequestClose={() => { }} // Disable hardware back button closing if needed, or keep handleClose
         >
           <View style={styles.overlay}>
             {/* Wrap content in a TouchableWithoutFeedback to prevent closing when clicking inside */}
-             <View style={styles.popup}>
+            <View style={styles.popup}>
               {/* Close Button or Timer */}
               {showCloseButton ? (
                 <TouchableOpacity
@@ -326,11 +329,11 @@ const LuckyDrawPopup: React.FC<LuckyDrawPopupProps> = ({ visible, onClose }) => 
                   onPress={handleClose}
                   activeOpacity={0.7}
                 >
-                  <CrossIcon width={18} height={18} color={GREY} />
+                  <CrossIcon width={20} height={20} color={GREY} />
                 </TouchableOpacity>
               ) : (
                 <View style={[styles.closeButton, { backgroundColor: 'transparent' }]}>
-                  <Svg width={28} height={28} viewBox="0 0 32 32">
+                  <Svg width={32} height={32} viewBox="0 0 32 32">
                     <G rotation="-90" origin="16, 16">
                       <Circle
                         cx="16"
@@ -411,7 +414,7 @@ const LuckyDrawPopup: React.FC<LuckyDrawPopupProps> = ({ visible, onClose }) => 
                     )}
 
                     {!popupData.pop_up.video && popupData.pop_up.gif && (
-                      <View style={{ width: width , height: (width) * 0.6, marginBottom: 15, borderRadius: 12, overflow: 'hidden' }}>
+                      <View style={{ width: width, height: (width) * 0.6, marginBottom: 15, borderRadius: 12, overflow: 'hidden' }}>
                         <WebView
                           source={{
                             html: `
@@ -458,7 +461,7 @@ const LuckyDrawPopup: React.FC<LuckyDrawPopupProps> = ({ visible, onClose }) => 
                     )}
 
                     {!popupData.pop_up.video && !popupData.pop_up.gif && popupData.pop_up.image && (
-                      <View style={{ width: width , height: (width) * 0.6, marginBottom: 15, borderRadius: 12, overflow: 'hidden' }}>
+                      <View style={{ width: width, height: (width) * 0.6, marginBottom: 15, borderRadius: 12, overflow: 'hidden' }}>
                         {getMediaType(popupData.pop_up.image) === 'gif' ? (
                           <WebView
                             source={{
@@ -522,18 +525,44 @@ const LuckyDrawPopup: React.FC<LuckyDrawPopupProps> = ({ visible, onClose }) => 
                     {/* YouTube Video or Link */}
                     {popupData.pop_up.link && (
                       (() => {
-                        const youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+                        // popupData.pop_up.link = 'https://youtube.com/shorts/4NwZzC4fyOs'; // For testing
+                        const youtubeRegex =
+                          /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/|v\/))([A-Za-z0-9_-]{11})/;
+
                         const match = popupData.pop_up.link.match(youtubeRegex);
                         const videoId = match ? match[1] : null;
 
                         if (videoId) {
                           return (
-                            <View style={{ width: width , height: (width ) * 0.6, marginVertical: 10, borderRadius: 12, overflow: 'hidden' }}>
+                            <View style={{ width: width, height: (width) * 0.6, marginVertical: 10, borderRadius: 12, overflow: 'hidden' }}>
                               <YoutubePlayer
-                                height={(width ) * 0.6}
-                                width={width }
-                                play={false}
+                                height={width * 0.6}
+                                width={width}
                                 videoId={videoId}
+                                play={isYoutubeReady}
+                                mute={true}
+                                onReady={() => {
+                                  console.log("Player Ready - Triggering Autoplay");
+                                  // A tiny timeout ensures the JS bridge is fully active
+                                  setTimeout(() => {
+                                    setIsYoutubeReady(true);
+                                  }, 500);
+                                }}
+                                webViewProps={{
+                                  allowsInlineMediaPlayback: true,
+                                  mediaPlaybackRequiresUserAction: false,
+                                  javaScriptEnabled: true,
+                                  domStorageEnabled: true,
+                                  // Add this to handle Android specifically
+                                  mixedContentMode: "always",
+                                }}
+                                initialPlayerParams={{
+                                  controls: true,
+                                  modestbranding: true,
+                                  autoplay: 1,
+                                  playsinline: 1,
+                                  rel: 0, // Don't show related videos
+                                }}
                               />
                             </View>
                           );
@@ -755,4 +784,4 @@ const LuckyDrawPopup: React.FC<LuckyDrawPopupProps> = ({ visible, onClose }) => 
   );
 };
 
-export default LuckyDrawPopup;
+export default LuckyDrawPopup;// 

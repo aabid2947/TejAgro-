@@ -1,5 +1,5 @@
 
-curl -X POST "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/otp.php" -H "Content-Type:application/json"   -d '{"mobile_no":"8264782290"}' 
+curl -X POST "https://tejagrosales.tejgroup.in/Webservices/otp.php" -H "Content-Type:application/json"   -d '{"mobile_no":"9021086570"}' 
 
 curl -X GET "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/offer.php" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)" 
 curl -X GET "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/referral-code.php" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)"  
@@ -8,6 +8,7 @@ curl -X GET "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/popup-not
 curl -X POST "https://tejagrotech.com/tejagro_sale_demo/Webservices/order-place.php" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)" -d '{"client_id": "568520", "payment_id": "", "payment_method": "Cash on Delivery", "payment_response": "", "payment_status": "pending", "product_details": [{"discount_amount": "108.00", "discount_percent": "10.074626865671647", "gst_amount": "45.90", "gst_percent": "5", "mrp": "1072", "product_id": "59", "quantity": "1", "total_amount": "964.00"}], "promo_code_amount": "0", "promo_code_id": "", "referral_code": "3F385F", "shipping_address_id": "39", "transaction_id": "", "use_wallet_amount": ""}'
 curl -X POST "https://tejagrotech.com/tejagro_sale_demo/Webservices/order-history.php" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)" -d '{"client_id": "568520"}'
 
+curl -X GET "https://tejagrosales.tejgroup.in/Webservices/referral-code.php" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)"  
 
 curl -X POST "https://tejagrosales.tejgroup.in/Webservices/otp.php" -H "Content-Type:application/json"   -d '{"mobile_no":"826478229"}' 
 
@@ -17,7 +18,7 @@ curl -X POST "https://www.tejagrosales.tejgroup.in/Webservices/otp.php" -H "Cont
 curl -X POST "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/otp.php" -H "Content-Type: application/json" -d '{"mobile_no":"8264782290"}'
 
 <!-- Validate OTP -->
-curl -X POST "https://tejagrosales.tejgroup.in/Webservices/login.php" -H "Content-Type: application/json" -d '{"mobile_no":"8264782290","otp":"6375"}'
+curl -X POST "https://tejagrosales.tejgroup.in/Webservices/login.php" -H "Content-Type: application/json" -d '{"mobile_no":"9021086570","otp":"5175"}'
 curl -X POST "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/login.php" -H "Content-Type: application/json" -d '{"mobile_no":"8264782290","otp":"4602"}'
 
 <!-- Post file in chat -->

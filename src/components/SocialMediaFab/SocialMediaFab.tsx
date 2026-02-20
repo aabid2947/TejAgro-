@@ -29,6 +29,7 @@ const SocialMediaFab: React.FC<SocialMediaFabProps> = ({ style }) => {
 
   const openSocialMedia = (platform: string) => {
     let url = '';
+    
     switch (platform) {
       case 'facebook':
         url = 'https://www.facebook.com/tejagrotechindia/';

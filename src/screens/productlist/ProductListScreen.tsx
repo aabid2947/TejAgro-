@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Animated, FlatList, Pressable, SafeAreaView, Text, View, Image, StyleSheet, Dimensions } from 'react-native';
+import { Animated, FlatList, Pressable, SafeAreaView, Text, View, Image, StyleSheet, Dimensions, Linking, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import AuthApi from '../../api/AuthApi';
 import { ProductItem } from '../../components/commonComponent/ProductItem';
@@ -13,6 +13,11 @@ import { MENUBAR_SCREEN } from '../../routes/Routes';
 import { WHITE } from '../../shared/common-styles/colors';
 import { headerView } from '../../shared/components/CommonUtilities';
 import CrossIcon from '../../svg/CrossIcon';
+import FacebookIcon from '../../svg/FacebookIcon';
+import InstagramIcon from '../../svg/InstagramIcon';
+import LinkedInIcon from '../../svg/LinkedInIcon';
+import YouTubeIcon from '../../svg/YouTubeIcon';
+import WhatsAppIcon from '../../svg/WhatsAppIcon';
 import { DashboardStyle } from '../dashboard/DashboardStyle';
 import { ProductListStyle } from './ProductListStyle';
 import TextPoppinsMediumBold from '../../shared/fontFamily/TextPoppinsMediumBold';
@@ -34,7 +39,7 @@ const ProductListScreen = ({ navigation }: any) => {
     const profileDetail: any = useSelector((state: RootState) => state.counter.isProfileInfo)
     const totalItems: any = useSelector((state: RootState) => state.counter.totalItems)
     const isUserData = useSelector((state: any) => state.counter.isUserinfo)
-    
+
     const insets = useSafeAreaInsets();
     const scrollY = useRef(new Animated.Value(0)).current;
     const dispatch = useDispatch();
@@ -44,9 +49,49 @@ const ProductListScreen = ({ navigation }: any) => {
     // Scroll Logic: Move banner up as we scroll
     const bannerTranslateY = scrollY.interpolate({
         inputRange: [0, BANNER_HEIGHT],
-        outputRange: [0, -BANNER_HEIGHT-BANNER_HEIGHT],
+        outputRange: [0, -BANNER_HEIGHT - BANNER_HEIGHT],
         extrapolate: 'clamp'
     });
+
+    const openSocialMedia = (platform: string) => {
+        let url = '';
+        //         Instagram - https://www.instagram.com/tejagrotech/
+        // Facebook - https://www.facebook.com/tejagrotechindia/
+        // Linkedin - https://www.linkedin.com/company/101432630/admin/page-posts/published/
+        switch (platform) {
+            case 'facebook':
+                url = 'https://www.facebook.com/tejagrotechindia/';
+                break;
+            case 'instagram':
+                const username = 'tejagrotech';
+                const appUrl = `instagram://user?username=${username}`;
+                const webUrl = `https://www.instagram.com/${username}/`;
+
+                Linking.canOpenURL(appUrl)
+                    .then(supported => supported ? Linking.openURL(appUrl) : Linking.openURL(webUrl))
+                    .catch(() => Linking.openURL(webUrl));
+                return;
+                // break;
+            case 'linkedin':
+                url = 'https://www.linkedin.com/company/101432630/admin/page-posts/published/';
+                break;
+            case 'youtube':
+                url = 'https://www.youtube.com/@tejagrotech123';
+                break;
+            case 'whatsapp':
+                const phoneNumber = '+919130530591';
+                const whatsappUrl = `whatsapp://send?phone=${phoneNumber}`;
+                Linking.canOpenURL(whatsappUrl).then((supported) => {
+                    if (supported) {
+                        return Linking.openURL(whatsappUrl);
+                    } else {
+                        return Linking.openURL(`https://wa.me/${phoneNumber.replace('+', '')}`);
+                    }
+                }).catch((err) => console.error('Error opening WhatsApp:', err));
+                return;
+        }
+        Linking.openURL(url).catch((err) => console.error('Error opening URL:', err));
+    };
 
     const loadBanner = async () => {
         try {
@@ -121,15 +166,34 @@ const ProductListScreen = ({ navigation }: any) => {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: WHITE, paddingBottom: insets.bottom }}>
             {/* 1. FIXED HEADER & SEARCH BAR AREA */}
-            <View style={{ zIndex: 10, backgroundColor: WHITE , paddingTop: insets.top }}>
+            <View style={{ zIndex: 10, backgroundColor: WHITE, paddingTop: insets.top }}>
                 {headerView(`Hi, ${profileDetail?.client_name || ""}`, "Enjoy our services", onPressSide, totalItems, navigation, undefined)}
+
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 15, paddingBottom: 10 }}>
+                    <TouchableOpacity onPress={() => openSocialMedia('whatsapp')}>
+                        <WhatsAppIcon width={30} height={30} color='#25D366' />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => openSocialMedia('youtube')}>
+                        <YouTubeIcon width={30} height={30} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => openSocialMedia('instagram')}>
+                        <InstagramIcon width={30} height={30} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => openSocialMedia('facebook')}>
+                        <FacebookIcon width={30} height={30} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => openSocialMedia('linkedin')}>
+                        <LinkedInIcon width={30} height={30} />
+                    </TouchableOpacity>
+                </View>
+
                 <View style={{ paddingHorizontal: '5%', paddingBottom: 10 }}>
                     <SearchInput
                         placeholder={t('SEARCH_HERE')}
                         value={searchQuery}
                         setSearchQuery={setSearchQuery}
                         searchQuery={searchQuery}
-                        onChangeText={handleSearch} 
+                        onChangeText={handleSearch}
                     />
                 </View>
             </View>
@@ -158,7 +222,9 @@ const ProductListScreen = ({ navigation }: any) => {
                 </Animated.View>
 
                 {isLoader ? (
-                    <LoaderScreen />
+                    <View style={ProductListStyle.loaderOverlay}>
+                        <LoaderScreen />
+                    </View>
                 ) : (
                     <Animated.FlatList
                         onScroll={Animated.event(
@@ -176,13 +242,13 @@ const ProductListScreen = ({ navigation }: any) => {
                         onRefresh={onRefresh}
                         showsVerticalScrollIndicator={false}
                         columnWrapperStyle={DashboardStyle.columnView}
-                        
+
                         // 3. THE MAGIC: PaddingTop creates the initial space for the carousel
-                        contentContainerStyle={{ 
-                            paddingTop: BANNER_HEIGHT + BANNER_HEIGHT * 0.1, 
-                            paddingBottom: 20 
+                        contentContainerStyle={{
+                            paddingTop: BANNER_HEIGHT + BANNER_HEIGHT * 0.1,
+                            paddingBottom: 100
                         }}
-                        
+
                         ListHeaderComponent={
                             <View>
                                 <TextPoppinsMediumBold style={ProductListStyle.headerText}>
@@ -192,7 +258,13 @@ const ProductListScreen = ({ navigation }: any) => {
                         }
                     />
                 )}
+                {/* {isLoader ? (
+                    <View style={ProductListStyle.loaderOverlay}>
+                        <LoaderScreen />
+                    </View>
+                ) : null} */}
             </View>
+
         </SafeAreaView>
     );
 };

@@ -493,7 +493,12 @@ const MyCartScreen = ({ navigation, route }: any) => {
 
                     {promoCodeDiscount > 0 && (
                         <View style={cartStyles.orderSummaryRow}>
-                            <Text style={cartStyles.summaryLabel}>{t('PROMO_CODE_DISCOUNT')}</Text>
+                            <Text style={cartStyles.summaryLabel}>
+                                {t('PROMO_CODE_DISCOUNT')}
+                                {selectedPromoCodeValue?.discount_type === 'percentage'
+                                    ? ` (${selectedPromoCodeValue?.discount_percent}%)`
+                                    : (selectedPromoCodeValue?.discount_type === 'amount' && selectedPromoCodeValue?.discount_percent ? ` (Flat ₹${selectedPromoCodeValue?.discount_percent})` : '')}
+                            </Text>
                             <Text style={[cartStyles.summaryValue, cartStyles.discountValue]}>-₹{promoCodeDiscount}</Text>
                         </View>
                     )}

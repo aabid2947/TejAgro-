@@ -61,7 +61,8 @@ const LogInScreen = () => {
     const [referralCodeError, setReferralCodeError]: any = useState('');
     const [isLoader, setLoader] = useState(false);
     const [apiResponse, setApiResponse] = useState(''); // New state for API response
-    const [showReferralInput, setShowReferralInput] = useState(false); // Checkbox state
+    const [loginData, setLoginData] = useState<any>(null);
+    const [step, setStep] = useState(1);
     console.log("AUTH_API_URL",AUTH_API_URL)
     const renderItem = (placeholder: string, value: any, erroMsg?: any, onchange?: any,) => {
         return (
@@ -114,15 +115,17 @@ const LogInScreen = () => {
     }
 
     const onClickSignIn = async () => {
+        if (step === 1) {
+            handleMobileSubmit();
+        } else {
+            handleReferralSubmit();
+        }
+    };
+
+    const handleMobileSubmit = async () => {
         if ((!formValue.phoneNumber || formValue.phoneNumber.length <= 9)) {
             setMobileNumberError("Please enter a valid 10 digit mobile number");
             setApiResponse("Please enter a valid 10 digit mobile number");
-            return;
-        }
-        
-        // Validate referral code if checkbox is checked
-        if (showReferralInput && !referralCodeInput.trim()) {
-            setReferralCodeError(t('REFERRAL_CODE_REQUIRED'));
             return;
         }
 
@@ -132,7 +135,7 @@ const LogInScreen = () => {
             setMobileNumberError(t('NO_INTERNET_CONNECTION') || "Internet connection is not available");
             return;
         }
-        
+
         try {
             setLoader(true);
             // console.log("formValue.phoneNumber", Number(formValue.phoneNumber));
@@ -143,19 +146,26 @@ const LogInScreen = () => {
             const responseString = convertResponseToString(response);
             setApiResponse(responseString);
 
-            if (response && response.status === 200 ) {
+            if (response && response.status === 200) {
                 // Save referral code to Redux store if it exists
                 console.log(response.data.referral_code, "referral_code");
                 if (response.data.referral_code) {
                     dispatch(setReferralCode(response.data.referral_code));
                 }
-                navigation.navigate(OTP_SCREEN, { 
-                    ...response.data, 
-                    mobileNumber,
-                    enteredReferralCode: referralCodeInput // Pass the entered referral code
-                })
+
+                // Check referral_status
+                if (response.data.referral_status === 0) {
+                    setLoginData(response.data);
+                    setStep(2);
+                } else {
+                    navigation.navigate(OTP_SCREEN, {
+                        ...response.data,
+                        mobileNumber,
+                        enteredReferralCode: '' // No referral code
+                    })
+                }
             }
-            else if(response && response.status !== 200){
+            else if (response && response.status !== 200) {
                 setMobileNumberError(response.data.message || "Something went wrong. Please try again.");
             }
         } catch (error: any) {
@@ -163,17 +173,25 @@ const LogInScreen = () => {
             // Convert error to string and store it
             const errorString = convertResponseToString(error);
             setApiResponse(`ERROR: ${errorString}`);
-            
+
             if (error.message === 'Network Error') {
-                 setMobileNumberError(t('NETWORK_ERROR') || "Network Error. Please check your connection.");
+                setMobileNumberError(t('NETWORK_ERROR') || "Network Error. Please check your connection.");
             } else if (error.response && error.response.data && error.response.data.message) {
-                 setMobileNumberError(error.response.data.message);
+                setMobileNumberError(error.response.data.message);
             } else {
-                 setMobileNumberError( "Something went wrong. Please try again.");
+                setMobileNumberError("Something went wrong. Please try again.");
             }
         } finally {
             setLoader(false);
         }
+    };
+
+    const handleReferralSubmit = () => {
+        navigation.navigate(OTP_SCREEN, {
+            ...loginData,
+            mobileNumber,
+            enteredReferralCode: referralCodeInput
+        });
     };
 
     
@@ -233,43 +251,25 @@ const LogInScreen = () => {
                         }} />
                 </View>
                 <View style={LogInScreenStyle.inputView}>
-                    <MobileNumber 
-                        title={t('PHONE_NUMBER')}
-                        placeholder="Enter your mobile number"
-                        value={mobileNumber}
-                        error=""
-                        onChangeText={(text: any) => onChangeFormName(text)}
-                        style={LogInScreenStyle.dataView}
-                        containerStyle={LogInScreenStyle.mainBody}
-                    />
-                    {mobileNumberError && <TextPoppinsSemiBold style={LogInScreenStyle.errorFormTextLogin}>{mobileNumberError}</TextPoppinsSemiBold> }
-                    
-                    {/* Referral Code Checkbox */}
-                    <TouchableOpacity 
-                        style={LogInScreenStyle.checkboxContainer}
-                        onPress={() => {
-                            setShowReferralInput(!showReferralInput);
-                            if (showReferralInput) {
-                                setReferralCodeInput('');
-                                setReferralCodeError('');
-                                dispatch(setReferredUserReferralCode(''));
-                            }
-                        }}
-                        activeOpacity={0.7}
-                    >
-                        <View style={[LogInScreenStyle.checkbox, showReferralInput && LogInScreenStyle.checkboxChecked]}>
-                            {showReferralInput && <Text style={LogInScreenStyle.checkmark}>✓</Text>}
-                        </View>
-                        <TextPoppinsSemiBold style={LogInScreenStyle.checkboxLabel}>
-                            {t('HAVE_REFERRAL_CODE')}
-                        </TextPoppinsSemiBold>
-                    </TouchableOpacity> 
-                    
-                    {/* Referral Code Input - Only show if checkbox is checked */}
-                    {showReferralInput && (
+                    {step === 1 && (
+                        <>
+                            <MobileNumber
+                                title={t('PHONE_NUMBER')}
+                                placeholder="Enter your mobile number"
+                                value={mobileNumber}
+                                error=""
+                                onChangeText={(text: any) => onChangeFormName(text)}
+                                style={LogInScreenStyle.dataView}
+                                containerStyle={LogInScreenStyle.mainBody}
+                            />
+                            {mobileNumberError && <TextPoppinsSemiBold style={LogInScreenStyle.errorFormTextLogin}>{mobileNumberError}</TextPoppinsSemiBold>}
+                        </>
+                    )}
+
+                    {step === 2 && (
                         <View style={{ marginTop: 16 }}>
-                            <ReferralCodeInput 
-                                title="Referral Code *"
+                            <ReferralCodeInput
+                                title="Referral Code"
                                 placeholder="Enter referral code"
                                 value={referralCodeInput}
                                 error={referralCodeError}
@@ -279,11 +279,9 @@ const LogInScreen = () => {
                             />
                         </View>
                     )}
-                    
+
                     {PressableButton(isLoader ? t('LOADING') : t('CONTINUE_BUTTON'), onClickSignIn, isLoader)}
-                    
-            
-                    
+
                     {/* {alreadyAccountView(t('NO_ACCOUNT'), t('SIGN_UP'), getStartedPress)} */}
                 </View>
             </KeyboardAwareScrollView>

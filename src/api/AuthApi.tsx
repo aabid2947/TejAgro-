@@ -8,6 +8,10 @@ const mobileSignIn = (requestBody: any) => {
 }
 
 
+const saveFCMToken = (requestBody: any) => {
+    const url = `${AUTH_API_URL}save_fcm_token.php`;
+    return axios.post(url, requestBody);
+}
 
 
 const verifyOTP = (requestBody: any) => {
@@ -327,6 +331,7 @@ export default {
     getReferralInfo,
     getPopupNotification,
     postImageInChat,
-    trackClick
+    trackClick,
+    saveFCMToken
 }
 

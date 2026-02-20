@@ -163,14 +163,14 @@ function App(): React.JSX.Element {
               <LoaderScreen />
             }
                 {/* Hide FAB buttons on intro, login and OTP screens */}
-                {currentRouteName !== 'IntroScreen' && currentRouteName !== 'SignIn' && currentRouteName !== 'OtpScreen' && (
+                {/* {currentRouteName !== 'IntroScreen' && currentRouteName !== 'SignIn' && currentRouteName !== 'OtpScreen' && (
                   <SocialMediaFab 
                     style={[
                       style.socialMediaButton, 
                       { bottom: 90 + insets.bottom }
                     ]} 
                   />
-                )}
+                )} */}
           </>
         </NavigationContainer>
       </GestureHandlerRootView >
