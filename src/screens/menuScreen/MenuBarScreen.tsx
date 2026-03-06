@@ -361,7 +361,7 @@ const MenuBarScreen = ({ navigation }: any) => {
                         )}
                     </View>
                 </View>
-                {dataItems(WalletIcon, ArrowIcon, `${t('WALLET')}`, undefined, `Balance: ${profileInfo?.my_wallet || 0}`, true)}
+                {dataItems(WalletIcon, ArrowIcon, `${t('WALLET')}`, undefined, `Balance: ${profileInfo?.wallet_balance || 0}`, true)}
                 {dataItems(ShareIcon, ArrowIcon, `${t('REFER_AND_EARN')}`, () => navigation.navigate(REFER_EARN_SCREEN), `Referral Code: ${referralCode || 'Not Available'}`)}
                 {dataItems(CartIcon, ArrowIcon, `${t('MY_ORDERS')}`, () => navigation.navigate(ORDER_SCREEN), `You have ${orderData.length || "0"} orders`)}
                 {dataItems(LocationIcon, ArrowIcon, `${t('SHIPPING_ADDRESS')}`, () => navigation.navigate(SHIPPING_ADDRESS_SCREEN), `${addressData.length || "0"} Addresses`)}

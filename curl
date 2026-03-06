@@ -1,5 +1,5 @@
 
-curl -X POST "https://tejagrosales.tejgroup.in/Webservices/otp.php" -H "Content-Type:application/json"   -d '{"mobile_no":"9021086570"}' 
+curl -X POST "https://tejagrosales.tejgroup.in/Webservices/otp.php" -H "Content-Type:application/json"   -d '{"mobile_no":"8264782290"}' 
 
 curl -X GET "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/offer.php" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)" 
 curl -X GET "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/referral-code.php" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)"  
@@ -14,12 +14,16 @@ curl -X POST "https://tejagrosales.tejgroup.in/Webservices/otp.php" -H "Content-
 
 
 <!-- Request OTP -->
-curl -X POST "https://www.tejagrosales.tejgroup.in/Webservices/otp.php" -H "Content-Type: application/json" -d '{"mobile_no":"8264782290"}'
+curl -X POST "https://tejagrosales.tejgroup.in/Webservices/otp.php" -H "Content-Type: application/json" -d '{"mobile_no":"8264782290"}'
 curl -X POST "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/otp.php" -H "Content-Type: application/json" -d '{"mobile_no":"8264782290"}'
 
 <!-- Validate OTP -->
-curl -X POST "https://tejagrosales.tejgroup.in/Webservices/login.php" -H "Content-Type: application/json" -d '{"mobile_no":"9021086570","otp":"5175"}'
-curl -X POST "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/login.php" -H "Content-Type: application/json" -d '{"mobile_no":"8264782290","otp":"4602"}'
+curl -X POST "https://tejagrosales.tejgroup.in/Webservices/login.php" -H "Content-Type: application/json" -d '{"mobile_no":"8264782290","otp":"2651"}'
+curl -X POST "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/login.php" -H "Content-Type: application/json" -d '{"mobile_no":"8264782290","otp":"7841"}'
 
 <!-- Post file in chat -->
 curl -X POST "https://tejagrosales.tejgroup.in/Webservices/chat-messages.php?action=get_data" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)" -d '$(cat t.text)'
+
+curl -X GET "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/all-promo-code.php?grand_total=100&wallet_amt=10&promocode_amt=0&remaining_amt=90" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)" 
+curl -X GET "https://tejagrosales.tejgroup.in/Webservices/all-promo-code.php?grand_total=100&wallet_amt=10&promocode_amt=0&remaining_amt=90" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)" 
+curl -X GET "https://tejagrosales.tejgroup.in/Webservices/all-promo-code.php" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)" 

@@ -25,7 +25,7 @@ const getProductList = () => {
 }
 
 const searchProduct = (requestBody: any, accessToken: string) => {
-    console.log(requestBody)
+    // console.log(requestBody)
     const url = `${AUTH_API_URL}product-search.php`;
     return axios.post(url, requestBody, {
         headers: {
@@ -230,10 +230,9 @@ const getCropByCategoryId = (payload: any) => {
     const url = `category-wise-all-crop.php`;
     return authAxios.post(url, payload);
 }
-const getPromoCodeList = () => {
-    
+const getPromoCodeList = (payload?: { grand_total?: number; wallet_amt?: number; promocode_amt?: number; remaining_amt?: number }) => {
     const url = `all-promo-code.php`;
-    return authAxios.get(url);
+    return authAxios.get(url, { params: payload });
 }
 const updatePromoCode = (payload: any) => {
     console.log(payload)

@@ -52,6 +52,7 @@ const MyCartScreen = ({ navigation, route }: any) => {
     const selectedShippingAddress: any = useSelector((state: RootState) => state.counter.selectAddress)
     const selectedPromoCodeValue: any = useSelector((state: RootState) => state.counter.promoCodeId)
     const profileInfo: any = useSelector((state: RootState) => state.counter.isProfileInfo)
+    // profileInfo.my_wallet =  0; // Ensure my_wallet is defined and not null/undefined
     console.log("ll", profileInfo)
     const orderPlaced = useSelector((state: RootState) => state.counter.orderPlaced)
     const referredUserReferralCode = useSelector((state: RootState) => state.counter.referred_user_referral_code)
@@ -79,10 +80,12 @@ const MyCartScreen = ({ navigation, route }: any) => {
     };
     let totalItemsCount = calculateTotalItems()
     useEffect(() => {
-        //    console.log("e",profileInfo?.min_order_value)
+           console.log("e",profileInfo)
     }, []);
     useEffect(() => {
         dispatch(setTotalItems(totalItemsCount));
+           console.log("e",profileInfo)
+
     }, [cartData, dispatch]);
     useFocusEffect(
         useCallback(() => {
@@ -96,6 +99,9 @@ const MyCartScreen = ({ navigation, route }: any) => {
             const timer = setTimeout(() => {
                 setPromoModalVisible(false);
             }, 1000);
+            // Promo applied — uncheck wallet
+            setIsChecked(false);
+            setWalletUsed(null);
             return () => clearTimeout(timer);
         }
         setIsChecked(false);
@@ -375,7 +381,14 @@ const MyCartScreen = ({ navigation, route }: any) => {
     const onApply = () => {
         removeCode();
         setPromoCodeApplied(true);
-        navigation.navigate(PROMO_CODE_SCREEN)
+        const walletAmt = walletUsed?.use_wallet_amount || 0;
+        const promocodeAmt = selectedPromoCodeValue?.promo_code_discount || 0;
+        navigation.navigate(PROMO_CODE_SCREEN, {
+            grand_total: totalCartPrice,
+            wallet_amt: walletAmt,
+            promocode_amt: promocodeAmt,
+            remaining_amt: totalCartPrice - walletAmt - promocodeAmt
+        })
     }
     const updateCartItemQuantity = async (itemId: any, productId: any, quantity: number) => {
         try {
@@ -474,10 +487,10 @@ const MyCartScreen = ({ navigation, route }: any) => {
     };
 
     const OrderSummaryComponent = () => {
-        const totalAmount = selectedPromoCodeValue?.total_amount || totalCartPrice;
-        const finalAmount = walletUsed?.use_wallet_amount > 0 ? walletUsed?.grand_amount : (selectedPromoCodeValue?.final_amount || totalCartPrice);
-        const promoCodeDiscount = selectedPromoCodeValue?.promo_code_discount || 0;
-
+        const totalAmount = totalCartPrice;
+        const promoCodeDiscount = Number(selectedPromoCodeValue?.promo_code_discount) || 0;
+        const walletDeduction = Number(walletUsed?.use_wallet_amount) || 0;
+        const finalAmount = Number((totalCartPrice - promoCodeDiscount - walletDeduction).toFixed(2));
         return (
             <View style={cartStyles.orderSummaryContainer}>
                 <View style={cartStyles.orderSummaryHeader}>
@@ -495,9 +508,9 @@ const MyCartScreen = ({ navigation, route }: any) => {
                         <View style={cartStyles.orderSummaryRow}>
                             <Text style={cartStyles.summaryLabel}>
                                 {t('PROMO_CODE_DISCOUNT')}
-                                {selectedPromoCodeValue?.discount_type === 'percentage'
-                                    ? ` (${selectedPromoCodeValue?.discount_percent}%)`
-                                    : (selectedPromoCodeValue?.discount_type === 'amount' && selectedPromoCodeValue?.discount_percent ? ` (Flat ₹${selectedPromoCodeValue?.discount_percent})` : '')}
+                                {selectedPromoCodeValue?.discount_type === 'Amount'
+                                    ? (selectedPromoCodeValue?.discount_type === 'Amount' && selectedPromoCodeValue?.discount_percent ? ` (Flat ₹${selectedPromoCodeValue?.discount_percent})` : '')
+                                    : ` (${selectedPromoCodeValue?.discount_percent}%)`}
                             </Text>
                             <Text style={[cartStyles.summaryValue, cartStyles.discountValue]}>-₹{promoCodeDiscount}</Text>
                         </View>
@@ -548,9 +561,22 @@ const MyCartScreen = ({ navigation, route }: any) => {
                         </Pressable>
                     ) : (
                         <View style={styles.compactAppliedPromoBox}>
-                            <TextPoppinsSemiBold style={styles.compactAppliedPromoText} numberOfLines={1}>
-                                {selectedPromoCodeValue?.promo_code}
-                            </TextPoppinsSemiBold>
+                            <View style={{ flex: 1 }}>
+                                <TextPoppinsSemiBold style={styles.compactAppliedPromoText} numberOfLines={1}>
+                                    {selectedPromoCodeValue?.promo_code}
+                                    {/* {selectedPromoCodeValue?.discount_type === 'Amount'
+                                        ? selectedPromoCodeValue?.promo_code_discount > 0
+                                            ? ` (-₹${selectedPromoCodeValue?.promo_code_discount})`
+                                            : ''
+                                        : ` (-${selectedPromoCodeValue?.discount_percent}%)`
+                                            } */}
+                                </TextPoppinsSemiBold>
+                                {!!selectedPromoCodeValue?.promo_code_description && (
+                                    <Text style={{ fontSize: 11, color: '#2E7D32', marginTop: 2 }} numberOfLines={2}>
+                                        {selectedPromoCodeValue.promo_code_description}
+                                    </Text>
+                                )}
+                            </View>
                             <Pressable onPress={() => removeCode()}>
                                 <Text style={styles.compactRemoveText}>×</Text>
                             </Pressable>
@@ -579,57 +605,60 @@ const MyCartScreen = ({ navigation, route }: any) => {
                     )}
 
                     {/* Wallet Section */}
-                    {cartData.length > 0 && Number(profileInfo?.my_wallet) > 0 && (
-                        <View style={styles.compactWalletBox}>
-                            {isLoading ? (
-                                <ActivityIndicator size="small" color="#FBAB32" />
-                            ) : (
-                                <CheckBox
-                                    disabled={!(profileInfo?.min_order_value <= Number(selectedPromoCodeValue?.final_amount || totalCartPrice)) || isLoading}
-                                    checked={isChecked}
-                                    onPress={() => {
-                                        const newValue = !isChecked;
-                                        const isCheckboxEnabled = profileInfo?.min_order_value <= Number(selectedPromoCodeValue?.final_amount || totalCartPrice);
+                    {cartData.length > 0 && Number(profileInfo?.wallet_balance) > 0 && (() => {
+                        const remainingAfterPromo = Number(selectedPromoCodeValue?.final_amount || totalCartPrice);
+                        const walletBalance = Number(profileInfo?.wallet_balance) || 0;
+                        const isCheckboxEnabled = profileInfo?.min_order_value <= remainingAfterPromo && walletBalance <= remainingAfterPromo;
+                        return (
+                            <View style={styles.compactWalletBox}>
+                                {isLoading ? (
+                                    <ActivityIndicator size="small" color="#FBAB32" />
+                                ) : (
+                                    <CheckBox
+                                        disabled={!isCheckboxEnabled || isLoading}
+                                        checked={isChecked}
+                                        onPress={() => {
+                                            if (!isCheckboxEnabled) return;
+                                            const newValue = !isChecked;
+                                            setIsChecked(newValue);
+                                            setWalletUsed(null);
+                                            if (newValue) {
+                                                setIsLoading(true);
+                                                const payload = {
+                                                    "client_id": decodedToken?.data?.client_id,
+                                                    "grand_total": remainingAfterPromo,
+                                                };
+                                                console.log(payload)
+                                                AuthApi.useWallet(payload).then(response => {
+                                                    setIsLoading(false);
+                                                    if (response.data?.status) {
+                                                        setWalletUsed(response.data);
+                                                    }
+                                                    console.log(response.data)
 
-                                        if (!isCheckboxEnabled) return;
+                                                }).catch(error => {
+                                                    console.log("API Error:", error);
+                                                    setIsLoading(false);
+                                                });
+                                            }
+                                        }}
+                                        checkedIcon={<CheckBoxSvg />}
+                                        uncheckedIcon={<UnCheckbox fill={!isCheckboxEnabled ? LIGHT_SILVER : undefined} />}
+                                        title={<Text style={styles.compactWalletText}>
+                                            {`${t("WALLET")} ₹${profileInfo?.wallet_balance}`}
+                                        </Text>}
+                                        containerStyle={styles.compactWalletCheckboxContainer}
+                                        textStyle={styles.compactWalletTextStyle}
+                                    />
+                                )}
+                            </View>
+                        );
+                    })()}
 
-                                        setIsChecked(newValue);
-                                        setWalletUsed(null);
-
-                                        if (newValue) {
-                                            setIsLoading(true);
-                                            const payload = {
-                                                "client_id": decodedToken?.data?.client_id,
-                                                "grand_total": Number(selectedPromoCodeValue?.final_amount || totalCartPrice),
-                                            };
-
-                                            AuthApi.useWallet(payload).then(response => {
-                                                setIsLoading(false);
-                                                if (response.data?.status) {
-                                                    setWalletUsed(response.data);
-                                                }
-                                            }).catch(error => {
-                                                console.log("API Error:", error);
-                                                setIsLoading(false);
-                                            });
-                                        }
-                                    }}
-                                    checkedIcon={<CheckBoxSvg />}
-                                    uncheckedIcon={<UnCheckbox fill={!(profileInfo?.min_order_value <= Number(selectedPromoCodeValue?.final_amount || totalCartPrice)) ? LIGHT_SILVER : undefined} />}
-                                    title={<Text style={styles.compactWalletText}>
-                                        {`${t("WALLET")} ₹${profileInfo?.my_wallet}`}
-                                    </Text>}
-                                    containerStyle={styles.compactWalletCheckboxContainer}
-                                    textStyle={styles.compactWalletTextStyle}
-                                />
-                            )}
-                        </View>
-                    )}
-
-                    {/* Wallet minimum cart value message */}
                 </View>
-                <View style={{ width: '90%', alignSelf: 'center' }}>
-                    {cartData.length > 0 && Number(profileInfo?.my_wallet) > 0 && (
+
+                {Number(profileInfo?.wallet_balance) > 0 && totalCartPrice < Number(profileInfo?.min_order_value) && (
+                    <View style={{ width: '90%', alignSelf: 'center' }}>
                         <View
                             style={{
                                 backgroundColor: '#F2F7FF',
@@ -646,19 +675,12 @@ const MyCartScreen = ({ navigation, route }: any) => {
                                 shadowRadius: 3,
                             }}
                         >
-                            <Text
-                                style={{
-                                    fontSize: 14,
-                                    color: BLACK,
-                                    fontWeight: '500',
-                                    flex: 1,
-                                }}
-                            >
+                            <Text style={{ fontSize: 14, color: BLACK, fontWeight: '500', flex: 1 }}>
                                 * {t("WALLET_MIN_CART_VALUE_MESSAGE")}
                             </Text>
                         </View>
-                    )}
-                </View>
+                    </View>
+                )}
 
                 <OrderSummaryComponent />
             </>
@@ -715,6 +737,7 @@ const MyCartScreen = ({ navigation, route }: any) => {
                     <>
                         <FlatList
                             data={cartData}
+                            extraData={[walletUsed, selectedPromoCodeValue, isChecked, isLoading, profileInfo]}
                             renderItem={({ item, index }: any) => <CartItemView item={item} decrementQuantity={decrementQuantity} incrementQuantity={incrementQuantity} index={index} />}
                             keyExtractor={(item: any) => item.cart_id}
                             ListEmptyComponent={

@@ -106,7 +106,7 @@ const CustomCaraosel = (banner: any) => {
     const onSnapToItem = async (itemIndex: any) => {
          
                                
-        
+        console.log(banner.data)
         if ((banner?.data || [])?.length == 2) {
             if (itemIndex == 2) {
                 setItemIndex(0);

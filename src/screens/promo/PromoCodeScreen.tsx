@@ -38,7 +38,7 @@ const voucher = [
 export const SLIDER_WIDTH = Dimensions.get('window').width + 45;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
 export const ITEM_HEIGHT = Dimensions.get('window').width + 0;
-export const PromoCodeScreen = ({ navigation }: any) => {
+export const PromoCodeScreen = ({ navigation, route }: any) => {
     const { t } = useTranslation();
     const insets = useSafeAreaInsets();
     const [selectedOption, setSelectedOption]: any = useState(null);
@@ -85,7 +85,23 @@ export const PromoCodeScreen = ({ navigation }: any) => {
                 const response = await AuthApi.updatePromoCode(payload);
                 setLoader(false);
                 if (response?.data?.status === true) {
-                    dispatch(selectedPromoCode({ ...value, ...response?.data }));
+                    const discountVal = Number(value.discount) || 0;
+                    const totalAmt = Number(response?.data?.total_amount) || 0;
+
+                    let calculatedDeduction = 0;
+                    if (value.discount_type === 'Percentage') {
+                        calculatedDeduction = (totalAmt * discountVal) / 100;
+                    } else {
+                        calculatedDeduction = discountVal;
+                    }
+
+                    const correctFinalAmount = (totalAmt - calculatedDeduction).toFixed(2);
+                    dispatch(selectedPromoCode({
+                        ...value,
+                        ...response?.data,
+                        promo_code_discount: String(calculatedDeduction),
+                        final_amount: correctFinalAmount,
+                    }));
                     navigation.navigate(MYCART_SCREEN, { showPromoCodePopup: true })
                     // navigation.goBack()                    
                 } else {
@@ -100,7 +116,8 @@ export const PromoCodeScreen = ({ navigation }: any) => {
     const getPromoCodes = async () => {
         try {
             setLoader(true);
-            const res = await AuthApi.getPromoCodeList();
+            const { grand_total, wallet_amt, promocode_amt, remaining_amt } = route?.params || {};
+            const res = await AuthApi.getPromoCodeList({ grand_total, wallet_amt, promocode_amt, remaining_amt });
             console.log(res)
             setLoader(false);
             if(res?.data?.status === false) {
@@ -108,6 +125,16 @@ export const PromoCodeScreen = ({ navigation }: any) => {
                 return
             }
             if (res?.data) {
+                const demo = [{
+            "promo_code_id": "1",
+            "promo_code": "1STPURCHASE500",
+            "promo_code_title": "Welcome Offer",
+            "promo_code_description": "Get 10% off on your first purchase",
+            "start_date": "2026-02-24 00:00:00",
+            "end_date": "2026-05-31 00:00:00",
+            "discount_type": "Percentage",
+            "discount": "50",
+        }];
                 setPromoCodeList(res?.data)
             }
         } catch (error) {
@@ -149,7 +176,6 @@ export const PromoCodeScreen = ({ navigation }: any) => {
         setFilteredData(newFilter);
     };
 
-
     const applyDisabledUseNow = (item: any) => {
         if (item?.voucherTypeId == 2) {
             if (!item.nonPick?.active) {
@@ -163,7 +189,6 @@ export const PromoCodeScreen = ({ navigation }: any) => {
         } else {
             return true;
         }
-
     }
     const applyDisabledApply = (item: any) => {
         if (item.resetClaim?.active) {
@@ -185,6 +210,7 @@ export const PromoCodeScreen = ({ navigation }: any) => {
     const handleSelectPromo = (id: any) => {
         setSelectedPromo(id)
     };
+
     return (
         <SafeAreaView style={{ ...ProductListStyle.main, paddingTop: insets.top }}>
             <TopHeaderFixed
@@ -206,75 +232,66 @@ export const PromoCodeScreen = ({ navigation }: any) => {
                                         {promoCodeList.length != 0 && (
                                             (promoCodeList || []).map((item: any, index: any) => {
                                                 return (
-                                                    <View style={{
-                                                        marginHorizontal: 20, flex: 1, flexDirection: "row", elevation: 4, backgroundColor: WHITE, borderRadius: 8, marginVertical: 10, padding: 10, paddingBottom: -10
-                                                    }} key={index}>
-                                                        <View style={{
-                                                            flexDirection: "row",
-                                                            borderWidth: 1,
-                                                            backgroundColor: WHITE,
-                                                            width: widthPercentageToDP(35),
-                                                            height: 130,
-                                                            borderColor: ORANGE,
-                                                            marginVertical: 15,
-                                                            borderRadius: 18,
-                                                            zIndex: 999,
-                                                        }} key={index}>
-                                                            <View style={{
-                                                                justifyContent: "center",
-                                                                alignItems: "center",
-                                                                width: "20%",
-                                                                backgroundColor: ORANGE,
-                                                                borderTopLeftRadius: 12,
-                                                                borderBottomLeftRadius: 12
-                                                            }}>
-                                                                <Text style={{
-                                                                    color: WHITE,
-                                                                    fontSize: 14,
-                                                                    transform: [{ rotate: '-90deg' }],
-                                                                    width: 200,
-                                                                    textAlign: "center",
-                                                                    position: 'absolute',
-                                                                }}>{item.promo_code}</Text>
-                                                            </View>
-                                                            <View style={{
-                                                                justifyContent: "space-around",
-                                                                width: "70%",
-                                                                // left: "15%",
-                                                                flexDirection: "column"
-                                                            }}>
-                                                                <View>
-                                                                    <TextPoppinsSemiBold style={{ fontSize: 18, lineHeight: 30, alignSelf: "center", color: BLACK, }} >{item.discount || "0"}% OFF</TextPoppinsSemiBold>
-                                                                    <TextPoppinsSemiBold style={{ fontSize: 14, lineHeight: 22, alignSelf: "center", color: GREY, left: 5 }} >Valid upto {getDateFormat(item.end_date)}</TextPoppinsSemiBold>
-                                                                </View>
-                                                            </View>
+                                                    <View key={index} style={styles.cardWrapper}>
+
+                                                        {/* ── Left orange sidebar with rotated promo code ── */}
+                                                        <View style={styles.leftSidebar}>
+                                                            <Text style={styles.rotatedCode} numberOfLines={1}>
+                                                                {item.promo_code}
+                                                            </Text>
                                                         </View>
-                                                        <View style={{
-                                                            flexDirection: "row",
-                                                            backgroundColor: WHITE,
-                                                            width: widthPercentageToDP(50),
-                                                            height: 150,
-                                                            marginVertical: 15,
-                                                            // zIndex: 999,
-                                                        }}>
-                                                            <View style={{ width: "65%" }}>
-                                                                <TextPoppinsSemiBold style={{ fontSize: 16, lineHeight: 24, color: ORANGE, left: 10 }} >{item.promo_code_title || ""}</TextPoppinsSemiBold>
-                                                                <TextPoppinsSemiBold style={{ fontSize: 12, lineHeight: 20, color: GREY, left: 10 }}>{item.promo_code_description || ""}</TextPoppinsSemiBold>
-                                                                <Pressable onPress={() =>
-                                                                    ClaimPromoCode(item)
-                                                                }>
-                                                                    <TextPoppinsSemiBold style={PromoCodeStyle.textApply} >Apply</TextPoppinsSemiBold>
+
+                                                        {/* ── Dashed vertical separator ── */}
+                                                        <View style={styles.dashedDivider} />
+
+                                                        {/* ── Right: all content ── */}
+                                                        <View style={styles.rightContent}>
+
+                                                            {/* Discount amount — primary info, big and orange */}
+                                                            <TextPoppinsSemiBold style={styles.discountText}>
+                                                                {item.discount_type === 'Amount'
+                                                                    ? `₹${item.discount || '0'} OFF`
+                                                                    : `${item.discount || '0'}% OFF`}
+                                                            </TextPoppinsSemiBold>
+
+                                                            {/* Title — secondary info */}
+                                                            {!!item.promo_code_title && (
+                                                                <TextPoppinsSemiBold style={styles.titleText} numberOfLines={1}>
+                                                                    {item.promo_code_title}
+                                                                </TextPoppinsSemiBold>
+                                                            )}
+
+                                                            {/* Description */}
+                                                            {!!item.promo_code_description && (
+                                                                <Text style={styles.descText} numberOfLines={2}>
+                                                                    {item.promo_code_description}
+                                                                </Text>
+                                                            )}
+
+                                                            {/* Footer row: expiry left, apply button right */}
+                                                            <View style={styles.footerRow}>
+                                                                <Text style={styles.expiryText}>
+                                                                    Valid upto {getDateFormat(item.end_date)}
+                                                                </Text>
+                                                                <Pressable
+                                                                    onPress={() => ClaimPromoCode(item)}
+                                                                    style={({ pressed }) => [
+                                                                        styles.applyBtn,
+                                                                        pressed && { opacity: 0.75 }
+                                                                    ]}
+                                                                >
+                                                                    <TextPoppinsSemiBold style={styles.applyBtnText}>
+                                                                        Apply
+                                                                    </TextPoppinsSemiBold>
                                                                 </Pressable>
                                                             </View>
+
                                                         </View>
-
-
                                                     </View>
                                                 )
                                             })
                                         )}
                                     </View>
-
                                 </React.Fragment>
                         }
                     </ScrollView>
@@ -285,6 +302,97 @@ export const PromoCodeScreen = ({ navigation }: any) => {
 export default PromoCodeScreen;
 
 const styles = StyleSheet.create({
+    // ── Card ──────────────────────────────────────────────────
+    cardWrapper: {
+        marginHorizontal: 16,
+        marginVertical: 8,
+        flexDirection: 'row',
+        elevation: 4,
+        backgroundColor: WHITE,
+        borderRadius: 12,
+        overflow: 'hidden',
+        minHeight: 110,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.08,
+        shadowRadius: 4,
+    },
+
+    // ── Left orange sidebar ────────────────────────────────────
+    leftSidebar: {
+        width: 44,
+        backgroundColor: ORANGE,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    rotatedCode: {
+        color: WHITE,
+        fontSize: 8,
+        fontWeight: '700',
+        letterSpacing: 1.2,
+        transform: [{ rotate: '-90deg' }],
+        width: 100,
+        textAlign: 'center',
+    },
+
+    // ── Dashed divider ─────────────────────────────────────────
+    dashedDivider: {
+        width: 1,
+        borderLeftWidth: 1,
+        borderColor: ORANGE,
+        borderStyle: 'dashed',
+        marginVertical: 10,
+    },
+
+    // ── Right content ──────────────────────────────────────────
+    rightContent: {
+        flex: 1,
+        paddingHorizontal: 12,
+        paddingVertical: 12,
+        justifyContent: 'space-between',
+    },
+    discountText: {
+        fontSize: 20,
+        color: ORANGE,
+        lineHeight: 26,
+    },
+    titleText: {
+        fontSize: 13,
+        color: BLACK,
+        lineHeight: 20,
+        marginTop: 2,
+    },
+    descText: {
+        fontSize: 12,
+        color: GREY,
+        lineHeight: 17,
+        marginTop: 4,
+    },
+
+    // ── Footer ─────────────────────────────────────────────────
+    footerRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: 10,
+    },
+    expiryText: {
+        fontSize: 11,
+        color: GREY,
+        lineHeight: 16,
+    },
+    applyBtn: {
+        backgroundColor: ORANGE,
+        paddingHorizontal: 18,
+        paddingVertical: 5,
+        borderRadius: 20,
+    },
+    applyBtnText: {
+        color: WHITE,
+        fontSize: 13,
+    },
+
+    // ── Legacy styles (kept as-is) ─────────────────────────────
     optionContainer: {
         flexDirection: 'row',
         alignItems: 'center',

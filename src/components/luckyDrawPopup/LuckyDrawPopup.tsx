@@ -98,7 +98,7 @@ const handleLinkPress = async (url: string) => {
 
   try {
     const supported = await Linking.openURL(url);
-    console.log(url)
+    // console.log(url)
     if (supported) {
       await Linking.openURL(url);
     } else {
