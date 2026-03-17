@@ -94,6 +94,41 @@ const PostDetailsScreen: React.FC = () => {
   const [isCommentInReview, setIsCommentInReview] = useState(false);
   const [showImageModal, setShowImageModal] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [expandedComments, setExpandedComments] = useState<Record<string, boolean>>({});
+
+  const COMMENT_PREVIEW_LENGTH = 180;
+
+  const toggleExpandedComment = (key: string) => {
+    setExpandedComments((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
+  };
+
+  const renderExpandableText = (text: string, key: string, textStyle: any) => {
+    const safeText = text || '';
+    const isExpanded = !!expandedComments[key];
+    const shouldTruncate = safeText.length > COMMENT_PREVIEW_LENGTH;
+    const displayText = shouldTruncate && !isExpanded
+      ? `${safeText.slice(0, COMMENT_PREVIEW_LENGTH).trim()}...`
+      : safeText;
+
+    return (
+      <View>
+        <TextPoppinsRegular style={textStyle}>{displayText}</TextPoppinsRegular>
+        {shouldTruncate && (
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => toggleExpandedComment(key)}
+          >
+            <Text style={{ color: MDBLUE, marginTop: 4, fontSize: 12, fontWeight: '600' }}>
+              {isExpanded ? t('View_Less') : t('View_More')}
+            </Text>
+          </TouchableOpacity>
+        )}
+      </View>
+    );
+  };
 
   // Decode token to get current user's client_id
   const decodeToken = (token: string) => {
@@ -432,9 +467,7 @@ const PostDetailsScreen: React.FC = () => {
           <TextPoppinsSemiBold style={styles.commentAuthor}>
             {item.client_name}
           </TextPoppinsSemiBold>
-          <TextPoppinsRegular style={styles.commentText}>
-            {item.comment_text}
-          </TextPoppinsRegular>
+          {renderExpandableText(item.comment_text, `comment-${item.id}`, styles.commentText)}
           <TextPoppinsRegular style={styles.commentTime}>
             {new Date(item.created_on).toLocaleDateString('en-IN', {
               day: '2-digit',
@@ -479,9 +512,11 @@ const PostDetailsScreen: React.FC = () => {
                     <TextPoppinsSemiBold style={{ fontSize: 12, color: BLACK }}>
                       {reply.client_name}
                     </TextPoppinsSemiBold>
-                    <TextPoppinsRegular style={{ fontSize: 12, color: '#424242', marginTop: 2 }}>
-                      {reply.reply_text}
-                    </TextPoppinsRegular>
+                    {renderExpandableText(
+                      reply.reply_text,
+                      `comment-${item.id}-reply-${reply.id}`,
+                      { fontSize: 12, color: '#424242', marginTop: 2 }
+                    )}
                   </View>
                   <TextPoppinsRegular style={{ fontSize: 10, color: GRAY, marginTop: 4, marginLeft: 4 }}>
                     {new Date(reply.created_on).toLocaleDateString('en-IN', {

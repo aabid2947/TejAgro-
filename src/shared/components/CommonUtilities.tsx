@@ -34,17 +34,17 @@ import { jwtDecode } from 'jwt-decode'
 //     alt: "offers"
 // };
 const NEW_OFFER_GIF_CONFIG = {
-    url: "https://www.tejagrotech.com/tejagro_sale_demo/offer_images/offer_icon.gif", // Replace with your GIF URL
+    url: "https://tejagrosales.tejgroup.in/offer_images/offer_icon.gif", // Replace with your GIF URL
     width: 90,
     height: 60,
     alt: "offers"
 };
 
 const CATEGORY_GIFS = {
-    platinum: "https://www.tejagrotech.com/tejagro_sale_demo/images/category_images/Platinum.gif",
-    diamond: "https://www.tejagrotech.com/tejagro_sale_demo/images/category_images/Diamond.gif",
-    gold: "https://www.tejagrotech.com/tejagro_sale_demo/images/category_images/Gold.gif",
-    silver: "https://www.tejagrotech.com/tejagro_sale_demo/images/category_images/Silver.gif"
+    platinum: "https://tejagrosales.tejgroup.in/images/category_images/Platinum.gif",
+    diamond: "https://tejagrosales.tejgroup.in/images/category_images/Diamond.gif",
+    gold: "https://tejagrosales.tejgroup.in/images/category_images/Gold.gif",
+    silver: "https://tejagrosales.tejgroup.in/images/category_images/Silver.gif"
 };
 
 interface Message {

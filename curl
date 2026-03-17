@@ -18,7 +18,7 @@ curl -X POST "https://tejagrosales.tejgroup.in/Webservices/otp.php" -H "Content-
 curl -X POST "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/otp.php" -H "Content-Type: application/json" -d '{"mobile_no":"8264782290"}'
 
 <!-- Validate OTP -->
-curl -X POST "https://tejagrosales.tejgroup.in/Webservices/login.php" -H "Content-Type: application/json" -d '{"mobile_no":"8264782290","otp":"2651"}'
+curl -X POST "https://tejagrosales.tejgroup.in/Webservices/login.php" -H "Content-Type: application/json" -d '{"mobile_no":"8264782290","otp":"4103"}'
 curl -X POST "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/login.php" -H "Content-Type: application/json" -d '{"mobile_no":"8264782290","otp":"7841"}'
 
 <!-- Post file in chat -->
@@ -27,3 +27,7 @@ curl -X POST "https://tejagrosales.tejgroup.in/Webservices/chat-messages.php?act
 curl -X GET "https://www.tejagrotech.com/tejagro_sale_demo/Webservices/all-promo-code.php?grand_total=100&wallet_amt=10&promocode_amt=0&remaining_amt=90" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)" 
 curl -X GET "https://tejagrosales.tejgroup.in/Webservices/all-promo-code.php?grand_total=100&wallet_amt=10&promocode_amt=0&remaining_amt=90" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)" 
 curl -X GET "https://tejagrosales.tejgroup.in/Webservices/all-promo-code.php" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)" 
+
+curl -X POST "https://tejagrosales.tejgroup.in/Webservices/save_fcm_token.php" -H "Content-Type: application/json" -d '{client_id: '575861', fcm_token: 'f39F6RYJR4qbOZNIr7B6qJ:APA91bFglmP9RSTYYnmEHQxnuXHm23KVt8EqL6oSaI_LGe6w8sPYEo_L0tpXNT71jTzyQG4BP49G_CTHk-EvcAYuEBOpWZ6SyIx_N2rh7VT79GmrsoyphVE'}'
+profile-details.php
+curl -X GET "https://tejagrosales.tejgroup.in/Webservices/profile-details.php" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)" 

@@ -32,11 +32,12 @@ interface FAQItem {
     expanded: boolean;
 }
 
-const ReferEarnScreen: React.FC = () => {
+const ReferEarnScreen: React.FC<any> = ({ route }) => {
 
     const { t } = useTranslation();
     const navigation = useNavigation();
     const insets = useSafeAreaInsets();
+    const referralCountFromProfile = route?.params?.referralCount || '0';
 
     const referralCode = useSelector((state: RootState) => state.counter.referralCode);
     const [referralData, setReferralData] = useState<ReferralData | null>(null);
@@ -180,7 +181,7 @@ Tej Agro अ‍ॅपमध्ये मिळेल सर्व पिका�
                         <View style={styles.verticalDivider} /> */}
 
                         <View style={styles.leftSection}>
-                            <Text style={styles.countText}>{referralData?.referral_count || '0'}</Text>
+                            <Text style={styles.countText}>{referralCountFromProfile}</Text>
                         
                             <Text style={styles.countLabel}>{t('REFERRALS')}</Text>
                         </View>
