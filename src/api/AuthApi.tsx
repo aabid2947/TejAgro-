@@ -101,6 +101,7 @@ const createPost = (requestBody: any) => {
     return authAxios.post(url, requestBody);
 }
 const getPosts = (requestBody: any) => {
+    console.log("getPosts requestBody:", requestBody);
     const url = `${AUTH_API_URL}farmer-post-get-details.php?action=get_posts`;
     return authAxios.post(url, requestBody);
 }

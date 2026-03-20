@@ -125,7 +125,7 @@ const CustomCaraosel = (banner: any) => {
         <View style={styles.parentView}>
             <ReCarousel
                 loop
-                width={Math.round(width / 0.7)}
+                width={Math.round(width / 0.85)}
                 height={Math.round(width / 1.7)}
                 autoPlay={true}
                 data={shuffledData}

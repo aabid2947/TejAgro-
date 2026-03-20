@@ -31,3 +31,7 @@ curl -X GET "https://tejagrosales.tejgroup.in/Webservices/all-promo-code.php" -H
 curl -X POST "https://tejagrosales.tejgroup.in/Webservices/save_fcm_token.php" -H "Content-Type: application/json" -d '{client_id: '575861', fcm_token: 'f39F6RYJR4qbOZNIr7B6qJ:APA91bFglmP9RSTYYnmEHQxnuXHm23KVt8EqL6oSaI_LGe6w8sPYEo_L0tpXNT71jTzyQG4BP49G_CTHk-EvcAYuEBOpWZ6SyIx_N2rh7VT79GmrsoyphVE'}'
 profile-details.php
 curl -X GET "https://tejagrosales.tejgroup.in/Webservices/profile-details.php" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)" 
+
+
+curl -X POST "https://tejagrosales.tejgroup.in/Webservices/farmer-post-get-details.php?action=get_posts" -H "Content-Type:application/json" -H "Authorization:$(cat token.txt)" -d '{"client_id": "576041"}'
+
